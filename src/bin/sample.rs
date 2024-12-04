@@ -1,5 +1,5 @@
 /*!
-# 2023 Day 0: Sample
+# 2024 Day 0: Sample
 ##  Simple template
 
 <https://adventofcode.com/2024/day/1>

@@ -11,3 +11,11 @@ doctest = false
 all = "warn"
 pedantic = "warn"
 nursery = "warn"
+
+[dependencies]
+clap = { version = "4.5.22", features = ["derive"] }
+counter = "0.6.0"
+derive-new = {version="*", default-features = false}
+itertools = "0.13.0"
+serde = { version = "1.0.215", features = ["derive"] }
+tinytemplate = "1.2.1"

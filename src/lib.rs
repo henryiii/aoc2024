@@ -1,3 +1,13 @@
+#![doc = include_str!("../README.md")]
+
+/*!
+
+## aoc2024 crate
+
+This has some setup to make each file slightly simpler.
+
+*/
+
 pub trait Problem {
     fn solution_a(input: &str) -> i64;
     fn solution_b(input: &str) -> i64;
