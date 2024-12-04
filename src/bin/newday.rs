@@ -1,3 +1,8 @@
+/*!
+# New day template processor
+
+This program produces a new day, given a number. The day must not already exist.
+*/
 use std::fs::File;
 use std::io::Write;
 

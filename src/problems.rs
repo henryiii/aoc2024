@@ -1,25 +1,24 @@
-#![doc = include_str!("../README.md")]
-
 /*!
+# Problem helpers
 
-## aoc2024 crate
-
-This has some setup to make each file slightly simpler.
-
+This module has some setup to make each file slightly simpler.
 */
 
 use inline_colorization::{color_blue, color_green, color_reset};
 use std::time::Instant;
 
+/// The trait that each day must implement.
 pub trait Problem {
     fn solution_a(input: &str) -> i64;
     fn solution_b(input: &str) -> i64;
 }
 
+/// Read the input from a file.
 fn read_input(file: &str) -> String {
     std::fs::read_to_string(file).unwrap()
 }
 
+/// Run the problem. Should be the main function of every day.
 pub fn run<T: Problem>(name: &str) {
     let now = Instant::now();
     let input = read_input(&format!("data/{name}.txt"));
