@@ -33,7 +33,7 @@ mod tests \{
 
     #[test]
     fn test_sample_a() \{
-        assert_eq!(Example{day}::solution_a(INPUT), 1);
+        assert_eq!(Day{day}::solution_a(INPUT), 1);
     }
 
     #[test]
