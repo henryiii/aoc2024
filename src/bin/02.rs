@@ -1,10 +1,10 @@
 /*!
 # 2024 Day 2: Red-Nosed Reports
-##  Simple template
+##  Checking lists of numbers
 
 <https://adventofcode.com/2024/day/2>
 
-This is a small example to get started, also functions as a template for new days.
+This validates and counts lists of numbers.
 */
 
 use aoc2024::{run, Problem};
@@ -22,21 +22,23 @@ fn lists(input: &str) -> Vec<Vec<i64>> {
         .collect()
 }
 
+fn valid(row: &[i64]) -> bool {
+    let range = 1..=3;
+    (row.is_sorted() | row.iter().rev().is_sorted())
+        & row
+            .iter()
+            .tuple_windows()
+            .map(|(a, b)| range.contains(&(a - b).abs()))
+            .all(|x| x)
+}
+
 pub struct Day02 {}
 
 impl Problem for Day02 {
     fn solution_a(input: &str) -> i64 {
         let rows = lists(input);
-        let range = 1..=3;
         rows.iter()
-            .map(|row| {
-                (row.is_sorted() | row.iter().rev().is_sorted())
-                    & row
-                        .iter()
-                        .tuple_windows()
-                        .map(|(a, b)| range.contains(&(a - b).abs()))
-                        .all(|x| x)
-            })
+            .map(|row| valid(row))
             .filter(|&x| x)
             .count()
             .try_into()
@@ -44,7 +46,22 @@ impl Problem for Day02 {
     }
 
     fn solution_b(input: &str) -> i64 {
-        0
+        let rows = lists(input);
+        rows.iter()
+            .map(|row| {
+                valid(row)
+                    | (0..(row.len()))
+                        .map(|i| {
+                            let mut nrow = row.clone();
+                            nrow.remove(i);
+                            valid(&nrow)
+                        })
+                        .any(|x| x)
+            })
+            .filter(|&x| x)
+            .count()
+            .try_into()
+            .unwrap()
     }
 }
 
@@ -65,6 +82,6 @@ mod tests {
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day02::solution_b(INPUT), 1);
+        assert_eq!(Day02::solution_b(INPUT), 4);
     }
 }
