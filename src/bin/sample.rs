@@ -1,13 +1,22 @@
+/*!
+# 2023 Day 0: Sample
+##  Simple template
+
+<https://adventofcode.com/2024/day/1>
+
+This is a small example to get started, also functions as a template for new days.
+*/
+
 use aoc2024::{run, Problem};
 
 pub struct ExampleDay {}
 
 impl Problem for ExampleDay {
-    fn solution_a(&self, input: &str) -> i64 {
+    fn solution_a(input: &str) -> i64 {
         input.lines().map(|line| line.parse::<i64>().unwrap()).sum()
     }
 
-    fn solution_b(&self, input: &str) -> i64 {
+    fn solution_b(input: &str) -> i64 {
         input
             .lines()
             .map(|line| line.parse::<i64>().unwrap())
@@ -17,20 +26,22 @@ impl Problem for ExampleDay {
 }
 
 fn main() {
-    let problem = ExampleDay {};
-    run("sample", &problem);
+    run::<ExampleDay>("sample");
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_example_day() {
-        let input = "1\n2\n3\n";
+    const INPUT: &str = include_str!("../../samples/sample.txt");
 
-        let problem = ExampleDay {};
-        assert_eq!(problem.solution_a(input), 6);
-        assert_eq!(problem.solution_b(input), 14);
+    #[test]
+    fn test_sample_a() {
+        assert_eq!(ExampleDay::solution_a(INPUT), 6);
+    }
+
+    #[test]
+    fn test_sample_b() {
+        assert_eq!(ExampleDay::solution_b(INPUT), 14);
     }
 }
