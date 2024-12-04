@@ -32,7 +32,7 @@ fn valid(row: &[i64]) -> bool {
             .all(|x| x)
 }
 
-pub struct Day02 {}
+struct Day02 {}
 
 impl Problem for Day02 {
     fn solution_a(input: &str) -> i64 {
