@@ -29,8 +29,7 @@ pub fn run<T: Problem>(name: &str) {
     let solution_b = T::solution_b(&input);
     println!("Solution B: {color_blue}{solution_b}{color_reset}");
 
-    #[allow(clippy::cast_precision_loss)]
-    let time_taken = now.elapsed().as_micros() as f64 / 1000.0;
+    let time_taken = now.elapsed().as_secs_f64() * 1000.0;
 
-    println!("{color_green}Time taken: {time_taken}ms{color_reset}");
+    println!("{color_green}Time taken: {time_taken:.3}ms{color_reset}");
 }

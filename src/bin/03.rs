@@ -1,10 +1,11 @@
 /*!
-# 2024 Day 3: Sample
-##  Simple template
+# 2024 Day 3: Mull It Over
+##  Picking out simple instructions
 
 <https://adventofcode.com/2024/day/3>
 
-This is a small example to get started, also functions as a template for new days.
+This has us find and run very simple instructions embedded in junk. The second
+part has state.
 */
 
 use aoc2024::{run, Problem};
@@ -46,13 +47,7 @@ impl Problem for Day03 {
             .fold((0, true), |(acc, flag), inst| match inst {
                 Instruction::Do => (acc, true),
                 Instruction::Dont => (acc, false),
-                Instruction::Mul(a, b) => {
-                    if flag {
-                        (acc + a * b, flag)
-                    } else {
-                        (acc, flag)
-                    }
-                }
+                Instruction::Mul(a, b) => (acc + a * b * i64::from(flag), flag),
             })
             .0
     }

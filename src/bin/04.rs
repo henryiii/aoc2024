@@ -25,7 +25,9 @@ fn get_xmas(grid: &Grid<char>, a: i64, b: i64) -> i64 {
                 .enumerate()
                 .all(|(i, v)| grid.get(a + *x * (i as i64), b + *y * (i as i64)) == Some(v))
         })
-        .count() as i64
+        .count()
+        .try_into()
+        .unwrap()
 }
 
 fn get_mas(grid: &Grid<char>, a: i64, b: i64) -> i64 {
@@ -36,7 +38,9 @@ fn get_mas(grid: &Grid<char>, a: i64, b: i64) -> i64 {
                 .enumerate()
                 .all(|(i, v)| grid.get(a + *x * (i as i64 - 1), b + *y * (i as i64 - 1)) == Some(v))
         })
-        .count() as i64
+        .count()
+        .try_into()
+        .unwrap()
 }
 
 impl Problem for Day04 {

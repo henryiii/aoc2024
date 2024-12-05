@@ -22,11 +22,11 @@ fn lists(input: &str) -> Vec<Vec<i64>> {
         .collect()
 }
 
-fn valid(row: &[i64]) -> bool {
+fn valid<'a, T: DoubleEndedIterator<Item = &'a i64> + Clone>(row: &T) -> bool {
     let range = 1..=3;
-    (row.is_sorted() | row.iter().rev().is_sorted())
+    (row.clone().is_sorted() | row.clone().rev().is_sorted())
         & row
-            .iter()
+            .clone()
             .tuple_windows()
             .map(|(a, b)| range.contains(&(a - b).abs()))
             .all(|x| x)
@@ -38,7 +38,7 @@ impl Problem for Day02 {
     fn solution_a(input: &str) -> i64 {
         let rows = lists(input);
         rows.iter()
-            .map(|row| valid(row))
+            .map(|row| valid(&row.iter()))
             .filter(|&x| x)
             .count()
             .try_into()
@@ -49,12 +49,15 @@ impl Problem for Day02 {
         let rows = lists(input);
         rows.iter()
             .map(|row| {
-                valid(row)
+                valid(&row.iter())
                     | (0..(row.len()))
                         .map(|i| {
-                            let mut nrow = row.clone();
-                            nrow.remove(i);
-                            valid(&nrow)
+                            valid(
+                                &row.iter()
+                                    .enumerate()
+                                    .filter(|(j, _)| i != *j)
+                                    .map(|(_, x)| x),
+                            )
                         })
                         .any(|x| x)
             })
