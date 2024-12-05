@@ -24,8 +24,8 @@ fn lists(input: &str) -> Vec<Vec<i64>> {
 
 fn valid<'a, T: DoubleEndedIterator<Item = &'a i64> + Clone>(row: &T) -> bool {
     let range = 1..=3;
-    (row.clone().is_sorted() | row.clone().rev().is_sorted())
-        & row
+    (row.clone().is_sorted() || row.clone().rev().is_sorted())
+        && row
             .clone()
             .tuple_windows()
             .map(|(a, b)| range.contains(&(a - b).abs()))
@@ -50,7 +50,7 @@ impl Problem for Day02 {
         rows.iter()
             .map(|row| {
                 valid(&row.iter())
-                    | (0..(row.len()))
+                    || (0..(row.len()))
                         .map(|i| {
                             valid(
                                 &row.iter()

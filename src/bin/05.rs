@@ -36,30 +36,34 @@ fn parse_orders(input: &str) -> Vec<Vec<i64>> {
 fn in_order(rules: &[(i64, i64)], order: &[i64]) -> bool {
     rules
         .iter()
-        .filter(|(a, b)| order.contains(a) & order.contains(b))
-        .map(|(a, b)| {
-            order.iter().position(|x| x == a).unwrap() < order.iter().position(|x| x == b).unwrap()
+        .filter_map(|(a, b)| {
+            Some(order.iter().position(|x| x == a)? < order.iter().position(|x| x == b)?)
         })
         .all(|x| x)
 }
 
 fn put_in_order<'a>(rules: &[(i64, i64)], order: &'a [i64]) -> Vec<&'a i64> {
-    let valid_rules = rules
+    let valid_rules: Vec<_> = rules
         .iter()
-        .filter(|(a, b)| order.contains(a) & order.contains(b));
+        .filter(|(a, b)| order.contains(a) && order.contains(b))
+        .collect();
+
     order
         .iter()
         .sorted_by(|&a, &b| {
-            let rule = valid_rules
-                .clone()
-                .filter(|(x, y)| (x == a || x == b) && (y == a || y == b))
+            valid_rules
+                .iter()
+                .filter_map(|(x, y)| {
+                    if x == a && y == b {
+                        Some(std::cmp::Ordering::Less)
+                    } else if x == b && y == a {
+                        Some(std::cmp::Ordering::Greater)
+                    } else {
+                        None
+                    }
+                })
                 .exactly_one()
-                .unwrap();
-            if rule.0 == *a {
-                std::cmp::Ordering::Less
-            } else {
-                std::cmp::Ordering::Greater
-            }
+                .unwrap()
         })
         .collect()
 }
