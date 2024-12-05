@@ -1,10 +1,11 @@
 /*!
-# 2024 Day 5: Sample
-##  Simple template
+# 2024 Day 5: Print Queue
+##  Sorting a print queue with order rules
 
 <https://adventofcode.com/2024/day/5>
 
-This is a small example to get started, also functions as a template for new days.
+The first implmementation was slow (100+ ms); collecting a vector of rules sped
+it up 20x.
 */
 
 use aoc2024::{run, Problem};

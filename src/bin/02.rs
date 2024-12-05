@@ -38,8 +38,7 @@ impl Problem for Day02 {
     fn solution_a(input: &str) -> i64 {
         let rows = lists(input);
         rows.iter()
-            .map(|row| valid(&row.iter()))
-            .filter(|&x| x)
+            .filter(|&row| valid(&row.iter()))
             .count()
             .try_into()
             .unwrap()
@@ -48,7 +47,7 @@ impl Problem for Day02 {
     fn solution_b(input: &str) -> i64 {
         let rows = lists(input);
         rows.iter()
-            .map(|row| {
+            .filter(|&row| {
                 valid(&row.iter())
                     || (0..(row.len()))
                         .map(|i| {
@@ -61,7 +60,6 @@ impl Problem for Day02 {
                         })
                         .any(|x| x)
             })
-            .filter(|&x| x)
             .count()
             .try_into()
             .unwrap()
