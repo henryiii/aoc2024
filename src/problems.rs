@@ -19,6 +19,7 @@ fn read_input(file: &str) -> String {
 }
 
 /// Run the problem. Should be the main function of every day.
+#[allow(clippy::similar_names)]
 pub fn run<T: Problem>(name: &str) {
     let now = Instant::now();
     let input = read_input(&format!("data/{name}.txt"));
