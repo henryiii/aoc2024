@@ -12,7 +12,10 @@ use aoc2024::{run, Problem};
 use aoc2024::grid::{read_char, Direction, Position};
 use grid::Grid;
 
-struct Day06 {}
+enum Result {
+    Exited(Grid<u8>),
+    Cyclic,
+}
 
 fn next_step(map: &Grid<char>, pos: Position, dir: Direction) -> Direction {
     let next = pos + dir;
@@ -35,45 +38,51 @@ fn get_pos(map: &Grid<char>) -> Position {
         .unwrap()
 }
 
+fn solve(map: &Grid<char>) -> Result {
+    let mut pos = get_pos(map);
+    let mut visited: Grid<u8> = Grid::new(map.rows(), map.cols());
+    let mut dir = Direction::Up;
+    while map.get(pos.row(), pos.col()).is_some() {
+        visited[pos] |= dir as u8;
+        dir = next_step(map, pos, dir);
+        pos = pos + dir;
+        if let Some(&v) = visited.get(pos.row(), pos.col()) {
+            if v & dir as u8 != 0 {
+                return Result::Cyclic;
+            }
+        }
+    }
+    Result::Exited(visited)
+}
+
+struct Day06 {}
+
 impl Problem for Day06 {
     fn solution_a(input: &str) -> i64 {
         let map = read_char(input);
-        let mut pos = get_pos(&map);
-        let mut visited: Grid<bool> = Grid::new(map.rows(), map.cols());
-        let mut dir = Direction::Up;
-        while map.get(pos.row(), pos.col()).is_some() {
-            visited[pos] = true;
-            dir = next_step(&map, pos, dir);
-            pos = pos + dir;
+        if let Result::Exited(visited) = solve(&map) {
+            visited
+                .iter()
+                .filter(|&v| *v > 0)
+                .count()
+                .try_into()
+                .unwrap()
+        } else {
+            panic!("No solution found");
         }
-        visited.iter().filter(|&v| *v).count().try_into().unwrap()
     }
 
     fn solution_b(input: &str) -> i64 {
         let orig_map = read_char(input);
-        let start_pos = get_pos(&orig_map);
+        let mut map = orig_map.clone();
         orig_map
             .indexed_iter()
-            .filter_map(|((x, y), c)| {
-                if *c != '.' {
-                    return None;
-                }
-                let mut map = orig_map.clone();
-                let mut visited: Grid<u8> = Grid::new(map.rows(), map.cols());
-                map[(x, y)] = '#';
-                let mut pos = start_pos;
-                let mut dir = Direction::Up;
-                while map.get(pos.row(), pos.col()).is_some() {
-                    visited[pos] |= dir as u8;
-                    dir = next_step(&map, pos, dir);
-                    pos = pos + dir;
-                    if let Some(&v) = visited.get(pos.row(), pos.col()) {
-                        if v & dir as u8 != 0 {
-                            return Some(true);
-                        }
-                    }
-                }
-                None
+            .filter(|(_, &c)| c == '.')
+            .filter(|((x, y), _)| {
+                map[(*x, *y)] = '#';
+                let result = solve(&map);
+                map[(*x, *y)] = '.';
+                matches!(result, Result::Cyclic)
             })
             .count()
             .try_into()
