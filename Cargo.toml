@@ -16,9 +16,10 @@ nursery = "warn"
 clap = { version = "4.5.22", features = ["derive"] }
 counter = "0.6.0"
 derive-new = {version="*", default-features = false}
+derive_more = {version="*", default-features = false, features=["constructor"]}
 grid = "0.15.0"
 inline_colorization = "0.1.6"
 itertools = "0.13.0"
-regex = "1.11.1"
+regex = {version="*", default-features = false}
 serde = { version = "1.0.215", features = ["derive"] }
 tinytemplate = "1.2.1"
