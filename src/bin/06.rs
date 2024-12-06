@@ -5,13 +5,17 @@
 <https://adventofcode.com/2024/day/6>
 
 I'm using the direction code from my 2023 solutions. The first solution was
-really slow, due to rerunning iterators. Using a little memory is okay! The
-current solution adds parallel processing for part 2, which works really well.
+really slow, from using `HashMap`. Switching to the bitflag-like solution sped
+it up, but it was still slow due to rerunning iterators. Using a little memory
+is okay! Finally it was quite fast. The current solution adds parallel
+processing for part 2, which works really well. I've simplifed the 2023
+Direction by removing Position, which now only helps very slightly, due to
+`.get` being smarter in Grid this year.
 */
 
 use aoc2024::{run, Problem};
 
-use aoc2024::grid::{read_char, Direction, Position};
+use aoc2024::grid::{read_char, Direction};
 use grid::Grid;
 use rayon::prelude::*;
 
@@ -20,20 +24,20 @@ enum Result {
     Cyclic,
 }
 
-fn next_step(map: &Grid<char>, pos: Position, dir: Direction) -> Direction {
+fn next_step(map: &Grid<char>, pos: (i64, i64), dir: Direction) -> Direction {
     let next = pos + dir;
-    if map.get(next.row(), next.col()) == Some(&'#') {
+    if map.get(next.0, next.1) == Some(&'#') {
         next_step(map, pos, dir.clockwise())
     } else {
         dir
     }
 }
 
-fn get_pos(map: &Grid<char>) -> Position {
+fn get_pos(map: &Grid<char>) -> (i64, i64) {
     map.indexed_iter()
         .find_map(|((x, y), c)| {
             if *c == '^' {
-                Some(Position::new(x.try_into().unwrap(), y.try_into().unwrap()))
+                Some((x.try_into().unwrap(), y.try_into().unwrap()))
             } else {
                 None
             }
@@ -45,11 +49,11 @@ fn solve(map: &Grid<char>) -> Result {
     let mut pos = get_pos(map);
     let mut visited: Grid<u8> = Grid::new(map.rows(), map.cols());
     let mut dir = Direction::Up;
-    while map.get(pos.row(), pos.col()).is_some() {
-        visited[pos] |= dir as u8;
+    while map.get(pos.0, pos.1).is_some() {
+        visited[(pos.0.try_into().unwrap(), pos.1.try_into().unwrap())] |= dir as u8;
         dir = next_step(map, pos, dir);
         pos = pos + dir;
-        if let Some(&v) = visited.get(pos.row(), pos.col()) {
+        if let Some(&v) = visited.get(pos.0, pos.1) {
             if v & dir as u8 != 0 {
                 return Result::Cyclic;
             }
