@@ -9,8 +9,6 @@ This is a small example to get started, also functions as a template for new day
 
 use aoc2024::{run, Problem};
 
-use std::collections::HashSet;
-
 use aoc2024::grid::{read_char, Direction, Position};
 use grid::Grid;
 
@@ -61,16 +59,18 @@ impl Problem for Day06 {
                     return None;
                 }
                 let mut map = orig_map.clone();
+                let mut visited: Grid<u8> = Grid::new(map.rows(), map.cols());
                 map[(x, y)] = '#';
                 let mut pos = start_pos;
-                let mut visited = HashSet::new();
                 let mut dir = Direction::Up;
                 while map.get(pos.row(), pos.col()).is_some() {
-                    visited.insert((pos, dir));
+                    visited[pos] |= dir as u8;
                     dir = next_step(&map, pos, dir);
                     pos = pos + dir;
-                    if visited.contains(&(pos, dir)) {
-                        return Some(visited.len());
+                    if let Some(&v) = visited.get(pos.row(), pos.col()) {
+                        if v & dir as u8 != 0 {
+                            return Some(true);
+                        }
                     }
                 }
                 None

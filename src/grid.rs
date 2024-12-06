@@ -34,11 +34,12 @@ pub const XDIRECTIONS: [(i64, i64); 4] = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
 
 /// This is a direction.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[repr(u8)]
 pub enum Direction {
-    Up,
-    Left,
-    Down,
-    Right,
+    Up = 0x01,
+    Down = 0x02,
+    Left = 0x04,
+    Right = 0x08,
 }
 
 impl Direction {
