@@ -1,16 +1,19 @@
 /*!
-# 2024 Day 6: Sample
-##  Simple template
+# 2024 Day 6: Guard Gallivant
+## Walking with obstacles
 
 <https://adventofcode.com/2024/day/6>
 
-This is a small example to get started, also functions as a template for new days.
+I'm using the direction code from my 2023 solutions. The first solution was
+really slow, due to rerunning iterators. Using a little memory is okay! The
+current solution adds parallel processing for part 2, which works really well.
 */
 
 use aoc2024::{run, Problem};
 
 use aoc2024::grid::{read_char, Direction, Position};
 use grid::Grid;
+use rayon::prelude::*;
 
 enum Result {
     Exited(Grid<u8>),
@@ -74,14 +77,15 @@ impl Problem for Day06 {
 
     fn solution_b(input: &str) -> i64 {
         let orig_map = read_char(input);
-        let mut map = orig_map.clone();
         orig_map
             .indexed_iter()
             .filter(|(_, &c)| c == '.')
+            .collect::<Vec<_>>()
+            .par_iter()
             .filter(|((x, y), _)| {
+                let mut map = orig_map.clone();
                 map[(*x, *y)] = '#';
                 let result = solve(&map);
-                map[(*x, *y)] = '.';
                 matches!(result, Result::Cyclic)
             })
             .count()

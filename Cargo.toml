@@ -20,6 +20,7 @@ derive_more = {version="*", default-features = false, features=["constructor"]}
 grid = "0.15.0"
 inline_colorization = "0.1.6"
 itertools = "0.13.0"
+rayon = "1.10.0"
 regex = {version="*", default-features = false}
 serde = { version = "1.0.215", features = ["derive"] }
 tinytemplate = "1.2.1"
