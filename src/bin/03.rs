@@ -22,7 +22,7 @@ struct Day03 {}
 
 impl Problem for Day03 {
     fn solution_a(input: &str) -> i64 {
-        let reg = Regex::new(r"mul\((\d+),(\d+)\)").unwrap();
+        let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap();
         reg.captures_iter(input)
             .map(|cap| {
                 let a = cap[1].parse::<i64>().unwrap();
@@ -33,7 +33,7 @@ impl Problem for Day03 {
     }
 
     fn solution_b(input: &str) -> i64 {
-        let reg = Regex::new(r"mul\((\d+),(\d+)\)|do\(\)|don't\(\)").unwrap();
+        let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)|do\(\)|don't\(\)").unwrap();
         let instructions = reg.captures_iter(input).map(|cap| match &cap[0] {
             "do()" => Instruction::Do,
             "don't()" => Instruction::Dont,
