@@ -46,9 +46,7 @@ fn compute(input: &str, ops: &[Ops]) -> i64 {
                         .fold(*first, |acc, (val, op)| match op {
                             Ops::Add => acc + val,
                             Ops::Mul => acc * val,
-                            Ops::Cat => {
-                                (acc.to_string() + &val.to_string()).parse::<u64>().unwrap()
-                            }
+                            Ops::Cat => acc * 10u64.pow(val.checked_ilog10().unwrap() + 1) + val,
                         })
                 })
                 .find(|&x| x == *val)
