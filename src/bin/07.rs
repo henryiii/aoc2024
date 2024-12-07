@@ -22,12 +22,12 @@ enum Ops {
 }
 
 fn compute(input: &str, ops: &[Ops]) -> i64 {
-    let vals: Vec<(u64, Vec<u64>)> = input
+    let vals: Vec<(i64, Vec<i64>)> = input
         .lines()
         .map(|line| line.split_once(':').unwrap())
         .map(|(val, inst)| {
             (
-                val.parse::<u64>().unwrap(),
+                val.parse::<i64>().unwrap(),
                 inst.split_ascii_whitespace()
                     .map(|x| x.parse().unwrap())
                     .collect(),
@@ -46,14 +46,12 @@ fn compute(input: &str, ops: &[Ops]) -> i64 {
                         .fold(*first, |acc, (val, op)| match op {
                             Ops::Add => acc + val,
                             Ops::Mul => acc * val,
-                            Ops::Cat => acc * 10u64.pow(val.checked_ilog10().unwrap() + 1) + val,
+                            Ops::Cat => acc * 10i64.pow(val.checked_ilog10().unwrap() + 1) + val,
                         })
                 })
                 .find(|&x| x == *val)
         })
-        .sum::<u64>()
-        .try_into()
-        .unwrap()
+        .sum::<i64>()
 }
 
 impl Problem for Day07 {
