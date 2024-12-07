@@ -11,53 +11,60 @@ use aoc2024::{run, Problem};
 
 use itertools::Itertools;
 
-// 12830733360047 is too low
-// 12830757847983 is also too low
+// 13145792620347 is too low for part 2
 struct Day07 {}
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
     Add,
     Mul,
+    Cat,
+}
+
+fn compute(input: &str, ops: &[Ops]) -> i64 {
+    let vals: Vec<(u64, Vec<u64>)> = input
+        .lines()
+        .map(|line| line.split_once(':').unwrap())
+        .map(|(val, inst)| {
+            (
+                val.parse::<u64>().unwrap(),
+                inst.split_ascii_whitespace()
+                    .map(|x| x.parse().unwrap())
+                    .collect(),
+            )
+        })
+        .collect();
+    vals.iter()
+        .filter_map(|(val, inst)| {
+            let (first, rest) = inst.split_first().unwrap();
+            (0..rest.len())
+                .map(|_| ops)
+                .multi_cartesian_product()
+                .map(|ops| {
+                    rest.iter()
+                        .zip(ops.iter())
+                        .fold(*first, |acc, (val, op)| match op {
+                            Ops::Add => acc + val,
+                            Ops::Mul => acc * val,
+                            Ops::Cat => {
+                                (acc.to_string() + &val.to_string()).parse::<u64>().unwrap()
+                            }
+                        })
+                })
+                .find(|&x| x == *val)
+        })
+        .sum::<u64>()
+        .try_into()
+        .unwrap()
 }
 
 impl Problem for Day07 {
     fn solution_a(input: &str) -> i64 {
-        let vals: Vec<(u64, Vec<u64>)> = input
-            .lines()
-            .map(|line| line.split_once(':').unwrap())
-            .map(|(val, inst)| {
-                (
-                    val.parse::<u64>().unwrap(),
-                    inst.split_ascii_whitespace()
-                        .map(|x| x.parse().unwrap())
-                        .collect(),
-                )
-            })
-            .collect();
-        vals.iter()
-            .filter_map(|(val, inst)| {
-                let (first, rest) = inst.split_first().unwrap();
-                (0..rest.len())
-                    .map(|_| [Ops::Add, Ops::Mul])
-                    .multi_cartesian_product()
-                    .map(|ops| {
-                        rest.iter()
-                            .zip(ops.iter())
-                            .fold(*first, |acc, (val, op)| match op {
-                                Ops::Add => acc + val,
-                                Ops::Mul => acc * val,
-                            })
-                    })
-                    .find(|&x| x == *val)
-            })
-            .sum::<u64>()
-            .try_into()
-            .unwrap()
+        compute(input, &[Ops::Add, Ops::Mul])
     }
 
     fn solution_b(input: &str) -> i64 {
-        0
+        compute(input, &[Ops::Add, Ops::Mul, Ops::Cat])
     }
 }
 
@@ -78,6 +85,6 @@ mod tests {
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day07::solution_b(INPUT), 1);
+        assert_eq!(Day07::solution_b(INPUT), 11387);
     }
 }
