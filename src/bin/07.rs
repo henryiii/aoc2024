@@ -21,8 +21,8 @@ enum Ops {
     Cat,
 }
 
-fn compute(input: &str, ops: &[Ops]) -> i64 {
-    let vals: Vec<(i64, Vec<i64>)> = input
+fn read_data(input: &str) -> Vec<(i64, Vec<i64>)> {
+    input
         .lines()
         .map(|line| line.split_once(':').unwrap())
         .map(|(val, inst)| {
@@ -33,7 +33,10 @@ fn compute(input: &str, ops: &[Ops]) -> i64 {
                     .collect(),
             )
         })
-        .collect();
+        .collect()
+}
+
+fn compute(vals: &[(i64, Vec<i64>)], ops: &[Ops]) -> i64 {
     vals.iter()
         .filter_map(|(val, inst)| {
             let (first, rest) = inst.split_first().unwrap();
@@ -56,11 +59,13 @@ fn compute(input: &str, ops: &[Ops]) -> i64 {
 
 impl Problem for Day07 {
     fn solution_a(input: &str) -> i64 {
-        compute(input, &[Ops::Add, Ops::Mul])
+        let vals = read_data(input);
+        compute(&vals, &[Ops::Add, Ops::Mul])
     }
 
     fn solution_b(input: &str) -> i64 {
-        compute(input, &[Ops::Add, Ops::Mul, Ops::Cat])
+        let vals = read_data(input);
+        compute(&vals, &[Ops::Add, Ops::Mul, Ops::Cat])
     }
 }
 
