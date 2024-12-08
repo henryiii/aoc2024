@@ -12,7 +12,7 @@ use std::time::Instant;
 #[allow(clippy::similar_names)]
 pub fn run<T: Display>(name: &str, solution_a: fn(&str) -> T, solution_b: fn(&str) -> T) {
     let now = Instant::now();
-    let input = std::fs::read_to_string(&format!("data/{name}.txt")).unwrap();
+    let input = std::fs::read_to_string(format!("data/{name}.txt")).unwrap();
 
     let sol_a_time = Instant::now();
     let solution_a = solution_a(&input);
