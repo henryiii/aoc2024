@@ -8,22 +8,11 @@ use inline_colorization::{color_blue, color_green, color_reset};
 use std::fmt::Display;
 use std::time::Instant;
 
-/// The trait that each day must implement.
-pub trait Problem {
-    fn solution_a(input: &str) -> i64;
-    fn solution_b(input: &str) -> i64;
-}
-
-/// Read the input from a file.
-fn read_input(file: &str) -> String {
-    std::fs::read_to_string(file).unwrap()
-}
-
 /// Run the problem. Should be the main function of every day.
 #[allow(clippy::similar_names)]
 pub fn run<T: Display>(name: &str, solution_a: fn(&str) -> T, solution_b: fn(&str) -> T) {
     let now = Instant::now();
-    let input = read_input(&format!("data/{name}.txt"));
+    let input = std::fs::read_to_string(&format!("data/{name}.txt")).unwrap();
 
     let sol_a_time = Instant::now();
     let solution_a = solution_a(&input);
