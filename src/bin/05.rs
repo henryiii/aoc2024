@@ -12,7 +12,7 @@ use aoc2024::run;
 
 use itertools::Itertools;
 
-fn parse_rules(input: &str) -> Vec<(i64, i64)> {
+fn parse_rules(input: &str) -> Vec<(u64, u64)> {
     input
         .lines()
         .filter(|line| line.contains('|'))
@@ -24,7 +24,7 @@ fn parse_rules(input: &str) -> Vec<(i64, i64)> {
         })
         .collect()
 }
-fn parse_orders(input: &str) -> Vec<Vec<i64>> {
+fn parse_orders(input: &str) -> Vec<Vec<u64>> {
     input
         .lines()
         .filter(|line| line.contains(','))
@@ -32,7 +32,7 @@ fn parse_orders(input: &str) -> Vec<Vec<i64>> {
         .collect()
 }
 
-fn in_order(rules: &[(i64, i64)], order: &[i64]) -> bool {
+fn in_order(rules: &[(u64, u64)], order: &[u64]) -> bool {
     rules
         .iter()
         .filter_map(|(a, b)| {
@@ -41,7 +41,7 @@ fn in_order(rules: &[(i64, i64)], order: &[i64]) -> bool {
         .all(|x| x)
 }
 
-fn put_in_order<'a>(rules: &[(i64, i64)], order: &'a [i64]) -> Vec<&'a i64> {
+fn put_in_order<'a>(rules: &[(u64, u64)], order: &'a [u64]) -> Vec<&'a u64> {
     let valid_rules: Vec<_> = rules
         .iter()
         .filter(|(a, b)| order.contains(a) && order.contains(b))
@@ -67,7 +67,7 @@ fn put_in_order<'a>(rules: &[(i64, i64)], order: &'a [i64]) -> Vec<&'a i64> {
         .collect()
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> u64 {
     let rules = parse_rules(input);
     let orders = parse_orders(input);
     orders
@@ -77,7 +77,7 @@ fn solution_a(input: &str) -> i64 {
         .sum()
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> u64 {
     let rules = parse_rules(input);
     let orders = parse_orders(input);
     orders

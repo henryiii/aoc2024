@@ -50,7 +50,7 @@ fn solve(map: &Grid<char>) -> Result {
     let mut visited: Grid<u8> = Grid::new(map.rows(), map.cols());
     let mut dir = Direction::Up;
     while map.get(pos.0, pos.1).is_some() {
-        visited[(pos.0.try_into().unwrap(), pos.1.try_into().unwrap())] |= dir as u8;
+        *visited.get_mut(pos.0, pos.1).unwrap() |= dir as u8;
         dir = next_step(map, pos, dir);
         pos = pos + dir;
         if let Some(&v) = visited.get(pos.0, pos.1) {
@@ -62,21 +62,16 @@ fn solve(map: &Grid<char>) -> Result {
     Result::Exited(visited)
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     if let Result::Exited(visited) = solve(&map) {
-        visited
-            .iter()
-            .filter(|&v| *v > 0)
-            .count()
-            .try_into()
-            .unwrap()
+        visited.iter().filter(|&v| *v > 0).count()
     } else {
         panic!("No solution found");
     }
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> usize {
     let orig_map = read_char(input);
     orig_map
         .indexed_iter()
@@ -90,8 +85,6 @@ fn solution_b(input: &str) -> i64 {
             matches!(result, Result::Cyclic)
         })
         .count()
-        .try_into()
-        .unwrap()
 }
 
 fn main() {
