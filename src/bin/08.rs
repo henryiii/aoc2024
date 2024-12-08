@@ -11,11 +11,9 @@ use std::collections::HashSet;
 use std::ops::Range;
 
 use aoc2024::grid::read_char;
-use aoc2024::{run, Problem};
+use aoc2024::run;
 use grid::Grid;
 use itertools::Itertools;
-
-struct Day08 {}
 
 fn solution(map: &Grid<char>, range: Range<i64>) -> i64 {
     let mut antinodes: Grid<bool> = Grid::new(map.rows(), map.cols());
@@ -49,20 +47,18 @@ fn solution(map: &Grid<char>, range: Range<i64>) -> i64 {
     antinodes.iter().filter(|&v| *v).count().try_into().unwrap()
 }
 
-impl Problem for Day08 {
-    fn solution_a(input: &str) -> i64 {
-        let map = read_char(input);
-        solution(&map, 1..2)
-    }
+fn solution_a(input: &str) -> i64 {
+    let map = read_char(input);
+    solution(&map, 1..2)
+}
 
-    fn solution_b(input: &str) -> i64 {
-        let map = read_char(input);
-        solution(&map, 0..(map.cols().max(map.rows()).try_into().unwrap()))
-    }
+fn solution_b(input: &str) -> i64 {
+    let map = read_char(input);
+    solution(&map, 0..(map.cols().max(map.rows()).try_into().unwrap()))
 }
 
 fn main() {
-    run::<Day08>("08");
+    run("08", solution_a, solution_b);
 }
 
 #[cfg(test)]
@@ -73,11 +69,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(Day08::solution_a(INPUT), 14);
+        assert_eq!(solution_a(INPUT), 14);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day08::solution_b(INPUT), 34);
+        assert_eq!(solution_b(INPUT), 34);
     }
 }

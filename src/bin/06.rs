@@ -13,7 +13,7 @@ Direction by removing Position, which now only helps very slightly, due to
 `.get` being smarter in Grid this year.
 */
 
-use aoc2024::{run, Problem};
+use aoc2024::run;
 
 use aoc2024::grid::{read_char, Direction};
 use grid::Grid;
@@ -62,44 +62,40 @@ fn solve(map: &Grid<char>) -> Result {
     Result::Exited(visited)
 }
 
-struct Day06 {}
-
-impl Problem for Day06 {
-    fn solution_a(input: &str) -> i64 {
-        let map = read_char(input);
-        if let Result::Exited(visited) = solve(&map) {
-            visited
-                .iter()
-                .filter(|&v| *v > 0)
-                .count()
-                .try_into()
-                .unwrap()
-        } else {
-            panic!("No solution found");
-        }
-    }
-
-    fn solution_b(input: &str) -> i64 {
-        let orig_map = read_char(input);
-        orig_map
-            .indexed_iter()
-            .filter(|(_, &c)| c == '.')
-            .collect::<Vec<_>>()
-            .par_iter()
-            .filter(|((x, y), _)| {
-                let mut map = orig_map.clone();
-                map[(*x, *y)] = '#';
-                let result = solve(&map);
-                matches!(result, Result::Cyclic)
-            })
+fn solution_a(input: &str) -> i64 {
+    let map = read_char(input);
+    if let Result::Exited(visited) = solve(&map) {
+        visited
+            .iter()
+            .filter(|&v| *v > 0)
             .count()
             .try_into()
             .unwrap()
+    } else {
+        panic!("No solution found");
     }
 }
 
+fn solution_b(input: &str) -> i64 {
+    let orig_map = read_char(input);
+    orig_map
+        .indexed_iter()
+        .filter(|(_, &c)| c == '.')
+        .collect::<Vec<_>>()
+        .par_iter()
+        .filter(|((x, y), _)| {
+            let mut map = orig_map.clone();
+            map[(*x, *y)] = '#';
+            let result = solve(&map);
+            matches!(result, Result::Cyclic)
+        })
+        .count()
+        .try_into()
+        .unwrap()
+}
+
 fn main() {
-    run::<Day06>("06");
+    run("06", solution_a, solution_b);
 }
 
 #[cfg(test)]
@@ -110,11 +106,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(Day06::solution_a(INPUT), 41);
+        assert_eq!(solution_a(INPUT), 41);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day06::solution_b(INPUT), 6);
+        assert_eq!(solution_b(INPUT), 6);
     }
 }

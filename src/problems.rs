@@ -5,6 +5,7 @@ This module has some setup to make each file slightly simpler.
 */
 
 use inline_colorization::{color_blue, color_green, color_reset};
+use std::fmt::Display;
 use std::time::Instant;
 
 /// The trait that each day must implement.
@@ -20,17 +21,17 @@ fn read_input(file: &str) -> String {
 
 /// Run the problem. Should be the main function of every day.
 #[allow(clippy::similar_names)]
-pub fn run<T: Problem>(name: &str) {
+pub fn run<T: Display>(name: &str, solution_a: fn(&str) -> T, solution_b: fn(&str) -> T) {
     let now = Instant::now();
     let input = read_input(&format!("data/{name}.txt"));
 
     let sol_a_time = Instant::now();
-    let solution_a = T::solution_a(&input);
+    let solution_a = solution_a(&input);
     let sol_a_time = sol_a_time.elapsed().as_secs_f64() * 1000.0;
     println!("Solution A: {color_blue}{solution_a}{color_reset}    ({color_green}{sol_a_time:.3}ms{color_reset})");
 
     let sol_b_time = Instant::now();
-    let solution_b = T::solution_b(&input);
+    let solution_b = solution_b(&input);
     let sol_b_time = sol_b_time.elapsed().as_secs_f64() * 1000.0;
     println!("Solution B: {color_blue}{solution_b}{color_reset}    ({color_green}{sol_b_time:.3}ms{color_reset})");
 

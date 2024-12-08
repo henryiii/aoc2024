@@ -8,11 +8,9 @@ The first implmementation was slow (100+ ms); collecting a vector of rules sped
 it up 20x.
 */
 
-use aoc2024::{run, Problem};
+use aoc2024::run;
 
 use itertools::Itertools;
-
-struct Day05 {}
 
 fn parse_rules(input: &str) -> Vec<(i64, i64)> {
     input
@@ -69,30 +67,27 @@ fn put_in_order<'a>(rules: &[(i64, i64)], order: &'a [i64]) -> Vec<&'a i64> {
         .collect()
 }
 
-impl Problem for Day05 {
-    fn solution_a(input: &str) -> i64 {
-        let rules = parse_rules(input);
-        let orders = parse_orders(input);
-        orders
-            .iter()
-            .filter(|order| in_order(&rules, order))
-            .map(|order| order[(order.len() - 1) / 2])
-            .sum()
-    }
-
-    fn solution_b(input: &str) -> i64 {
-        let rules = parse_rules(input);
-        let orders = parse_orders(input);
-        orders
-            .iter()
-            .filter(|order| !in_order(&rules, order))
-            .map(|order| put_in_order(&rules, order)[(order.len() - 1) / 2])
-            .sum()
-    }
+fn solution_a(input: &str) -> i64 {
+    let rules = parse_rules(input);
+    let orders = parse_orders(input);
+    orders
+        .iter()
+        .filter(|order| in_order(&rules, order))
+        .map(|order| order[(order.len() - 1) / 2])
+        .sum()
 }
 
+fn solution_b(input: &str) -> i64 {
+    let rules = parse_rules(input);
+    let orders = parse_orders(input);
+    orders
+        .iter()
+        .filter(|order| !in_order(&rules, order))
+        .map(|order| put_in_order(&rules, order)[(order.len() - 1) / 2])
+        .sum()
+}
 fn main() {
-    run::<Day05>("05");
+    run("05", solution_a, solution_b);
 }
 
 #[cfg(test)]
@@ -103,11 +98,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(Day05::solution_a(INPUT), 143);
+        assert_eq!(solution_a(INPUT), 143);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day05::solution_b(INPUT), 123);
+        assert_eq!(solution_b(INPUT), 123);
     }
 }

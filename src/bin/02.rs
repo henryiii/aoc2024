@@ -7,7 +7,7 @@
 This validates and counts lists of numbers.
 */
 
-use aoc2024::{run, Problem};
+use aoc2024::run;
 
 use itertools::Itertools;
 
@@ -32,42 +32,38 @@ fn valid<'a, T: DoubleEndedIterator<Item = &'a i64> + Clone>(row: &T) -> bool {
             .all(|x| x)
 }
 
-struct Day02 {}
+fn solution_a(input: &str) -> i64 {
+    let rows = lists(input);
+    rows.iter()
+        .filter(|&row| valid(&row.iter()))
+        .count()
+        .try_into()
+        .unwrap()
+}
 
-impl Problem for Day02 {
-    fn solution_a(input: &str) -> i64 {
-        let rows = lists(input);
-        rows.iter()
-            .filter(|&row| valid(&row.iter()))
-            .count()
-            .try_into()
-            .unwrap()
-    }
-
-    fn solution_b(input: &str) -> i64 {
-        let rows = lists(input);
-        rows.iter()
-            .filter(|&row| {
-                valid(&row.iter())
-                    || (0..(row.len()))
-                        .map(|i| {
-                            valid(
-                                &row.iter()
-                                    .enumerate()
-                                    .filter(|(j, _)| i != *j)
-                                    .map(|(_, x)| x),
-                            )
-                        })
-                        .any(|x| x)
-            })
-            .count()
-            .try_into()
-            .unwrap()
-    }
+fn solution_b(input: &str) -> i64 {
+    let rows = lists(input);
+    rows.iter()
+        .filter(|&row| {
+            valid(&row.iter())
+                || (0..(row.len()))
+                    .map(|i| {
+                        valid(
+                            &row.iter()
+                                .enumerate()
+                                .filter(|(j, _)| i != *j)
+                                .map(|(_, x)| x),
+                        )
+                    })
+                    .any(|x| x)
+        })
+        .count()
+        .try_into()
+        .unwrap()
 }
 
 fn main() {
-    run::<Day02>("02");
+    run("02", solution_a, solution_b);
 }
 
 #[cfg(test)]
@@ -78,11 +74,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(Day02::solution_a(INPUT), 2);
+        assert_eq!(solution_a(INPUT), 2);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day02::solution_b(INPUT), 4);
+        assert_eq!(solution_b(INPUT), 4);
     }
 }

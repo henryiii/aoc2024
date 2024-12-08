@@ -9,12 +9,10 @@ I had an impl of that but had a bug in IO, and this version was easier for part
 2. This one is pretty readable, and still under a second without parallelism.
 */
 
-use aoc2024::{run, Problem};
+use aoc2024::run;
 
 use itertools::Itertools;
 use rayon::prelude::*;
-
-struct Day07 {}
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
@@ -59,20 +57,18 @@ fn compute(vals: &[(i64, Vec<i64>)], ops: &[Ops]) -> i64 {
         .sum::<i64>()
 }
 
-impl Problem for Day07 {
-    fn solution_a(input: &str) -> i64 {
-        let vals = read_data(input);
-        compute(&vals, &[Ops::Add, Ops::Mul])
-    }
+fn solution_a(input: &str) -> i64 {
+    let vals = read_data(input);
+    compute(&vals, &[Ops::Add, Ops::Mul])
+}
 
-    fn solution_b(input: &str) -> i64 {
-        let vals = read_data(input);
-        compute(&vals, &[Ops::Add, Ops::Mul, Ops::Cat])
-    }
+fn solution_b(input: &str) -> i64 {
+    let vals = read_data(input);
+    compute(&vals, &[Ops::Add, Ops::Mul, Ops::Cat])
 }
 
 fn main() {
-    run::<Day07>("07");
+    run("07", solution_a, solution_b);
 }
 
 #[cfg(test)]
@@ -83,11 +79,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(Day07::solution_a(INPUT), 3749);
+        assert_eq!(solution_a(INPUT), 3749);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(Day07::solution_b(INPUT), 11387);
+        assert_eq!(solution_b(INPUT), 11387);
     }
 }

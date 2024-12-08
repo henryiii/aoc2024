@@ -7,26 +7,22 @@
 This is a small example to get started, also functions as a template for new days.
 */
 
-use aoc2024::{run, Problem};
+use aoc2024::run;
 
-pub struct ExampleDay {}
+fn solution_a(input: &str) -> i64 {
+    input.lines().map(|line| line.parse::<i64>().unwrap()).sum()
+}
 
-impl Problem for ExampleDay {
-    fn solution_a(input: &str) -> i64 {
-        input.lines().map(|line| line.parse::<i64>().unwrap()).sum()
-    }
-
-    fn solution_b(input: &str) -> i64 {
-        input
-            .lines()
-            .map(|line| line.parse::<i64>().unwrap())
-            .map(|x| x * x)
-            .sum()
-    }
+fn solution_b(input: &str) -> i64 {
+    input
+        .lines()
+        .map(|line| line.parse::<i64>().unwrap())
+        .map(|x| x * x)
+        .sum()
 }
 
 fn main() {
-    run::<ExampleDay>("sample");
+    run("sample", solution_a, solution_b);
 }
 
 #[cfg(test)]
@@ -37,11 +33,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(ExampleDay::solution_a(INPUT), 6);
+        assert_eq!(solution_a(INPUT), 6);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(ExampleDay::solution_b(INPUT), 14);
+        assert_eq!(solution_b(INPUT), 14);
     }
 }
