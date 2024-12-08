@@ -1,17 +1,19 @@
 /*!
-# 2024 Day 7: Sample
-##  Simple template
+# 2024 Day 7: Bridge Repair
+## Applying operators
 
 <https://adventofcode.com/2024/day/7>
 
-This is a small example to get started, also functions as a template for new days.
+This could be faster (10x?) by avoiding making vectors in the cartesian product.
+I had an impl of that but had a bug in IO, and this version was easier for part
+2. This one is pretty readable, and still under a second without parallelism.
 */
 
 use aoc2024::{run, Problem};
 
 use itertools::Itertools;
+use rayon::prelude::*;
 
-// 13145792620347 is too low for part 2
 struct Day07 {}
 
 #[derive(Debug, Clone, Copy)]
@@ -37,7 +39,7 @@ fn read_data(input: &str) -> Vec<(i64, Vec<i64>)> {
 }
 
 fn compute(vals: &[(i64, Vec<i64>)], ops: &[Ops]) -> i64 {
-    vals.iter()
+    vals.par_iter()
         .filter_map(|(val, inst)| {
             let (first, rest) = inst.split_first().unwrap();
             (0..rest.len())
