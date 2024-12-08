@@ -22,8 +22,8 @@ fn solution_a(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap();
     reg.captures_iter(input)
         .map(|cap| {
-            let a = cap[1].parse::<u64>().unwrap();
-            let b = cap[2].parse::<u64>().unwrap();
+            let a: u64 = cap[1].parse().unwrap();
+            let b: u64 = cap[2].parse().unwrap();
             a * b
         })
         .sum()
