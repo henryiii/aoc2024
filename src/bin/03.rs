@@ -15,36 +15,32 @@ use regex::Regex;
 enum Instruction {
     Do,
     Dont,
-    Mul(i64, i64),
+    Mul(u64, u64),
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap();
     reg.captures_iter(input)
         .map(|cap| {
-            let a = cap[1].parse::<i64>().unwrap();
-            let b = cap[2].parse::<i64>().unwrap();
+            let a = cap[1].parse::<u64>().unwrap();
+            let b = cap[2].parse::<u64>().unwrap();
             a * b
         })
         .sum()
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)|do\(\)|don't\(\)").unwrap();
-    let instructions = reg.captures_iter(input).map(|cap| match &cap[0] {
-        "do()" => Instruction::Do,
-        "don't()" => Instruction::Dont,
-        _ => {
-            let a = cap[1].parse::<i64>().unwrap();
-            let b = cap[2].parse::<i64>().unwrap();
-            Instruction::Mul(a, b)
-        }
-    });
-    instructions
+    reg.captures_iter(input)
+        .map(|cap| match &cap[0] {
+            "do()" => Instruction::Do,
+            "don't()" => Instruction::Dont,
+            _ => Instruction::Mul(cap[1].parse().unwrap(), cap[2].parse().unwrap()),
+        })
         .fold((0, true), |(acc, flag), inst| match inst {
             Instruction::Do => (acc, true),
             Instruction::Dont => (acc, false),
-            Instruction::Mul(a, b) => (acc + a * b * i64::from(flag), flag),
+            Instruction::Mul(a, b) => (acc + a * b * u64::from(flag), flag),
         })
         .0
 }

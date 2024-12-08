@@ -14,28 +14,28 @@ use aoc2024::run;
 use counter::Counter;
 use itertools::Itertools;
 
-fn lists(input: &str) -> (Vec<i64>, Vec<i64>) {
+fn lists(input: &str) -> (Vec<u64>, Vec<u64>) {
     input
         .lines()
         .map(|line| {
             line.split_whitespace()
-                .map(|x| x.parse::<i64>().unwrap())
+                .map(|x| x.parse::<u64>().unwrap())
                 .next_tuple()
                 .unwrap()
         })
         .unzip()
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> u64 {
     let (mut row1, mut row2) = lists(input);
     row1.sort_unstable();
     row2.sort_unstable();
-    row1.into_iter().zip(row2).map(|(a, b)| (a - b).abs()).sum()
+    row1.into_iter().zip(row2).map(|(a, b)| a.abs_diff(b)).sum()
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> u64 {
     let (row1, row2) = lists(input);
-    let counts: Counter<_, i64> = row2.iter().collect();
+    let counts: Counter<_, u64> = row2.iter().collect();
     row1.iter().map(|x| counts[x] * x).sum()
 }
 

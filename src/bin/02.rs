@@ -11,55 +11,46 @@ use aoc2024::run;
 
 use itertools::Itertools;
 
-fn lists(input: &str) -> Vec<Vec<i64>> {
+fn lists(input: &str) -> Vec<Vec<u64>> {
     input
         .lines()
         .map(|line| {
             line.split_whitespace()
-                .map(|x| x.parse::<i64>().unwrap())
+                .map(|x| x.parse().unwrap())
                 .collect()
         })
         .collect()
 }
 
-fn valid<'a, T: DoubleEndedIterator<Item = &'a i64> + Clone>(row: &T) -> bool {
+fn valid<'a, T: DoubleEndedIterator<Item = &'a u64> + Clone>(row: &T) -> bool {
     let range = 1..=3;
     (row.clone().is_sorted() || row.clone().rev().is_sorted())
         && row
             .clone()
             .tuple_windows()
-            .map(|(a, b)| range.contains(&(a - b).abs()))
-            .all(|x| x)
+            .all(|(&a, &b)| range.contains(&a.abs_diff(b)))
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> usize {
     let rows = lists(input);
-    rows.iter()
-        .filter(|&row| valid(&row.iter()))
-        .count()
-        .try_into()
-        .unwrap()
+    rows.iter().filter(|&row| valid(&row.iter())).count()
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> usize {
     let rows = lists(input);
     rows.iter()
         .filter(|&row| {
             valid(&row.iter())
-                || (0..(row.len()))
-                    .map(|i| {
-                        valid(
-                            &row.iter()
-                                .enumerate()
-                                .filter(|(j, _)| i != *j)
-                                .map(|(_, x)| x),
-                        )
-                    })
-                    .any(|x| x)
+                || (0..(row.len())).any(|i| {
+                    valid(
+                        &row.iter()
+                            .enumerate()
+                            .filter(|(j, _)| i != *j)
+                            .map(|(_, x)| x),
+                    )
+                })
         })
         .count()
-        .try_into()
-        .unwrap()
 }
 
 fn main() {

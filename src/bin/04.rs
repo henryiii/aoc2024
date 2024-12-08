@@ -1,4 +1,3 @@
-#![allow(clippy::cast_possible_wrap)]
 /*!
 # 2024 Day 4: Ceres Search
 ##  Word search
@@ -15,44 +14,42 @@ use grid::Grid;
 const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
 const MAS: [char; 3] = ['M', 'A', 'S'];
 
-fn get_xmas(grid: &Grid<char>, a: i64, b: i64) -> i64 {
+fn get_xmas(grid: &Grid<char>, a: i64, b: i64) -> usize {
     DIRECTIONS
         .iter()
         .filter(|(x, y)| {
             XMAS.iter()
-                .enumerate()
-                .all(|(i, v)| grid.get(a + *x * (i as i64), b + *y * (i as i64)) == Some(v))
+                .zip(0_i64..)
+                .all(|(v, i)| grid.get(a + *x * i, b + *y * i) == Some(v))
         })
         .count()
-        .try_into()
-        .unwrap()
 }
 
-fn get_mas(grid: &Grid<char>, a: i64, b: i64) -> i64 {
+fn get_mas(grid: &Grid<char>, a: i64, b: i64) -> usize {
     XDIRECTIONS
         .iter()
         .filter(|(x, y)| {
             MAS.iter()
-                .enumerate()
-                .all(|(i, v)| grid.get(a + *x * (i as i64 - 1), b + *y * (i as i64 - 1)) == Some(v))
+                .zip(0_i64..)
+                .all(|(v, i)| grid.get(a + *x * (i - 1), b + *y * (i - 1)) == Some(v))
         })
         .count()
-        .try_into()
-        .unwrap()
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> usize {
     let grid = read_char(input);
     grid.indexed_iter()
-        .map(|((a, b), _)| get_xmas(&grid, a as i64, b as i64))
+        .map(|((a, b), _)| get_xmas(&grid, a.try_into().unwrap(), b.try_into().unwrap()))
         .sum()
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> usize {
     let grid = read_char(input);
     grid.indexed_iter()
-        .filter(|((a, b), _)| get_mas(&grid, *a as i64, *b as i64) == 2)
-        .count() as i64
+        .filter(|((a, b), _)| {
+            get_mas(&grid, (*a).try_into().unwrap(), (*b).try_into().unwrap()) == 2
+        })
+        .count()
 }
 
 fn main() {
