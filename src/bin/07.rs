@@ -12,7 +12,6 @@ I had an impl of that but had a bug in IO, and this version was easier for part
 use aoc2024::run;
 
 use aoc2024::par::prelude::*;
-use itertools::Itertools;
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
@@ -40,17 +39,16 @@ fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
     vals.par_iter()
         .filter_map(|(val, inst)| {
             let (first, rest) = inst.split_first().unwrap();
-            (0..rest.len())
-                .map(|_| ops)
-                .multi_cartesian_product()
-                .map(|ops| {
-                    rest.iter()
-                        .zip(ops.iter())
-                        .fold(*first, |acc, (val, op)| match op {
+            let num_combos = ops.len().pow(rest.len().try_into().unwrap());
+            (0..num_combos)
+                .map(|opt_int| {
+                    rest.iter().zip(0..).fold(*first, |acc, (val, i)| {
+                        match ops[(opt_int / ops.len().pow(i)) % ops.len()] {
                             Ops::Add => acc + val,
                             Ops::Mul => acc * val,
                             Ops::Cat => acc * 10u64.pow(val.checked_ilog10().unwrap() + 1) + val,
-                        })
+                        }
+                    })
                 })
                 .find(|&x| x == *val)
         })
