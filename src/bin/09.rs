@@ -8,10 +8,15 @@ Warning: Example does not have side by side movement for part 2.
 */
 
 use aoc2024::run;
+use derive_new::new;
 use itertools::Itertools;
 
-#[derive(Debug, Clone, Copy)]
-struct Block(usize, usize, usize);
+#[derive(Debug, Clone, Copy, new)]
+struct Block {
+    pub id: usize,
+    pub size: usize,
+    pub empty: usize,
+}
 
 fn read(input: &str) -> Vec<usize> {
     input
@@ -26,13 +31,18 @@ fn mk_data(numbers: &[usize]) -> Vec<Block> {
         .chain(std::iter::once(&0))
         .tuples()
         .enumerate()
-        .map(|(i, (a, b))| Block(i, *a, *b))
+        .map(|(i, (a, b))| Block::new(i, *a, *b))
         .collect()
 }
 
 fn expand_filesystem(data: &[Block]) -> Vec<Option<usize>> {
     data.iter()
-        .flat_map(|Block(i, a, b)| [Some(*i)].repeat(*a).into_iter().chain([None].repeat(*b)))
+        .flat_map(|block| {
+            [Some(block.id)]
+                .repeat(block.size)
+                .into_iter()
+                .chain([None].repeat(block.empty))
+        })
         .collect()
 }
 
@@ -60,24 +70,20 @@ fn solution_b(input: &str) -> usize {
     let numbers = read(input);
     let data = mk_data(&numbers);
     let mut compact = data.clone();
-    for Block(i, a, _) in data.iter().rev() {
-        let (orig_pos, &orig_val) = compact
-            .iter()
-            .find_position(|Block(ii, _, _)| i == ii)
-            .unwrap();
-        if let Some((target_pos, &target_val)) =
-            compact.iter().find_position(|Block(_, _, bb)| bb >= a)
+    for block in data.iter().rev() {
+        let (orig_pos, &orig) = compact.iter().find_position(|x| x.id == block.id).unwrap();
+        if let Some((target_pos, &target)) = compact.iter().find_position(|x| x.empty >= block.size)
         {
             if target_pos < orig_pos {
-                compact[orig_pos - 1].2 += orig_val.1 + orig_val.2;
-                compact[target_pos].2 = 0;
+                compact[orig_pos - 1].empty += orig.size + orig.empty;
+                compact[target_pos].empty = 0;
                 compact.remove(orig_pos);
                 compact.insert(
                     target_pos + 1,
-                    Block(orig_val.0, orig_val.1, target_val.2 - orig_val.1),
+                    Block::new(orig.id, orig.size, target.empty - orig.size),
                 );
                 if target_pos + 1 == orig_pos {
-                    compact[orig_pos].2 += orig_val.1 + orig_val.2;
+                    compact[orig_pos].empty += orig.size + orig.empty;
                 }
             }
         }
