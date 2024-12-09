@@ -24,29 +24,25 @@ struct Context {
 
 const TMPL: &str = include_str!("template.rs.in");
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let opts: Opts = Opts::parse();
     let mut tt = TinyTemplate::new();
-    tt.add_template("template", TMPL).unwrap();
+    tt.add_template("template", TMPL)?;
     tt.add_formatter("simplify", |value, f| {
-        let val: u32 = value.as_str().unwrap().parse().unwrap();
+        let val: u32 = value
+            .as_str()
+            .ok_or(std::fmt::Error)?
+            .parse()
+            .map_err(|_| std::fmt::Error)?;
         f.push_str(&val.to_string());
         Ok(())
     });
     let day = format!("{:02}", opts.day);
     let data = Context::new(day.clone());
-    let rendered = tt.render("template", &data).unwrap();
+    let rendered = tt.render("template", &data)?;
     // Using create_new to avoid overwriting existing files, instead of simpler std::fs::write
-    File::create_new(format!("src/bin/{day}.rs"))
-        .unwrap()
-        .write_all(rendered.as_bytes())
-        .unwrap();
-    File::create_new(format!("data/{day}.txt"))
-        .unwrap()
-        .write_all(b"")
-        .unwrap();
-    File::create_new(format!("samples/{day}.txt"))
-        .unwrap()
-        .write_all(b"")
-        .unwrap();
+    File::create_new(format!("src/bin/{day}.rs"))?.write_all(rendered.as_bytes())?;
+    File::create_new(format!("data/{day}.txt"))?.write_all(b"")?;
+    File::create_new(format!("samples/{day}.txt"))?.write_all(b"")?;
+    Ok(())
 }
