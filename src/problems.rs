@@ -9,6 +9,9 @@ use std::fmt::Display;
 use std::time::Instant;
 
 /// Run the problem. Should be the main function of every day.
+///
+/// # Panics
+/// Panics if the file is not found.
 #[allow(clippy::similar_names)]
 pub fn run<T: Display>(name: &str, solution_a: fn(&str) -> T, solution_b: fn(&str) -> T) {
     let now = Instant::now();

@@ -15,7 +15,7 @@ use aoc2024::run;
 use grid::Grid;
 use itertools::Itertools;
 
-fn solution(map: &Grid<char>, range: Range<i64>) -> i64 {
+fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
     let mut antinodes: Grid<bool> = Grid::new(map.rows(), map.cols());
 
     // Every char that is a node
@@ -33,28 +33,29 @@ fn solution(map: &Grid<char>, range: Range<i64>) -> i64 {
             let (&a, &b) = v.iter().collect_tuple().unwrap();
             let dir = (b.0 - a.0, b.1 - a.1);
             for n in range.clone() {
+                let n: i64 = n.try_into().unwrap();
                 let pos1 = (a.0 - dir.0 * n, a.1 - dir.1 * n);
                 let pos2 = (b.0 + dir.0 * n, b.1 + dir.1 * n);
-                if map.get(pos1.0, pos1.1).is_some() {
-                    antinodes[(pos1.0.try_into().unwrap(), pos1.1.try_into().unwrap())] = true;
+                if let Some(val) = antinodes.get_mut(pos1.0, pos1.1) {
+                    *val = true;
                 }
-                if map.get(pos2.0, pos2.1).is_some() {
-                    antinodes[(pos2.0.try_into().unwrap(), pos2.1.try_into().unwrap())] = true;
+                if let Some(val) = antinodes.get_mut(pos2.0, pos2.1) {
+                    *val = true;
                 }
             }
         });
     }
-    antinodes.iter().filter(|&v| *v).count().try_into().unwrap()
+    antinodes.iter().filter(|&v| *v).count()
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     solution(&map, 1..2)
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> usize {
     let map = read_char(input);
-    solution(&map, 0..(map.cols().max(map.rows()).try_into().unwrap()))
+    solution(&map, 0..(map.cols().max(map.rows())))
 }
 
 fn main() {

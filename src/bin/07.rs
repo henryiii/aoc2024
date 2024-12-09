@@ -21,13 +21,13 @@ enum Ops {
     Cat,
 }
 
-fn read_data(input: &str) -> Vec<(i64, Vec<i64>)> {
+fn read_data(input: &str) -> Vec<(u64, Vec<u64>)> {
     input
         .lines()
         .map(|line| line.split_once(':').unwrap())
         .map(|(val, inst)| {
             (
-                val.parse::<i64>().unwrap(),
+                val.parse::<u64>().unwrap(),
                 inst.split_ascii_whitespace()
                     .map(|x| x.parse().unwrap())
                     .collect(),
@@ -36,7 +36,7 @@ fn read_data(input: &str) -> Vec<(i64, Vec<i64>)> {
         .collect()
 }
 
-fn compute(vals: &[(i64, Vec<i64>)], ops: &[Ops]) -> i64 {
+fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
     vals.par_iter()
         .filter_map(|(val, inst)| {
             let (first, rest) = inst.split_first().unwrap();
@@ -49,20 +49,20 @@ fn compute(vals: &[(i64, Vec<i64>)], ops: &[Ops]) -> i64 {
                         .fold(*first, |acc, (val, op)| match op {
                             Ops::Add => acc + val,
                             Ops::Mul => acc * val,
-                            Ops::Cat => acc * 10i64.pow(val.checked_ilog10().unwrap() + 1) + val,
+                            Ops::Cat => acc * 10u64.pow(val.checked_ilog10().unwrap() + 1) + val,
                         })
                 })
                 .find(|&x| x == *val)
         })
-        .sum::<i64>()
+        .sum()
 }
 
-fn solution_a(input: &str) -> i64 {
+fn solution_a(input: &str) -> u64 {
     let vals = read_data(input);
     compute(&vals, &[Ops::Add, Ops::Mul])
 }
 
-fn solution_b(input: &str) -> i64 {
+fn solution_b(input: &str) -> u64 {
     let vals = read_data(input);
     compute(&vals, &[Ops::Add, Ops::Mul, Ops::Cat])
 }
