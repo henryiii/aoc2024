@@ -11,8 +11,8 @@ I had an impl of that but had a bug in IO, and this version was easier for part
 
 use aoc2024::run;
 
+use aoc2024::par::prelude::*;
 use itertools::Itertools;
-use rayon::prelude::*;
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {

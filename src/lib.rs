@@ -6,6 +6,7 @@ This contains things that might get used multiple times.
 */
 
 pub mod grid;
+pub mod par;
 pub mod problems;
 
 pub use problems::run;

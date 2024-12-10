@@ -16,8 +16,8 @@ Direction by removing Position, which now only helps very slightly, due to
 use aoc2024::run;
 
 use aoc2024::grid::{read_char, Direction};
+use aoc2024::par::prelude::*;
 use grid::Grid;
-use rayon::prelude::*;
 
 enum Result {
     Exited(Grid<u8>),
