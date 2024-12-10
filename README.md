@@ -17,7 +17,7 @@ Feel free to check out my 2023 repo at <https://github.com/henryiii/aoc2023>.
 Use:
 
 ```bash
-cargo fmt && cargo clippy --all-targets
+cargo fmt && cargo clippy-all
 ```
 
 If you want to auto-fix anything, you can:

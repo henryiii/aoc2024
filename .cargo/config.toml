@@ -1,3 +1,4 @@
 [alias]
-newday = "run -r --bin newday --"
-day = "run -r --bin"
+newday = "run --release --package newday --"
+day = "run --release --bin"
+clippy-all = "clippy --all-targets --all-features --workspace"

@@ -1,0 +1,11 @@
+[package]
+name = "newday"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+clap = { version = "4.5.22", features = ["derive"] }
+derive-new = {version="*", default-features = false}
+serde = { version = "1.0.215", features = ["derive"] }
+tinytemplate = "1.2.1"
