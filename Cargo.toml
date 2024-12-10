@@ -16,6 +16,19 @@ all = "warn"
 pedantic = "warn"
 nursery = "warn"
 
+[workspace.dependencies]
+derive-new = { version = "0.7.0", default-features = false }
+
+[dependencies]
+counter = "0.6.0"
+derive-new.workspace = true
+grid = "0.15.0"
+inline_colorization = "0.1.6"
+itertools = "0.13.0"
+rayon = "1.10.0"
+regex = { version = "1.11.1", default-features = false }
+strum = { version = "0.26.3", features = ["derive"] }
+
 [lints]
 workspace = true
 
@@ -24,13 +37,3 @@ doctest = false
 
 [profile.release]
 debug = 1
-
-[dependencies]
-counter = "0.6.0"
-derive-new = {version="*", default-features = false}
-grid = "0.15.0"
-inline_colorization = "0.1.6"
-itertools = "0.13.0"
-rayon = "1.10.0"
-regex = {version="*", default-features = false}
-strum = { version = "0.26.3", features = ["derive"] }
