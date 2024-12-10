@@ -24,6 +24,7 @@ fn parse_rules(input: &str) -> Vec<(u64, u64)> {
         })
         .collect()
 }
+
 fn parse_orders(input: &str) -> Vec<Vec<u64>> {
     input
         .lines()

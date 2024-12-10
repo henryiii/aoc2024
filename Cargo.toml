@@ -22,4 +22,5 @@ itertools = "0.13.0"
 rayon = "1.10.0"
 regex = {version="*", default-features = false}
 serde = { version = "1.0.215", features = ["derive"] }
+strum = { version = "0.26.3", features = ["derive"] }
 tinytemplate = "1.2.1"

@@ -55,7 +55,7 @@ fn checksum(filesystem_iter: impl Iterator<Item = Option<usize>>) -> usize {
 
 fn solution_a(input: &str) -> usize {
     let numbers = read(input);
-    let data: Vec<_> = mk_data(&numbers);
+    let data = mk_data(&numbers);
     let filesystem = expand_filesystem(&data);
     let num_good = filesystem.iter().filter(|x| x.is_some()).count();
     let mut rev_fs = filesystem.iter().rev().filter(|x| x.is_some());
