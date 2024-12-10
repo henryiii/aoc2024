@@ -10,10 +10,18 @@ use std::time::Instant;
 
 /// Run the problem. Should be the main function of every day.
 ///
+/// This was originally defined with a `fn(&str) -> T` signture, but
+/// traits were introduced as good practice.
+///
 /// # Panics
 /// Panics if the file is not found.
 #[allow(clippy::similar_names)]
-pub fn run<T: Display>(name: &str, solution_a: fn(&str) -> T, solution_b: fn(&str) -> T) {
+pub fn run<T, F1, F2>(name: &str, solution_a: F1, solution_b: F2)
+where
+    T: Display,
+    F1: Fn(&str) -> T,
+    F2: Fn(&str) -> T,
+{
     let now = Instant::now();
     let input = std::fs::read_to_string(format!("data/{name}.txt")).unwrap();
 

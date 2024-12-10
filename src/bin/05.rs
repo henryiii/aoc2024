@@ -12,6 +12,7 @@ use aoc2024::run;
 
 use itertools::Itertools;
 
+/// Parse the rules from the input. Ignores orders.
 fn parse_rules(input: &str) -> Vec<(u64, u64)> {
     input
         .lines()
@@ -25,6 +26,7 @@ fn parse_rules(input: &str) -> Vec<(u64, u64)> {
         .collect()
 }
 
+/// Parse the orders from the input. Ignores rules.
 fn parse_orders(input: &str) -> Vec<Vec<u64>> {
     input
         .lines()
@@ -33,6 +35,7 @@ fn parse_orders(input: &str) -> Vec<Vec<u64>> {
         .collect()
 }
 
+/// Returns true if the order follows the rules.
 fn in_order(rules: &[(u64, u64)], order: &[u64]) -> bool {
     rules
         .iter()
@@ -42,7 +45,9 @@ fn in_order(rules: &[(u64, u64)], order: &[u64]) -> bool {
         .all(|x| x)
 }
 
+/// Reorders the order to follow the rules. Returns a new ordered vector.
 fn put_in_order<'a>(rules: &[(u64, u64)], order: &'a [u64]) -> Vec<&'a u64> {
+    // Collecting this saves a lot of time when working on the order.
     let valid_rules: Vec<_> = rules
         .iter()
         .filter(|(a, b)| order.contains(a) && order.contains(b))
