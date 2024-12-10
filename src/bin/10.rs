@@ -22,19 +22,18 @@ fn find_starts(map: &Grid<u32>) -> Vec<(i64, i64)> {
         .collect()
 }
 
-fn find_path(map: &Grid<u32>, x: i64, y: i64) -> Vec<(i64, i64)> {
+fn find_path(map: &Grid<u32>, start_pos: (i64, i64)) -> Vec<(i64, i64)> {
     // Could be a number from 0 to 8.
-    let start_val = *map.get(x, y).unwrap();
-    let start_pos = (x, y);
+    let start_val = *map.get(start_pos.0, start_pos.1).unwrap();
     Direction::iter()
         .flat_map(move |dir| {
             let pos = start_pos + dir;
             if let Some(&val) = map.get(pos.0, pos.1) {
                 if val == start_val + 1 {
                     if val == 9 {
-                        return vec![(pos.0, pos.1)];
+                        return vec![pos];
                     }
-                    return find_path(map, pos.0, pos.1);
+                    return find_path(map, pos);
                 }
             }
             vec![]
@@ -45,10 +44,9 @@ fn find_path(map: &Grid<u32>, x: i64, y: i64) -> Vec<(i64, i64)> {
 fn solution_a(input: &str) -> usize {
     let map = read_int(input);
     let starts = find_starts(&map);
-
     starts
         .into_iter()
-        .map(|(x, y)| HashSet::<_>::from_iter(find_path(&map, x, y)).len())
+        .map(|pos| HashSet::<_>::from_iter(find_path(&map, pos)).len())
         .sum()
 }
 
@@ -57,7 +55,7 @@ fn solution_b(input: &str) -> usize {
     let starts = find_starts(&map);
     starts
         .into_iter()
-        .map(|(x, y)| find_path(&map, x, y).len())
+        .map(|pos| find_path(&map, pos).len())
         .sum()
 }
 
