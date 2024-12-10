@@ -11,8 +11,7 @@ use grid::Grid;
 use std::collections::HashSet;
 use strum::IntoEnumIterator;
 
-use aoc2024::grid::read_int;
-use aoc2024::grid::Direction;
+use aoc2024::grid::{read_int, Direction};
 use aoc2024::run;
 
 fn find_starts(map: &Grid<u32>) -> Vec<(i64, i64)> {
