@@ -84,6 +84,20 @@ fine grained detail, but I haven't needed that. I have replaced `par_iter` with
 `iter` when doing this, otherwise Rayon hides what's happening. I could use a
 feature to automate this, but I think keeping usage simple is fine.
 
+## Debugging
+
+To use lldb, just do the following:
+
+```console
+$ cargo build --bin XX
+$ lldb target/debug/XX
+> breakpoint set -f src/bin/XX.rs -l YY
+> r
+```
+
+It should work like any other executable, mostly. The visual debugger in VSCode
+should work too (haven't checked yet).
+
 ## Notes
 
 Also see [Blessed.rs](https://blessed.rs), a curated list of good Rust libraries.
