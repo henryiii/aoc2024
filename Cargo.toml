@@ -3,6 +3,7 @@ name = "aoc2024"
 version.workspace = true
 edition.workspace = true
 publish = false
+rust-version = "1.78"
 
 [workspace]
 members = ["crates/*"]
