@@ -17,8 +17,7 @@ Feel free to check out my 2023 repo at <https://github.com/henryiii/aoc2023>.
 Use:
 
 ```bash
-cargo fmt
-cargo clippy --all
+cargo fmt && cargo clippy --all-targets
 ```
 
 If you want to auto-fix anything, you can:
@@ -75,7 +74,16 @@ You can build with:
 cargo docs --no-deps
 ```
 
-## Notes
+## Profiling
 
+I've used [samply](https://github.com/mstange/samply) to profile. After
+installing (`cargo install --locked samply`), you can use `samply record
+target/bin/XX` and open the page in Chrome or Firefox. I've enabled debug info
+in release mode for this. You can rebuild Rust's stdlib with debuginfo for more
+fine grained detail, but I haven't needed that. I have replaced `par_iter` with
+`iter` when doing this, otherwise Rayon hides what's happening. I could use a
+feature to automate this, but I think keeping usage simple is fine.
+
+## Notes
 
 Also see [Blessed.rs](https://blessed.rs), a curated list of good Rust libraries.

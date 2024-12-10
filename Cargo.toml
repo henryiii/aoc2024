@@ -7,6 +7,9 @@ publish = false
 [lib]
 doctest = false
 
+[profile.release]
+debug = 1
+
 [lints.clippy]
 all = "warn"
 pedantic = "warn"
