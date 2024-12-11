@@ -38,6 +38,7 @@ fn blink(stone: usize) -> NewStones {
 
 fn blink_counter(stones: &mut Counter<usize, usize>) {
     for (stone, count) in stones.clone() {
+        stones[&stone] -= count;
         match blink(stone) {
             NewStones::Single(stone_0) => {
                 *stones.entry(stone_0).or_insert(0) += count;
@@ -47,7 +48,6 @@ fn blink_counter(stones: &mut Counter<usize, usize>) {
                 *stones.entry(stone_2).or_insert(0) += count;
             }
         }
-        stones[&stone] -= count;
     }
 }
 
