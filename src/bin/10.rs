@@ -1,10 +1,10 @@
 /*!
-# 2024 Day 10: Sample
-##  Simple template
+# 2024 Day 10: Hoof It
+## Increasing paths on a grid
 
 <https://adventofcode.com/2024/day/10>
 
-This is a small example to get started, also functions as a template for new days.
+This is a simple number of paths on a grid problem.
 */
 
 use grid::Grid;

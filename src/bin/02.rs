@@ -32,14 +32,16 @@ fn valid<'a, T: DoubleEndedIterator<Item = &'a u64> + Clone>(row: &T) -> bool {
 }
 
 fn solution_a(input: &str) -> usize {
-    let rows = lists(input);
-    rows.iter().filter(|&row| valid(&row.iter())).count()
+    lists(input)
+        .into_iter()
+        .filter(|row| valid(&row.iter()))
+        .count()
 }
 
 fn solution_b(input: &str) -> usize {
-    let rows = lists(input);
-    rows.iter()
-        .filter(|&row| {
+    lists(input)
+        .into_iter()
+        .filter(|row| {
             valid(&row.iter())
                 || (0..(row.len())).any(|i| {
                     valid(

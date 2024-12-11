@@ -1,13 +1,11 @@
 /*!
 # 2024 Day {day | simplify}: Sample
-##  Simple template
+## Simple template
 
 <https://adventofcode.com/2024/day/{day | simplify}>
 
 This is a small example to get started, also functions as a template for new days.
 */
-
-use aoc2024::run;
 
 fn solution_a(input: &str) -> i64 \{
     0
@@ -18,7 +16,7 @@ fn solution_b(input: &str) -> i64 \{
 }
 
 fn main() \{
-    run("{day}", solution_a, solution_b);
+    aoc2024::run("{day}", solution_a, solution_b);
 }
 
 #[cfg(test)]
