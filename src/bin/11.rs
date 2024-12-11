@@ -11,56 +11,58 @@ comute them multiple times.
 
 use counter::Counter;
 
-fn read_stones(input: &str) -> Vec<usize> {
+enum NewStones {
+    Single(usize),
+    Double(usize, usize),
+}
+
+fn read_stones(input: &str) -> Counter<usize, usize> {
     input
         .split_ascii_whitespace()
-        .map(|val| val.parse().unwrap())
+        .map(|val| val.parse::<usize>().unwrap())
         .collect()
 }
 
-fn blink(stones: &[usize]) -> Vec<usize> {
-    stones
-        .iter()
-        .flat_map(|&stone| {
-            if stone == 0 {
-                return vec![1];
-            }
-            let num_digits = stone.checked_ilog10().unwrap() + 1;
-            if num_digits % 2 == 0 {
-                return vec![
-                    stone / 10usize.pow(num_digits / 2),
-                    stone % 10usize.pow(num_digits / 2),
-                ];
-            }
-            vec![stone * 2024]
-        })
-        .collect()
-}
-
-fn blink_counter(stones: &Counter<usize, usize>) -> Counter<usize, usize> {
-    let mut counter = Counter::new();
-    for (stone, count) in stones {
-        let new_stones = blink(&[*stone]);
-        for new_stone in new_stones {
-            *counter.entry(new_stone).or_insert(0) += count;
+fn blink(stone: usize) -> NewStones {
+    if let Some(num_digits) = stone.checked_ilog10().map(|x| x + 1) {
+        if num_digits % 2 == 0 {
+            return NewStones::Double(
+                stone / 10usize.pow(num_digits / 2),
+                stone % 10usize.pow(num_digits / 2),
+            );
         }
+        return NewStones::Single(stone * 2024);
     }
-    counter
+    NewStones::Single(1)
+}
+
+fn blink_counter(stones: &mut Counter<usize, usize>) {
+    for (stone, count) in stones.clone() {
+        match blink(stone) {
+            NewStones::Single(stone_0) => {
+                *stones.entry(stone_0).or_insert(0) += count;
+            }
+            NewStones::Double(stone_1, stone_2) => {
+                *stones.entry(stone_1).or_insert(0) += count;
+                *stones.entry(stone_2).or_insert(0) += count;
+            }
+        }
+        stones[&stone] -= count;
+    }
 }
 
 fn solution_a(input: &str) -> usize {
     let mut stones = read_stones(input);
     for _ in 0..25 {
-        stones = blink(&stones);
+        blink_counter(&mut stones);
     }
-    stones.len()
+    stones.total()
 }
 
 fn solution_b(input: &str) -> usize {
-    let mut stones: Counter<usize, usize> = read_stones(input).into_iter().collect();
-
+    let mut stones = read_stones(input);
     for _ in 0..75 {
-        stones = blink_counter(&stones);
+        blink_counter(&mut stones);
     }
     stones.total()
 }
