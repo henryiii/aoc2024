@@ -38,7 +38,7 @@ fn blink(stone: usize) -> NewStones {
 
 fn blink_counter(stones: &Counter<usize, usize>) -> Counter<usize, usize> {
     let mut new_stones = Counter::new();
-    new_stones.reserve(stones.len()*2);
+    new_stones.reserve(stones.len() * 2);
     for (&stone, &count) in stones {
         match blink(stone) {
             NewStones::Single(stone_0) => {
