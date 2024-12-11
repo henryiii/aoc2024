@@ -36,35 +36,35 @@ fn blink(stone: usize) -> NewStones {
     NewStones::Single(1)
 }
 
-fn blink_counter(stones: &mut Counter<usize, usize>) {
-    for (stone, count) in stones.clone() {
-        stones[&stone] -= count;
+fn blink_counter(stones: &Counter<usize, usize>) -> Counter<usize, usize> {
+    let mut new_stones = Counter::new();
+    new_stones.reserve(stones.len()*2);
+    for (&stone, &count) in stones {
         match blink(stone) {
             NewStones::Single(stone_0) => {
-                *stones.entry(stone_0).or_insert(0) += count;
+                *new_stones.entry(stone_0).or_insert(0) += count;
             }
             NewStones::Double(stone_1, stone_2) => {
-                *stones.entry(stone_1).or_insert(0) += count;
-                *stones.entry(stone_2).or_insert(0) += count;
+                *new_stones.entry(stone_1).or_insert(0) += count;
+                *new_stones.entry(stone_2).or_insert(0) += count;
             }
         }
     }
+    new_stones
 }
 
 fn solution_a(input: &str) -> usize {
-    let mut stones = read_stones(input);
-    for _ in 0..25 {
-        blink_counter(&mut stones);
-    }
-    stones.total()
+    let stones = read_stones(input);
+    (0..25)
+        .fold(stones, |stones, _| blink_counter(&stones))
+        .total()
 }
 
 fn solution_b(input: &str) -> usize {
-    let mut stones = read_stones(input);
-    for _ in 0..75 {
-        blink_counter(&mut stones);
-    }
-    stones.total()
+    let stones = read_stones(input);
+    (0..75)
+        .fold(stones, |stones, _| blink_counter(&stones))
+        .total()
 }
 
 fn main() {
