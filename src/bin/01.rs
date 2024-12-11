@@ -9,8 +9,6 @@ lists from a file. I'm going with two dependencies here, counter and itertools,
 for clean code that is simple. Going through a grid, using a regex, etc. would
 have been less bare-metal, though maybe more adaptable later.
 */
-use aoc2024::run;
-
 use counter::Counter;
 use itertools::Itertools;
 
@@ -40,22 +38,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("01", solution_a, solution_b);
+    aoc2024::run("01", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/01.txt");
 
     #[test]
     fn test_day01a() {
-        assert_eq!(solution_a(INPUT), 11);
+        assert_eq!(super::solution_a(INPUT), 11);
     }
 
     #[test]
     fn test_day01b() {
-        assert_eq!(solution_b(INPUT), 31);
+        assert_eq!(super::solution_b(INPUT), 31);
     }
 }

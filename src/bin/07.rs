@@ -9,10 +9,9 @@ I had an impl of that but had a bug in IO, and this version was easier for part
 2. This one is pretty readable, and still under a second without parallelism.
 */
 
-use aoc2024::run;
+use itertools::Itertools;
 
 use aoc2024::par::prelude::*;
-use itertools::Itertools;
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
@@ -68,22 +67,20 @@ fn solution_b(input: &str) -> u64 {
 }
 
 fn main() {
-    run("07", solution_a, solution_b);
+    aoc2024::run("07", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/07.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 3749);
+        assert_eq!(super::solution_a(INPUT), 3749);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 11387);
+        assert_eq!(super::solution_b(INPUT), 11387);
     }
 }

@@ -8,8 +8,6 @@ This has us find and run very simple instructions embedded in junk. The second
 part has state.
 */
 
-use aoc2024::run;
-
 use regex::Regex;
 
 enum Instruction {
@@ -46,23 +44,21 @@ fn solution_b(input: &str) -> u64 {
 }
 
 fn main() {
-    run("03", solution_a, solution_b);
+    aoc2024::run("03", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/03.txt");
     const INPUT2: &str = include_str!("../../samples/03b.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 161);
+        assert_eq!(super::solution_a(INPUT), 161);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT2), 48);
+        assert_eq!(super::solution_b(INPUT2), 48);
     }
 }

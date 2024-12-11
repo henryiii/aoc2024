@@ -7,7 +7,6 @@
 Warning: Example does not have side by side movement for part 2.
 */
 
-use aoc2024::run;
 use derive_new::new;
 use itertools::Itertools;
 
@@ -93,22 +92,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("09", solution_a, solution_b);
+    aoc2024::run("09", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/09.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 1928);
+        assert_eq!(super::solution_a(INPUT), 1928);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 2858);
+        assert_eq!(super::solution_b(INPUT), 2858);
     }
 }

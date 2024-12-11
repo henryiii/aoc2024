@@ -7,12 +7,12 @@
 This is a simple number of paths on a grid problem.
 */
 
-use grid::Grid;
 use std::collections::HashSet;
+
+use grid::Grid;
 use strum::IntoEnumIterator;
 
 use aoc2024::grid::{read_int, Direction};
-use aoc2024::run;
 
 fn find_starts(map: &Grid<u32>) -> Vec<(i64, i64)> {
     map.indexed_iter()
@@ -59,22 +59,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("10", solution_a, solution_b);
+    aoc2024::run("10", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/10.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 36);
+        assert_eq!(super::solution_a(INPUT), 36);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 81);
+        assert_eq!(super::solution_b(INPUT), 81);
     }
 }

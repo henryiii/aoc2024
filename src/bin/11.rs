@@ -9,8 +9,6 @@ The trick being to bundle repeated numbers, since you don't need to keep or
 comute them multiple times.
 */
 
-use aoc2024::run;
-
 use counter::Counter;
 
 fn read_stones(input: &str) -> Vec<usize> {
@@ -68,22 +66,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("11", solution_a, solution_b);
+    aoc2024::run("11", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/11.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 55_312);
+        assert_eq!(super::solution_a(INPUT), 55_312);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 65_601_038_650_482);
+        assert_eq!(super::solution_b(INPUT), 65_601_038_650_482);
     }
 }

@@ -7,8 +7,6 @@
 This validates and counts lists of numbers.
 */
 
-use aoc2024::run;
-
 use itertools::Itertools;
 
 fn lists(input: &str) -> Vec<Vec<u64>> {
@@ -56,22 +54,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("02", solution_a, solution_b);
+    aoc2024::run("02", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/02.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 2);
+        assert_eq!(super::solution_a(INPUT), 2);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 4);
+        assert_eq!(super::solution_b(INPUT), 4);
     }
 }

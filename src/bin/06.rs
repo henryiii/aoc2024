@@ -13,11 +13,10 @@ Direction by removing Position, which now only helps very slightly, due to
 `.get` being smarter in Grid this year.
 */
 
-use aoc2024::run;
+use grid::Grid;
 
 use aoc2024::grid::{read_char, Direction};
 use aoc2024::par::prelude::*;
-use grid::Grid;
 
 enum Result {
     Exited(Grid<u8>),
@@ -88,22 +87,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("06", solution_a, solution_b);
+    aoc2024::run("06", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/06.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 41);
+        assert_eq!(super::solution_a(INPUT), 41);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 6);
+        assert_eq!(super::solution_b(INPUT), 6);
     }
 }

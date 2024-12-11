@@ -13,8 +13,6 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use aoc2024::run;
-
 /// Parse the rules from the input. Ignores orders.
 fn parse_rules(input: &str) -> HashSet<(u64, u64)> {
     input
@@ -81,22 +79,20 @@ fn solution_b(input: &str) -> u64 {
         .sum()
 }
 fn main() {
-    run("05", solution_a, solution_b);
+    aoc2024::run("05", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/05.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 143);
+        assert_eq!(super::solution_a(INPUT), 143);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 123);
+        assert_eq!(super::solution_b(INPUT), 123);
     }
 }

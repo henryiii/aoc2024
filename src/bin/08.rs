@@ -10,10 +10,10 @@ Frequencies on a map.
 use std::collections::HashSet;
 use std::ops::Range;
 
-use aoc2024::grid::read_char;
-use aoc2024::run;
 use grid::Grid;
 use itertools::Itertools;
+
+use aoc2024::grid::read_char;
 
 fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
     let mut antinodes: Grid<bool> = Grid::new(map.rows(), map.cols());
@@ -59,22 +59,20 @@ fn solution_b(input: &str) -> usize {
 }
 
 fn main() {
-    run("08", solution_a, solution_b);
+    aoc2024::run("08", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     const INPUT: &str = include_str!("../../samples/08.txt");
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(solution_a(INPUT), 14);
+        assert_eq!(super::solution_a(INPUT), 14);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(solution_b(INPUT), 34);
+        assert_eq!(super::solution_b(INPUT), 34);
     }
 }
