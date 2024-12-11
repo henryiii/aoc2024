@@ -34,13 +34,7 @@ fn next_step(map: &Grid<char>, pos: (i64, i64), dir: Direction) -> Direction {
 
 fn get_pos(map: &Grid<char>) -> (i64, i64) {
     map.indexed_iter()
-        .find_map(|((x, y), c)| {
-            if *c == '^' {
-                Some((x.try_into().unwrap(), y.try_into().unwrap()))
-            } else {
-                None
-            }
-        })
+        .find_map(|((x, y), c)| (*c == '^').then(|| (x.try_into().unwrap(), y.try_into().unwrap())))
         .unwrap()
 }
 
@@ -48,15 +42,13 @@ fn solve(map: &Grid<char>) -> Result {
     let mut pos = get_pos(map);
     let mut visited: Grid<u8> = Grid::new(map.rows(), map.cols());
     let mut dir = Direction::Up;
-    while map.get(pos.0, pos.1).is_some() {
-        *visited.get_mut(pos.0, pos.1).unwrap() |= dir as u8;
+    while let Some(visit) = visited.get_mut(pos.0, pos.1) {
+        if *visit & dir as u8 != 0 {
+            return Result::Cyclic;
+        }
+        *visit |= dir as u8;
         dir = next_step(map, pos, dir);
         pos = pos + dir;
-        if let Some(&v) = visited.get(pos.0, pos.1) {
-            if v & dir as u8 != 0 {
-                return Result::Cyclic;
-            }
-        }
     }
     Result::Exited(visited)
 }
