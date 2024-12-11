@@ -5,15 +5,18 @@
 <https://adventofcode.com/2024/day/5>
 
 The first implmementation was slow (100+ ms); collecting a vector of rules sped
-it up 20x.
+it up 20x. The next implementation is much simpler and faster, using comparison
+functions.
 */
 
-use aoc2024::run;
+use std::collections::HashSet;
 
 use itertools::Itertools;
 
+use aoc2024::run;
+
 /// Parse the rules from the input. Ignores orders.
-fn parse_rules(input: &str) -> Vec<(u64, u64)> {
+fn parse_rules(input: &str) -> HashSet<(u64, u64)> {
     input
         .lines()
         .filter(|line| line.contains('|'))
@@ -35,41 +38,26 @@ fn parse_orders(input: &str) -> Vec<Vec<u64>> {
         .collect()
 }
 
+fn compare_rules(rules: &HashSet<(u64, u64)>, a: u64, b: u64) -> std::cmp::Ordering {
+    if rules.contains(&(a, b)) {
+        std::cmp::Ordering::Less
+    } else if rules.contains(&(b, a)) {
+        std::cmp::Ordering::Greater
+    } else {
+        std::cmp::Ordering::Equal
+    }
+}
+
 /// Returns true if the order follows the rules.
-fn in_order(rules: &[(u64, u64)], order: &[u64]) -> bool {
-    rules
-        .iter()
-        .filter_map(|(a, b)| {
-            Some(order.iter().position(|x| x == a)? < order.iter().position(|x| x == b)?)
-        })
-        .all(|x| x)
+fn in_order(rules: &HashSet<(u64, u64)>, order: &[u64]) -> bool {
+    order.is_sorted_by(|&a, &b| compare_rules(rules, a, b) == std::cmp::Ordering::Less)
 }
 
 /// Reorders the order to follow the rules. Returns a new ordered vector.
-fn put_in_order<'a>(rules: &[(u64, u64)], order: &'a [u64]) -> Vec<&'a u64> {
-    // Collecting this saves a lot of time when working on the order.
-    let valid_rules: Vec<_> = rules
-        .iter()
-        .filter(|(a, b)| order.contains(a) && order.contains(b))
-        .collect();
-
+fn put_in_order<'a>(rules: &HashSet<(u64, u64)>, order: &'a [u64]) -> Vec<&'a u64> {
     order
         .iter()
-        .sorted_by(|&a, &b| {
-            valid_rules
-                .iter()
-                .filter_map(|(x, y)| {
-                    if x == a && y == b {
-                        Some(std::cmp::Ordering::Less)
-                    } else if x == b && y == a {
-                        Some(std::cmp::Ordering::Greater)
-                    } else {
-                        None
-                    }
-                })
-                .exactly_one()
-                .unwrap()
-        })
+        .sorted_by(|&&a, &&b| compare_rules(rules, a, b))
         .collect()
 }
 
