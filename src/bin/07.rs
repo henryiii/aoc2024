@@ -48,7 +48,7 @@ fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
                         .fold(*first, |acc, (val, op)| match op {
                             Ops::Add => acc + val,
                             Ops::Mul => acc * val,
-                            Ops::Cat => acc * 10u64.pow(val.checked_ilog10().unwrap() + 1) + val,
+                            Ops::Cat => acc * 10u64.pow(val.ilog10() + 1) + val,
                         })
                 })
                 .find(|&x| x == *val)

@@ -32,7 +32,11 @@ fn next_step(map: &Grid<char>, pos: (i64, i64), dir: Direction) -> Direction {
     }
 }
 
-fn get_pos(map: &Grid<char>) -> (i64, i64) {
+fn get_pos<T>(map: &Grid<char>) -> (T, T)
+where
+    T: TryFrom<usize>,
+    <T as TryFrom<usize>>::Error: std::fmt::Debug,
+{
     map.indexed_iter()
         .find_map(|((x, y), c)| (*c == '^').then(|| (x.try_into().unwrap(), y.try_into().unwrap())))
         .unwrap()
@@ -64,18 +68,24 @@ fn solution_a(input: &str) -> usize {
 
 fn solution_b(input: &str) -> usize {
     let orig_map = read_char(input);
-    orig_map
-        .indexed_iter()
-        .filter(|(_, &c)| c == '.')
-        .collect::<Vec<_>>()
-        .par_iter()
-        .filter(|((x, y), _)| {
-            let mut map = orig_map.clone();
-            map[(*x, *y)] = '#';
-            let result = solve(&map);
-            matches!(result, Result::Cyclic)
-        })
-        .count()
+    // Only place barriers on the original walking path
+    let starting_pos = get_pos(&orig_map);
+    if let Result::Exited(solved_map) = solve(&orig_map) {
+        solved_map
+            .indexed_iter()
+            .filter(|(v, &c)| c > 0 && starting_pos != *v)
+            .collect::<Vec<_>>()
+            .par_iter()
+            .filter(|((x, y), _)| {
+                let mut map = orig_map.clone();
+                map[(*x, *y)] = '#';
+                let result = solve(&map);
+                matches!(result, Result::Cyclic)
+            })
+            .count()
+    } else {
+        panic!("No solution found");
+    }
 }
 
 fn main() {
