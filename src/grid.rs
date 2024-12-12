@@ -49,9 +49,9 @@ pub const XDIRECTIONS: [(i64, i64); 4] = [(-1, -1), (-1, 1), (1, -1), (1, 1)];
 #[repr(u8)]
 pub enum Direction {
     Up = 0x01,
-    Down = 0x02,
-    Left = 0x04,
-    Right = 0x08,
+    Right = 0x02,
+    Down = 0x04,
+    Left = 0x08,
 }
 
 impl Direction {

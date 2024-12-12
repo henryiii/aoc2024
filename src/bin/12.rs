@@ -4,11 +4,14 @@
 
 <https://adventofcode.com/2024/day/12>
 
-Building up `Vec`'s, then converting to a `BTreeSet` was faster than building
-`BTreeSet`/`HashSet`.
+Building up `Vec`'s, then converting to a `HashSet` was faster than building
+`HashSet`.
+
+The key here is that an "edge" is a position plus the direction from "filled" square
+to unfilled square (surface normal, basically).
 */
 
-use std::collections::BTreeSet;
+use std::collections::HashSet;
 
 use grid::Grid;
 use strum::IntoEnumIterator;
@@ -35,7 +38,7 @@ fn find_region(seen: &mut Grid<bool>, map: &Grid<char>, start: (i64, i64)) -> Ve
 }
 
 fn get_edges(
-    region: &'_ BTreeSet<(i64, i64)>,
+    region: &'_ HashSet<(i64, i64)>,
 ) -> impl Iterator<Item = (Direction, i64, i64)> + use<'_> {
     region.iter().flat_map(|(x, y)| {
         Direction::iter()
@@ -44,25 +47,27 @@ fn get_edges(
     })
 }
 
-fn remove_contiguous(sides: &mut Vec<(Direction, i64, i64)>, start: (Direction, i64, i64)) {
+fn remove_contiguous(sides: &mut HashSet<(Direction, i64, i64)>, start: (Direction, i64, i64)) {
     let a = (start.1, start.2) + start.0.clockwise();
     let b = (start.1, start.2) + start.0.counter_clockwise();
-    if let Some(side) = sides.iter().position(|x| x == &(start.0, a.0, a.1)) {
-        sides.remove(side);
+
+    if sides.contains(&(start.0, a.0, a.1)) {
+        sides.remove(&(start.0, a.0, a.1));
         remove_contiguous(sides, (start.0, a.0, a.1));
     }
-    if let Some(side) = sides.iter().position(|x| x == &(start.0, b.0, b.1)) {
-        sides.remove(side);
+    if sides.contains(&(start.0, b.0, b.1)) {
+        sides.remove(&(start.0, b.0, b.1));
         remove_contiguous(sides, (start.0, b.0, b.1));
     }
 }
 
-fn get_sides(region: &BTreeSet<(i64, i64)>) -> usize {
-    let mut sides: Vec<_> = get_edges(region).collect();
+fn get_sides(region: &HashSet<(i64, i64)>) -> usize {
+    let mut sides: HashSet<_> = get_edges(region).collect();
     let mut i = 0;
     while !sides.is_empty() {
         i += 1;
-        let start = sides.pop().unwrap();
+        let start = *sides.iter().next().unwrap();
+        sides.remove(&start);
         remove_contiguous(&mut sides, start);
     }
     i
@@ -77,7 +82,7 @@ fn solution_a(input: &str) -> usize {
                 return None;
             }
             let start = (x.try_into().unwrap(), y.try_into().unwrap());
-            let region: BTreeSet<_> = find_region(&mut seen, &map, start).into_iter().collect();
+            let region: HashSet<_> = find_region(&mut seen, &map, start).into_iter().collect();
             Some((region.len(), get_edges(&region).count()))
         })
         .fold(0, |acc, (a, p)| acc + a * p)
@@ -92,7 +97,7 @@ fn solution_b(input: &str) -> usize {
                 return None;
             }
             let start = (x.try_into().unwrap(), y.try_into().unwrap());
-            let region: BTreeSet<_> = find_region(&mut seen, &map, start).into_iter().collect();
+            let region: HashSet<_> = find_region(&mut seen, &map, start).into_iter().collect();
             Some((region.len(), get_sides(&region)))
         })
         .fold(0, |acc, (a, p)| acc + a * p)
