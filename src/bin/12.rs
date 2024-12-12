@@ -17,15 +17,15 @@ use aoc2024::grid::{read_char, Direction};
 
 fn find_region(seen: &mut Grid<bool>, map: &Grid<char>, start: (i64, i64)) -> Vec<(i64, i64)> {
     *seen.get_mut(start.0, start.1).unwrap() = true;
-    let mut vals = vec![start];
     let ch = map.get(start.0, start.1).unwrap();
-    for dir in Direction::iter() {
+    std::iter::once(start).chain(Direction::iter().filter_map(|dir| {
         let pos = start + dir;
         if seen.get(pos.0, pos.1) == Some(&false) && map.get(pos.0, pos.1) == Some(ch) {
-            vals.extend(find_region(seen, map, pos));
+            Some(find_region(seen, map, pos))
+        } else {
+            None
         }
-    }
-    vals
+    }).flat_map(|x| x)).collect()
 }
 
 fn get_edges(
