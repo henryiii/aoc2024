@@ -44,10 +44,6 @@ fn get_edges(
     })
 }
 
-fn get_p(region: &BTreeSet<(i64, i64)>) -> usize {
-    get_edges(region).count()
-}
-
 fn remove_contiguous(sides: &mut Vec<(Direction, i64, i64)>, start: (Direction, i64, i64)) {
     let a = (start.1, start.2) + start.0.clockwise();
     let b = (start.1, start.2) + start.0.counter_clockwise();
@@ -82,7 +78,7 @@ fn solution_a(input: &str) -> usize {
             }
             let start = (x.try_into().unwrap(), y.try_into().unwrap());
             let region: BTreeSet<_> = find_region(&mut seen, &map, start).into_iter().collect();
-            Some((region.len(), get_p(&region)))
+            Some((region.len(), get_edges(&region).count()))
         })
         .fold(0, |acc, (a, p)| acc + a * p)
 }
