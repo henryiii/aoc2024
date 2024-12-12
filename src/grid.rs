@@ -85,7 +85,7 @@ impl Direction {
 impl Add<Direction> for (i64, i64) {
     type Output = Self;
 
-    fn add(self, dir: Direction) -> Self {
+    fn add(self, dir: Direction) -> Self::Output {
         use Direction::{Down, Left, Right, Up};
 
         match dir {
@@ -93,6 +93,22 @@ impl Add<Direction> for (i64, i64) {
             Left => (self.0, self.1 - 1),
             Down => (self.0 + 1, self.1),
             Right => (self.0, self.1 + 1),
+        }
+    }
+}
+
+impl Add<Direction> for (usize, usize) {
+    type Output = (i64, i64);
+
+    fn add(self, dir: Direction) -> Self::Output {
+        use Direction::{Down, Left, Right, Up};
+        let signed: (i64, i64) = (self.0.try_into().unwrap(), self.1.try_into().unwrap());
+
+        match dir {
+            Up => (signed.0 - 1, signed.1),
+            Left => (signed.0, signed.1 - 1),
+            Down => (signed.0 + 1, signed.1),
+            Right => (signed.0, signed.1),
         }
     }
 }
