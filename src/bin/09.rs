@@ -56,11 +56,11 @@ fn solution_a(input: &str) -> usize {
     let numbers = read(input);
     let data = mk_data(&numbers);
     let filesystem = expand_filesystem(&data);
-    let num_good = filesystem.iter().filter(|x| x.is_some()).count();
-    let mut rev_fs = filesystem.iter().rev().filter(|x| x.is_some());
+    let num_good = filesystem.iter().flatten().count();
+    let mut rev_fs = filesystem.iter().rev().flatten();
     let compact = filesystem
         .iter()
-        .map(|x| x.map_or_else(|| Some(rev_fs.next().unwrap().unwrap()), Some))
+        .map(|x| x.map_or_else(|| Some(*rev_fs.next().unwrap()), Some))
         .take(num_good);
     checksum(compact)
 }
