@@ -1,0 +1,11 @@
+[package]
+name = "alldays"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+inline_colorization.workspace = true

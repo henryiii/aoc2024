@@ -19,12 +19,13 @@ nursery = "warn"
 
 [workspace.dependencies]
 derive-new = { version = "0.7.0", default-features = false }
+inline_colorization = "0.1.6"
 
 [dependencies]
 counter = "0.6.0"
 derive-new.workspace = true
 grid = "0.15.0"
-inline_colorization = "0.1.6"
+inline_colorization.workspace = true
 itertools = "0.13.0"
 rayon = { version = "1.10.0", optional = true }
 regex = { version = "1.11.1", default-features = false }
