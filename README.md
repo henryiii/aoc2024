@@ -57,7 +57,6 @@ the `data` file.
 
 ## Running
 
-Download the test files to `samples/<number>.txt`. For example, `samples/01.txt`.
 Download the input files to `data/<number>.txt`. For example, `data/01.txt`.
 
 Use:
