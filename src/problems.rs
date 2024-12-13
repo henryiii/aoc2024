@@ -19,8 +19,8 @@ use std::time::Instant;
 pub fn run<T, F1, F2>(name: &str, solution_a: F1, solution_b: F2)
 where
     T: Display,
-    F1: Fn(&str) -> T,
-    F2: Fn(&str) -> T,
+    F1: FnOnce(&str) -> T,
+    F2: FnOnce(&str) -> T,
 {
     let now = Instant::now();
     let input = std::fs::read_to_string(format!("data/{name}.txt")).unwrap();
