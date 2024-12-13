@@ -17,8 +17,7 @@ fn main() {
 
     for day_int in 1..=25 {
         let day = format!("{day_int:02}");
-        let prog = format!("target/release/{day}");
         println!("{style_bold}Day {day}{style_reset}:");
-        let _ = Command::new(&prog).status();
+        let _ = Command::new(format!("target/release/{day}")).status();
     }
 }
