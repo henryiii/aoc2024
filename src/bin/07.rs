@@ -7,12 +7,12 @@
 This could be faster (10x?) by avoiding making vectors in the cartesian product.
 I had an impl of that but had a bug in IO, and this version was easier for part
 2. This one is pretty readable, and still under a second without parallelism.
+
+Okay, now it's much faster by short circuiting and avoiding the cartesian
+product, using recursion instead.
 */
 
 use aoc2024::par::prelude::*;
-
-use itertools::FoldWhile::{Continue, Done};
-use itertools::Itertools;
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
@@ -36,30 +36,29 @@ fn read_data(input: &str) -> Vec<(u64, Vec<u64>)> {
         .collect()
 }
 
+fn all_combos(acc: u64, target: u64, rest: &[u64], ops: &[Ops]) -> bool {
+    if acc > target {
+        return false;
+    }
+    let (first, rest) = rest.split_first().unwrap();
+    for op in ops {
+        let next = match *op {
+            Ops::Add => acc + first,
+            Ops::Mul => acc * first,
+            Ops::Cat => acc * 10u64.pow(first.ilog10() + 1) + first,
+        };
+        if next == target || !rest.is_empty() && all_combos(next, target, rest, ops) {
+            return true;
+        }
+    }
+    false
+}
+
 fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
     vals.par_iter()
-        .filter_map(|(val, inst)| {
+        .filter_map(|(target, inst)| {
             let (first, rest) = inst.split_first().unwrap();
-            let num_combos = ops.len().pow(rest.len().try_into().unwrap());
-            (0..num_combos)
-                .map(|opt_int| {
-                    rest.iter()
-                        .zip(0..)
-                        .fold_while(*first, |acc, (x, i)| {
-                            let sum = match ops[(opt_int / ops.len().pow(i)) % ops.len()] {
-                                Ops::Add => acc + x,
-                                Ops::Mul => acc * x,
-                                Ops::Cat => acc * 10u64.pow(x.ilog10() + 1) + x,
-                            };
-                            if sum <= *val {
-                                Continue(sum)
-                            } else {
-                                Done(sum)
-                            }
-                        })
-                        .into_inner()
-                })
-                .find(|&x| x == *val)
+            all_combos(*first, *target, rest, ops).then_some(*target)
         })
         .sum()
 }
