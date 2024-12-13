@@ -9,9 +9,10 @@ I had an impl of that but had a bug in IO, and this version was easier for part
 2. This one is pretty readable, and still under a second without parallelism.
 */
 
-use itertools::Itertools;
-
 use aoc2024::par::prelude::*;
+
+use itertools::FoldWhile::{Continue, Done};
+use itertools::Itertools;
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
@@ -42,13 +43,21 @@ fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
             let num_combos = ops.len().pow(rest.len().try_into().unwrap());
             (0..num_combos)
                 .map(|opt_int| {
-                    rest.iter().zip(0..).fold(*first, |acc, (val, i)| {
-                        match ops[(opt_int / ops.len().pow(i)) % ops.len()] {
-                            Ops::Add => acc + val,
-                            Ops::Mul => acc * val,
-                            Ops::Cat => acc * 10u64.pow(val.ilog10() + 1) + val,
-                        }
-                    })
+                    rest.iter()
+                        .zip(0..)
+                        .fold_while(*first, |acc, (x, i)| {
+                            let sum = match ops[(opt_int / ops.len().pow(i)) % ops.len()] {
+                                Ops::Add => acc + x,
+                                Ops::Mul => acc * x,
+                                Ops::Cat => acc * 10u64.pow(x.ilog10() + 1) + x,
+                            };
+                            if sum <= *val {
+                                Continue(sum)
+                            } else {
+                                Done(sum)
+                            }
+                        })
+                        .into_inner()
                 })
                 .find(|&x| x == *val)
         })
