@@ -64,7 +64,11 @@ fn vis_grid(grid: &Grid<usize>) {
 
 fn solution_a(input: &str) -> usize {
     let robots = read_input(input);
-    let size = if robots.len() < 20 { (11, 7) } else { (101, 103) };
+    let size = if robots.len() < 20 {
+        (11, 7)
+    } else {
+        (101, 103)
+    };
 
     let new_robots = robots.into_iter().map(|((x, y), (dx, dy))| {
         (
