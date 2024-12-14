@@ -18,10 +18,13 @@ pedantic = "warn"
 nursery = "warn"
 
 [workspace.dependencies]
+clap = { version = "4.5.22", features = ["derive"] }
 derive-new = { version = "0.7.0", default-features = false }
 inline_colorization = "0.1.6"
 
 [dependencies]
+aoc-parse = "0.2.18"
+clap.workspace = true
 counter = "0.6.0"
 derive-new.workspace = true
 grid = "0.15.0"

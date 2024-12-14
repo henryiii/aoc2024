@@ -6,7 +6,7 @@
 
 This is the first "easy" problem that is actually only easy if you are clever.
 The trick being to bundle repeated numbers, since you don't need to keep or
-comute them multiple times.
+compute them multiple times.
 */
 
 use counter::Counter;

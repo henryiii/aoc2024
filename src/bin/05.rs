@@ -13,27 +13,15 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-/// Parse the rules from the input. Ignores orders.
-fn parse_rules(input: &str) -> HashSet<(u64, u64)> {
-    input
-        .lines()
-        .filter(|line| line.contains('|'))
-        .map(|line| {
-            line.split('|')
-                .map(|x| x.parse().unwrap())
-                .collect_tuple()
-                .unwrap()
-        })
-        .collect()
-}
+use aoc_parse::{parser, prelude::*};
 
-/// Parse the orders from the input. Ignores rules.
-fn parse_orders(input: &str) -> Vec<Vec<u64>> {
-    input
-        .lines()
-        .filter(|line| line.contains(','))
-        .map(|line| line.split(',').map(|x| x.parse().unwrap()).collect())
-        .collect()
+fn read_input(input: &str) -> (HashSet<(u64, u64)>, Vec<Vec<u64>>) {
+    parser!(
+        section(hash_set(lines(u64 "|" u64)))
+        section(lines(repeat_sep(u64, ",")))
+    )
+    .parse(input)
+    .unwrap()
 }
 
 fn compare_rules(rules: &HashSet<(u64, u64)>, a: u64, b: u64) -> std::cmp::Ordering {
@@ -60,8 +48,7 @@ fn put_in_order<'a>(rules: &HashSet<(u64, u64)>, order: &'a [u64]) -> Vec<&'a u6
 }
 
 fn solution_a(input: &str) -> u64 {
-    let rules = parse_rules(input);
-    let orders = parse_orders(input);
+    let (rules, orders) = read_input(input);
     orders
         .iter()
         .filter(|order| in_order(&rules, order))
@@ -70,8 +57,7 @@ fn solution_a(input: &str) -> u64 {
 }
 
 fn solution_b(input: &str) -> u64 {
-    let rules = parse_rules(input);
-    let orders = parse_orders(input);
+    let (rules, orders) = read_input(input);
     orders
         .iter()
         .filter(|order| !in_order(&rules, order))

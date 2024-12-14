@@ -7,12 +7,24 @@
 This is a small example to get started, also functions as a template for new days.
 */
 
-fn solution_a(input: &str) -> i64 \{
-    0
+use aoc_parse::\{parser, prelude::*};
+
+fn read_input(input: &str) -> Vec<String> \{
+    parser!(
+        lines(
+            string(any_char)
+        )
+    )
+    .parse(input)
+    .unwrap()
 }
 
-fn solution_b(input: &str) -> i64 \{
-    0
+fn solution_a(input: &str) -> u64 \{
+    read_input(input).len()
+}
+
+fn solution_b(input: &str) -> u64 \{
+    read_input(input).len()
 }
 
 fn main() \{
@@ -25,11 +37,11 @@ mod tests \{
 
     #[test]
     fn test_sample_a() \{
-        assert_eq!(super::solution_a(INPUT), 1);
+        assert_eq!(super::solution_a(INPUT), 0);
     }
 
     #[test]
     fn test_sample_b() \{
-        assert_eq!(super::solution_b(INPUT), 1);
+        assert_eq!(super::solution_b(INPUT), 0);
     }
 }

@@ -10,8 +10,8 @@ with the determinant, Copilot just wrote it for me. :shrug: (It didn't get the 0
 
 use std::ops::RangeInclusive;
 
+use aoc_parse::{parser, prelude::*};
 use derive_new::new;
-use regex::Regex;
 
 #[derive(Debug, new)]
 struct Machine {
@@ -45,21 +45,16 @@ impl Machine {
 }
 
 fn read_input(input: &str) -> Vec<Machine> {
-    let re = Regex::new(
-        r"(?s)Button A: X\+([[:digit:]]+), Y\+([[:digit:]]+)
-Button B: X\+([[:digit:]]+), Y\+([[:digit:]]+)
-Prize: X=([[:digit:]]+), Y=([[:digit:]]+)",
-    )
-    .unwrap();
-    let cap = re.captures_iter(input);
-    cap.map(|val| {
-        Machine::new(
-            (val[1].parse().unwrap(), val[2].parse().unwrap()),
-            (val[3].parse().unwrap(), val[4].parse().unwrap()),
-            (val[5].parse().unwrap(), val[6].parse().unwrap()),
+    parser!(
+        sections(
+            a:line("Button A: X+" i64 ", Y+" i64)
+            b:line("Button B: X+" i64 ", Y+" i64)
+            c:line("Prize: X=" i64 ", Y=" i64)
+            => Machine::new(a, b, c)
         )
-    })
-    .collect()
+    )
+    .parse(input)
+    .unwrap()
 }
 
 fn solution_a(input: &str) -> i64 {

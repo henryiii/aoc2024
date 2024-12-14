@@ -8,7 +8,7 @@ publish = false
 workspace = true
 
 [dependencies]
-clap = { version = "4.5.22", features = ["derive"] }
+clap.workspace = true
 derive-new.workspace = true
 serde = { version = "1.0.215", features = ["derive"] }
 tinytemplate = "1.2.1"
