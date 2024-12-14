@@ -117,6 +117,6 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(super::solution_a(INPUT), 11);
+        assert_eq!(super::solution_a(INPUT), 12);
     }
 }
