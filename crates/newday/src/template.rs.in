@@ -9,6 +9,8 @@ This is a small example to get started, also functions as a template for new day
 
 use aoc_parse::\{parser, prelude::*};
 
+type Int = usize;
+
 fn read_input(input: &str) -> Vec<String> \{
     parser!(
         lines(
@@ -19,11 +21,11 @@ fn read_input(input: &str) -> Vec<String> \{
     .unwrap()
 }
 
-fn solution_a(input: &str) -> u64 \{
+fn solution_a(input: &str) -> Int \{
     read_input(input).len()
 }
 
-fn solution_b(input: &str) -> u64 \{
+fn solution_b(input: &str) -> Int \{
     read_input(input).len()
 }
 

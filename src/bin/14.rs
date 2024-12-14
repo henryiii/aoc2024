@@ -18,21 +18,22 @@ struct Opts {
     vis: bool,
 }
 
-type Point = (i64, i64);
+type Int = i16;
+type Point = (Int, Int);
 
 fn read_input(input: &str) -> Vec<(Point, Point)> {
     use aoc_parse::{parser, prelude::*};
 
     parser!(
         lines(
-            "p=" (i64 "," i64) " v=" (i64 "," i64)
+            "p=" (i16 "," i16) " v=" (i16 "," i16)
         )
     )
     .parse(input)
     .unwrap()
 }
 
-const fn mid_pt(val: i64, edge: i64) -> Option<bool> {
+const fn mid_pt(val: Int, edge: Int) -> Option<bool> {
     let double = val * 2;
     if double == edge - 1 {
         None
