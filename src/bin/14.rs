@@ -8,20 +8,21 @@ This is a small example to get started, also functions as a template for new day
 */
 
 use clap::Parser;
+use counter::Counter;
+use grid::Grid;
 
-#[derive(clap::Parser, Debug)]
+#[derive(Parser, Debug)]
 #[command()]
 struct Opts {
     #[clap(long)]
     vis: bool,
 }
-type Point = (i64, i64);
 
-use counter::Counter;
-use grid::Grid;
+type Point = (i64, i64);
 
 fn read_input(input: &str) -> Vec<(Point, Point)> {
     use aoc_parse::{parser, prelude::*};
+
     parser!(
         lines(
             "p=" (i64 "," i64) " v=" (i64 "," i64)
@@ -88,7 +89,7 @@ fn solution_a(input: &str) -> usize {
 fn solution_b(input: &str, vis: bool) -> usize {
     let mut robots = read_input(input);
     let size = (101, 103);
-    for i in 0..10000 {
+    for i in 1..=10000 {
         for ((x, y), (dx, dy)) in &mut robots {
             *x = (*x + *dx).rem_euclid(size.0);
             *y = (*y + *dy).rem_euclid(size.1);
@@ -99,7 +100,7 @@ fn solution_b(input: &str, vis: bool) -> usize {
             if vis {
                 vis_grid(&grid);
             }
-            return i + 1;
+            return i;
         }
     }
     0
