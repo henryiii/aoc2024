@@ -91,7 +91,7 @@ fn solution_b(input: &str, vis: bool) -> usize {
         for (pos, _) in &robots {
             grid[*pos] += 1;
         }
-        if *grid.iter().max().unwrap() == 1 {
+        if grid.iter().all(|x| *x <= 1) {
             if vis {
                 vis_grid(&grid);
             }
