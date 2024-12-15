@@ -46,8 +46,8 @@ const fn mid_pt(val: Int, edge: Int) -> Option<bool> {
 
 fn to_grid(robots: &[(Point<Int>, Point<Int>)], size: (Int, Int)) -> Grid<usize> {
     let mut grid: Grid<usize> = Grid::new(size.1.try_into().unwrap(), size.0.try_into().unwrap());
-    for (Point(x, y), _) in robots {
-        *grid.get_mut(*y, *x).unwrap() += 1;
+    for (pos, _) in robots {
+        grid[*pos] += 1;
     }
     grid
 }

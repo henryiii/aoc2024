@@ -56,6 +56,7 @@ pub enum Direction {
 
 impl Direction {
     /// This rotates the direction clockwise.
+    #[inline]
     #[must_use]
     pub const fn clockwise(&self) -> Self {
         use Direction::{Down, Left, Right, Up};
@@ -69,6 +70,7 @@ impl Direction {
     }
 
     /// This rotates the direction counter-clockwise.
+    #[inline]
     #[must_use]
     pub const fn counter_clockwise(&self) -> Self {
         use Direction::{Down, Left, Right, Up};
@@ -85,6 +87,7 @@ impl Direction {
 impl Add<Direction> for (i64, i64) {
     type Output = Self;
 
+    #[inline]
     fn add(self, dir: Direction) -> Self::Output {
         use Direction::{Down, Left, Right, Up};
 
