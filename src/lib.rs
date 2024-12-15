@@ -5,6 +5,7 @@
 This contains things that might get used multiple times.
 */
 
+pub mod geom;
 pub mod grid;
 pub mod par;
 pub mod problems;

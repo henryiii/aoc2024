@@ -11,6 +11,8 @@ use clap::Parser;
 use counter::Counter;
 use grid::Grid;
 
+use aoc2024::geom::Point;
+
 #[derive(Parser, Debug)]
 #[command()]
 struct Opts {
@@ -18,15 +20,15 @@ struct Opts {
     vis: bool,
 }
 
-type Int = i16;
-type Point = (Int, Int);
+type Int = i32;
 
-fn read_input(input: &str) -> Vec<(Point, Point)> {
+fn read_input(input: &str) -> Vec<(Point<Int>, Point<Int>)> {
     use aoc_parse::{parser, prelude::*};
 
     parser!(
         lines(
-            "p=" (i16 "," i16) " v=" (i16 "," i16)
+            "p=" a:(i32 "," i32) " v=" b:(i32 "," i32)
+            => (Point::from(a), Point::from(b))
         )
     )
     .parse(input)
@@ -42,9 +44,9 @@ const fn mid_pt(val: Int, edge: Int) -> Option<bool> {
     }
 }
 
-fn to_grid(robots: &[(Point, Point)], size: Point) -> Grid<usize> {
+fn to_grid(robots: &[(Point<Int>, Point<Int>)], size: (Int, Int)) -> Grid<usize> {
     let mut grid: Grid<usize> = Grid::new(size.1.try_into().unwrap(), size.0.try_into().unwrap());
-    for ((x, y), _) in robots {
+    for (Point(x, y), _) in robots {
         *grid.get_mut(*y, *x).unwrap() += 1;
     }
     grid
@@ -71,15 +73,9 @@ fn solution_a(input: &str) -> usize {
         (101, 103)
     };
 
-    let new_robots = robots.into_iter().map(|((x, y), (dx, dy))| {
-        (
-            (
-                (x + 100 * dx).rem_euclid(size.0),
-                (y + 100 * dy).rem_euclid(size.1),
-            ),
-            (dx, dy),
-        )
-    });
+    let new_robots = robots
+        .into_iter()
+        .map(|(pos, vel)| ((pos + vel * 100).rem_euclid(size), vel));
 
     #[cfg(test)]
     vis_grid(&to_grid(&new_robots.clone().collect::<Vec<_>>(), size));
@@ -95,9 +91,8 @@ fn solution_b(input: &str, vis: bool) -> usize {
     let mut robots = read_input(input);
     let size = (101, 103);
     for i in 1..=10000 {
-        for ((x, y), (dx, dy)) in &mut robots {
-            *x = (*x + *dx).rem_euclid(size.0);
-            *y = (*y + *dy).rem_euclid(size.1);
+        for (pos, vel) in &mut robots {
+            *pos = (*pos + *vel).rem_euclid(size);
         }
 
         let grid = to_grid(&robots, size);
