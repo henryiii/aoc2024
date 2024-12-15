@@ -44,14 +44,6 @@ const fn mid_pt(val: Int, edge: Int) -> Option<bool> {
     }
 }
 
-fn to_grid(robots: &[(Point<Int>, Point<Int>)], size: (Int, Int)) -> Grid<usize> {
-    let mut grid: Grid<usize> = Grid::new(size.1.try_into().unwrap(), size.0.try_into().unwrap());
-    for (pos, _) in robots {
-        grid[*pos] += 1;
-    }
-    grid
-}
-
 fn vis_grid(grid: &Grid<usize>) {
     for row in grid.iter_rows() {
         for cell in row {
@@ -65,20 +57,19 @@ fn vis_grid(grid: &Grid<usize>) {
     }
 }
 
-fn solution_a(input: &str) -> usize {
+fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     let robots = read_input(input);
-    let size = if robots.len() < 20 {
-        (11, 7)
-    } else {
-        (101, 103)
-    };
-
+    let size = (X, Y);
     let new_robots = robots
         .into_iter()
         .map(|(pos, vel)| ((pos + vel * 100).rem_euclid(size), vel));
 
     #[cfg(test)]
-    vis_grid(&to_grid(&new_robots.clone().collect::<Vec<_>>(), size));
+    {
+        let mut grid = Grid::new(size.1.try_into().unwrap(), size.0.try_into().unwrap());
+        new_robots.clone().for_each(|(pos, _)| grid[pos] += 1);
+        vis_grid(&grid);
+    }
 
     let counts: Counter<_> = new_robots
         .into_iter()
@@ -90,12 +81,16 @@ fn solution_a(input: &str) -> usize {
 fn solution_b(input: &str, vis: bool) -> usize {
     let mut robots = read_input(input);
     let size = (101, 103);
+    let mut grid = Grid::new(103, 101);
     for i in 1..=10000 {
         for (pos, vel) in &mut robots {
             *pos = (*pos + *vel).rem_euclid(size);
         }
 
-        let grid = to_grid(&robots, size);
+        grid.fill(0);
+        for (pos, _) in &robots {
+            grid[*pos] += 1;
+        }
         if *grid.iter().max().unwrap() == 1 {
             if vis {
                 vis_grid(&grid);
@@ -108,7 +103,9 @@ fn solution_b(input: &str, vis: bool) -> usize {
 
 fn main() {
     let opts: Opts = Opts::parse();
-    aoc2024::run("14", solution_a, |input| solution_b(input, opts.vis));
+    aoc2024::run("14", solution_a::<101, 103>, |input| {
+        solution_b(input, opts.vis)
+    });
 }
 
 #[cfg(test)]
@@ -117,6 +114,6 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(super::solution_a(INPUT), 12);
+        assert_eq!(super::solution_a::<11, 7>(INPUT), 12);
     }
 }
