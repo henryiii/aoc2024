@@ -99,3 +99,28 @@ impl Add<Direction> for (i64, i64) {
         }
     }
 }
+
+impl Add<Direction> for (usize, usize) {
+    type Output = Self;
+
+    #[inline]
+    fn add(self, dir: Direction) -> Self::Output {
+        use Direction::{Down, Left, Right, Up};
+
+        match dir {
+            Up => (self.0.checked_sub(1).unwrap(), self.1),
+            Left => (self.0, self.1.checked_sub(1).unwrap()),
+            Down => (self.0 + 1, self.1),
+            Right => (self.0, self.1 + 1),
+        }
+    }
+}
+
+pub fn visualize(grid: &Grid<char>) {
+    for row in grid.iter_rows() {
+        for cell in row {
+            print!("{cell}");
+        }
+        println!();
+    }
+}
