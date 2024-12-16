@@ -89,60 +89,40 @@ fn track(
     })
     .collect();
 
-    if paths.is_empty() {
-        return res;
-    }
-
-    // Avoid cloning the tracker for the last path - move is much cheaper, and a long line
-    // of dots is common.
-    let (first, last) = paths.split_at(paths.len() - 1);
-    for (dir, start, cost) in first {
-        let nres = track(grid, costs, tracker.clone(), *start, *dir, *cost);
+    for (dir, start, cost) in paths {
+        let nres = track(grid, costs, tracker.clone(), start, dir, cost);
         res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
     }
-    let (dir, start, cost) = last[0];
-    let nres = track(grid, costs, tracker, start, dir, cost);
-    res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
     res
 }
 
 fn solution_a(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
+    let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
     let mut costs = Grid::new(grid.rows(), grid.cols());
     costs.fill(usize::MAX);
 
-    walk(
-        &grid,
-        &mut costs,
-        (start.0.try_into().unwrap(), start.1.try_into().unwrap()),
-        Direction::Right,
-        0,
-    )
-    .into_iter()
-    .min()
-    .unwrap()
+    walk(&grid, &mut costs, start, Direction::Right, 0)
+        .into_iter()
+        .min()
+        .unwrap()
 }
 
 fn solution_b(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
+    let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
     let mut costs = Grid::new(grid.rows(), grid.cols());
     costs.fill(usize::MAX);
 
-    walk(
-        &grid,
-        &mut costs,
-        (start.0.try_into().unwrap(), start.1.try_into().unwrap()),
-        Direction::Right,
-        0,
-    );
+    walk(&grid, &mut costs, start, Direction::Right, 0);
 
     let tracker = track(
         &grid,
         &costs,
         Grid::new(grid.rows(), grid.cols()),
-        (start.0.try_into().unwrap(), start.1.try_into().unwrap()),
+        start,
         Direction::Right,
         0,
     );
