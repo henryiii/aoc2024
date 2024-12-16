@@ -1,5 +1,5 @@
 /*!
-# 2024 Day 16: Sample
+# 2024 Day 16: Reindeer Maze
 ## Path through maze with turns
 
 <https://adventofcode.com/2024/day/16>

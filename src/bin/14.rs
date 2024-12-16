@@ -1,10 +1,12 @@
 /*!
-# 2024 Day 14: Sample
-## Simple template
+# 2024 Day 14: Restroom Redoubt
+## Movement prediction
 
 <https://adventofcode.com/2024/day/14>
 
-This is a small example to get started, also functions as a template for new days.
+This has the first "Easter Egg" style output I've done, since it was not
+included last year. I made an assumption to find the answer, and the assumption
+seems to work on my data, not sure if it's always true, though.
 */
 
 use clap::Parser;

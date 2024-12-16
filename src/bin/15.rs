@@ -1,10 +1,13 @@
 /*!
-# 2024 Day 15: Sample
-## Simple template
+# 2024 Day 15: Warehouse Woes
+## Pushing blocks around
 
 <https://adventofcode.com/2024/day/15>
 
-This is a small example to get started, also functions as a template for new days.
+I went with the rasterized solution, which is quite fast, but probably harder
+than storing the blocks and obsticles and moving them around. Doing that would
+require searching through the (moving) blocks, which would might be a bit slow,
+but finding and moving the blocks would be easier, I think.
 */
 
 use aoc2024::grid::{visualize, Direction};
