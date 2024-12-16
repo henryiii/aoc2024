@@ -1,10 +1,13 @@
 /*!
 # 2024 Day 16: Sample
-## Simple template
+## Path through maze with turns
 
 <https://adventofcode.com/2024/day/16>
 
-This is a small example to get started, also functions as a template for new days.
+This is a low-cost path traversal, but with turns costing 1000 more than going straight.
+
+This could be solved with a node graph, with two nodes per point, one for each
+direction pair, and a 1000 cost to move between them.
 */
 
 #[cfg(test)]
@@ -14,7 +17,6 @@ use aoc2024::grid::{read_char, Direction};
 use grid::Grid;
 #[cfg(test)]
 use inline_colorization::{color_red, color_reset};
-use itertools::Itertools;
 
 type Int = usize;
 
@@ -58,7 +60,6 @@ fn track(
     start: (i64, i64),
     dir: Direction,
     cost: Int,
-    final_cost: Int,
 ) -> Grid<bool> {
     let mut res = Grid::new(grid.rows(), grid.cols());
     *tracker.get_mut(start.0, start.1).unwrap() = true;
@@ -72,25 +73,14 @@ fn track(
     .filter_map(|(dir, cost)| {
         let new_pos = start + *dir;
         let char = *grid.get(new_pos.0, new_pos.1)?;
-        if *cost > final_cost {
-            return None;
-        }
         if char == 'E' {
             res.iter_mut()
                 .zip(tracker.iter())
                 .for_each(|(r, t)| *r |= *t);
-            #[cfg(test)]
-            dual_visualize(costs, &tracker, |&c, &b| {
-                if b {
-                    format!("{color_red}{c:6}{color_reset}")
-                } else if c == usize::MAX {
-                    "  XXXX".to_string()
-                } else {
-                    format!("{c:6}")
-                }
-            });
         }
 
+        // Careful here! We might enter a cell at a 90 degree angle from a
+        // cheaper path and end in a tie, so we need to allow for that.
         let current_cost = *costs.get(new_pos.0, new_pos.1)?;
         if char == '.' && (current_cost == *cost || current_cost + 1000 == *cost) {
             return Some((*dir, new_pos, *cost));
@@ -98,17 +88,21 @@ fn track(
         None
     })
     .collect();
-    if let Ok(path) = paths.iter().exactly_one() {
-        let (dir, start, cost) = path;
-        res.iter_mut()
-            .zip(track(grid, costs, tracker, *start, *dir, *cost, final_cost).iter())
-            .for_each(|(r, t)| *r |= *t);
-    } else {
-        for (dir, start, cost) in paths {
-            let nres = track(grid, costs, tracker.clone(), start, dir, cost, final_cost);
-            res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
-        }
+
+    if paths.is_empty() {
+        return res;
     }
+
+    // Avoid cloning the tracker for the last path - move is much cheaper, and a long line
+    // of dots is common.
+    let (first, last) = paths.split_at(paths.len() - 1);
+    for (dir, start, cost) in first {
+        let nres = track(grid, costs, tracker.clone(), *start, *dir, *cost);
+        res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
+    }
+    let (dir, start, cost) = last[0];
+    let nres = track(grid, costs, tracker, start, dir, cost);
+    res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
     res
 }
 
@@ -136,16 +130,13 @@ fn solution_b(input: &str) -> Int {
     let mut costs = Grid::new(grid.rows(), grid.cols());
     costs.fill(usize::MAX);
 
-    let total_cost = walk(
+    walk(
         &grid,
         &mut costs,
         (start.0.try_into().unwrap(), start.1.try_into().unwrap()),
         Direction::Right,
         0,
-    )
-    .into_iter()
-    .min()
-    .unwrap();
+    );
 
     let tracker = track(
         &grid,
@@ -154,8 +145,19 @@ fn solution_b(input: &str) -> Int {
         (start.0.try_into().unwrap(), start.1.try_into().unwrap()),
         Direction::Right,
         0,
-        total_cost,
     );
+
+    #[cfg(test)]
+    dual_visualize(&costs, &tracker, |&c, &b| {
+        if b {
+            format!("{color_red}{c:6}{color_reset}")
+        } else if c == usize::MAX {
+            "  XXXX".to_string()
+        } else {
+            format!("{c:6}")
+        }
+    });
+
     tracker.iter().filter(|&&t| t).count() + 1
 }
 
