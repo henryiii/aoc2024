@@ -82,6 +82,20 @@ impl Direction {
             Right => Up,
         }
     }
+
+    /// This reverses the direction.
+    #[inline]
+    #[must_use]
+    pub const fn reverse(&self) -> Self {
+        use Direction::{Down, Left, Right, Up};
+
+        match self {
+            Up => Down,
+            Left => Right,
+            Down => Up,
+            Right => Left,
+        }
+    }
 }
 
 impl Add<Direction> for (i64, i64) {

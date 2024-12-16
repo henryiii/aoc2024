@@ -7,11 +7,11 @@
 This is a small example to get started, also functions as a template for new days.
 */
 
-use aoc_parse::\{parser, prelude::*};
-
 type Int = usize;
 
 fn read_input(input: &str) -> Vec<String> \{
+    use aoc_parse::\{parser, prelude::*};
+
     parser!(
         lines(
             string(any_char)
