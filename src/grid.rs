@@ -8,6 +8,7 @@ This module contains some helpers for working with grids.
 use grid::Grid;
 
 use core::ops::Add;
+use std::fmt::Display;
 use strum::EnumIter;
 
 /// Read a grid of characters from a string.
@@ -130,10 +131,22 @@ impl Add<Direction> for (usize, usize) {
     }
 }
 
-pub fn visualize(grid: &Grid<char>) {
+pub fn visualize<T, V: Display>(grid: &Grid<T>, format: impl Fn(&T) -> V) {
     for row in grid.iter_rows() {
         for cell in row {
-            print!("{cell}");
+            print!("{}", format(cell));
+        }
+        println!();
+    }
+}
+pub fn dual_visualize<T, U, V: Display>(
+    grid: &Grid<T>,
+    other: &Grid<U>,
+    format: impl Fn(&T, &U) -> V,
+) {
+    for (row1, row2) in grid.iter_rows().zip(other.iter_rows()) {
+        for (cell1, cell2) in row1.zip(row2) {
+            print!("{}", format(cell1, cell2));
         }
         println!();
     }

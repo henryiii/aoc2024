@@ -103,13 +103,13 @@ fn push_vertical(
 fn solution_a(input: &str, vis: bool) -> Int {
     let (mut grid, dirs) = read_input(input);
     let (mut pos, _) = grid.indexed_iter().find(|(_, &c)| c == '@').unwrap();
-    vis.then(|| visualize(&grid));
+    vis.then(|| visualize(&grid, |c| *c));
     for dir in dirs {
         if let Some(new_pos) = push_simple(&mut grid, pos, dir) {
             pos = new_pos;
         }
     }
-    vis.then(|| visualize(&grid));
+    vis.then(|| visualize(&grid, |c| *c));
     grid.indexed_iter()
         .filter(|(_, &c)| c == 'O')
         .map(|((r, c), _)| r * 100 + c)
@@ -146,7 +146,7 @@ fn solution_b(input: &str, vis: bool) -> Int {
             pos = new_pos;
         }
     }
-    vis.then(|| visualize(&grid));
+    vis.then(|| visualize(&grid, |x| *x));
 
     grid.indexed_iter()
         .filter(|(_, &c)| c == '[')
