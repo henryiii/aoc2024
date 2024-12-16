@@ -32,13 +32,11 @@ fn next_step(map: &Grid<char>, pos: (i64, i64), dir: Direction) -> Direction {
     }
 }
 
-fn get_pos<T>(map: &Grid<char>) -> (T, T)
-where
-    T: TryFrom<usize>,
-    <T as TryFrom<usize>>::Error: std::fmt::Debug,
-{
+fn get_pos<T: TryFrom<usize>>(map: &Grid<char>) -> (T, T) {
     map.indexed_iter()
-        .find_map(|((x, y), c)| (*c == '^').then(|| (x.try_into().unwrap(), y.try_into().unwrap())))
+        .find_map(|((x, y), c)| {
+            (*c == '^').then(|| (x.try_into().ok().unwrap(), y.try_into().ok().unwrap()))
+        })
         .unwrap()
 }
 
