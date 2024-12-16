@@ -60,6 +60,7 @@ fn track(
     start: (i64, i64),
     dir: Direction,
     cost: Int,
+    final_cost: Int,
 ) -> Grid<bool> {
     let mut res = Grid::new(grid.rows(), grid.cols());
     *tracker.get_mut(start.0, start.1).unwrap() = true;
@@ -71,6 +72,9 @@ fn track(
     ]
     .iter()
     .filter_map(|(dir, cost)| {
+        if *cost > final_cost {
+            return None;
+        }
         let new_pos = start + *dir;
         let char = *grid.get(new_pos.0, new_pos.1)?;
         if char == 'E' {
@@ -90,7 +94,7 @@ fn track(
     .collect();
 
     for (dir, start, cost) in paths {
-        let nres = track(grid, costs, tracker.clone(), start, dir, cost);
+        let nres = track(grid, costs, tracker.clone(), start, dir, cost, final_cost);
         res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
     }
     res
@@ -116,7 +120,10 @@ fn solution_b(input: &str) -> Int {
     let mut costs = Grid::new(grid.rows(), grid.cols());
     costs.fill(usize::MAX);
 
-    walk(&grid, &mut costs, start, Direction::Right, 0);
+    let final_cost = walk(&grid, &mut costs, start, Direction::Right, 0)
+        .into_iter()
+        .min()
+        .unwrap();
 
     let tracker = track(
         &grid,
@@ -125,6 +132,7 @@ fn solution_b(input: &str) -> Int {
         start,
         Direction::Right,
         0,
+        final_cost,
     );
 
     #[cfg(test)]
