@@ -27,7 +27,7 @@ aoc-parse = "0.2.18"
 clap.workspace = true
 counter = "0.6.0"
 derive-new.workspace = true
-derive_more = { version = "1.0.0", features = ["add", "from", "mul"] }
+derive_more = { version = "1.0.0", features = ["add", "from", "mul", "try_from"] }
 grid = "0.15.0"
 inline_colorization.workspace = true
 itertools = "0.13.0"
