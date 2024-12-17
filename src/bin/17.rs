@@ -29,19 +29,19 @@ enum OpCode {
 
 #[derive(Debug, new)]
 struct Registers {
-    a: u32,
-    b: u32,
-    c: u32,
+    a: u64,
+    b: u64,
+    c: u64,
 }
 
-fn read_input(input: &str) -> ((u32, u32, u32), Vec<OpCode>) {
+fn read_input(input: &str) -> ((u64, u64, u64), Vec<OpCode>) {
     use aoc_parse::{parser, prelude::*};
 
     parser!(
         section(
-            line("Register A: " u32)
-            line("Register B: " u32)
-            line("Register C: " u32)
+            line("Register A: " u64)
+            line("Register B: " u64)
+            line("Register C: " u64)
         )
         section("Program: " repeat_sep(a:u8 => OpCode::try_from(a).unwrap(), ","))
     )
@@ -49,14 +49,12 @@ fn read_input(input: &str) -> ((u32, u32, u32), Vec<OpCode>) {
     .unwrap()
 }
 
-fn solution_a(input: &str) -> String {
-    let (reg, instructions) = read_input(input);
-    let mut reg = Registers::new(reg.0, reg.1, reg.2);
+fn computer(mut reg: Registers, instructions: &[OpCode]) -> Vec<u8> {
     let mut out = Vec::new();
     let mut instr_ptr = 0;
     while instr_ptr + 1 < instructions.len() {
         let opcode = instructions[instr_ptr];
-        let literal_operand = instructions[instr_ptr + 1] as u32;
+        let literal_operand = instructions[instr_ptr + 1] as u64;
         let combo_operand = match literal_operand {
             0..4 => literal_operand,
             4 => reg.a,
@@ -66,7 +64,7 @@ fn solution_a(input: &str) -> String {
         };
         match opcode {
             OpCode::Adv => {
-                reg.a /= 2u32.pow(combo_operand);
+                reg.a /= 2u64.pow(combo_operand.try_into().unwrap());
             }
             OpCode::Bxl => {
                 reg.b = reg.b.bitxor(literal_operand);
@@ -76,7 +74,7 @@ fn solution_a(input: &str) -> String {
             }
             OpCode::Jnz => {
                 if reg.a != 0 {
-                    instr_ptr = literal_operand as usize;
+                    instr_ptr = literal_operand.try_into().unwrap();
                     continue;
                 }
             }
@@ -84,24 +82,54 @@ fn solution_a(input: &str) -> String {
                 reg.b = reg.c.bitxor(reg.b);
             }
             OpCode::Out => {
-                out.push(combo_operand & 7);
+                out.push((combo_operand & 7).try_into().unwrap());
             }
             OpCode::Bdv => {
-                reg.b = reg.a / 2u32.pow(combo_operand);
+                reg.b = reg.a / 2u64.pow(combo_operand.try_into().unwrap());
             }
             OpCode::Cdv => {
-                reg.c = reg.a / 2u32.pow(combo_operand);
+                reg.c = reg.a / 2u64.pow(combo_operand.try_into().unwrap());
             }
         }
         instr_ptr += 2;
     }
+    out
+}
 
+fn solution_a(input: &str) -> String {
+    let (reg, instructions) = read_input(input);
+    let reg = Registers::new(reg.0, reg.1, reg.2);
+    let out = computer(reg, &instructions);
     out.iter().join(",")
 }
 
-fn solution_b(input: &str) -> String {
-    read_input(input);
-    String::new()
+fn solution_b(input: &str) -> u64 {
+    let (reg, instructions) = read_input(input);
+    let expected_out = instructions.iter().map(|x| *x as u8).collect_vec();
+
+    // Try to find the value, assuming each value is locked in place one it prints
+    let mut val = 0;
+    for i in 0..(expected_out.len()) {
+        val *= 8;
+        for _ in 0..8 {
+            val += 1;
+            let reg = Registers::new(val, reg.1, reg.2);
+            let out = computer(reg, &instructions);
+            if *out.first().unwrap() == expected_out[expected_out.len() - 1 - i] {
+                break;
+            }
+        }
+    }
+    // The assumption above is too strict for the final value due to the two
+    // 8-bit registers
+    for i in (val - 0o77)..=(val + 0o77) {
+        let reg = Registers::new(i, reg.1, reg.2);
+        let out = computer(reg, &instructions);
+        if out == expected_out {
+            return i;
+        }
+    }
+    unreachable!();
 }
 
 fn main() {
@@ -111,6 +139,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     const INPUT: &str = include_str!("../../samples/17.txt");
+    const INPUT_B: &str = include_str!("../../samples/17b.txt");
 
     #[test]
     fn test_sample_a() {
@@ -119,6 +148,6 @@ mod tests {
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(super::solution_b(INPUT), "");
+        assert_eq!(super::solution_b(INPUT_B), 117_440);
     }
 }

@@ -16,11 +16,12 @@ use std::time::Instant;
 /// # Panics
 /// Panics if the file is not found.
 #[allow(clippy::similar_names)]
-pub fn run<T, F1, F2>(name: &str, solution_a: F1, solution_b: F2)
+pub fn run<T1, T2, F1, F2>(name: &str, solution_a: F1, solution_b: F2)
 where
-    T: Display,
-    F1: FnOnce(&str) -> T,
-    F2: FnOnce(&str) -> T,
+    T1: Display,
+    T2: Display,
+    F1: FnOnce(&str) -> T1,
+    F2: FnOnce(&str) -> T2,
 {
     let now = Instant::now();
     let input = std::fs::read_to_string(format!("data/{name}.txt")).unwrap();
