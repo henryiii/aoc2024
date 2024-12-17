@@ -106,10 +106,18 @@ fn solution_a(input: &str) -> String {
 fn solution_b(input: &str) -> u64 {
     let (reg, instructions) = read_input(input);
     let expected_out = instructions.iter().map(|x| *x as u8).collect_vec();
+    let size: u32 = expected_out.len().try_into().unwrap();
+
+    // Shortcut for simple runs
+    if size < 7 {
+        return (0..8u64.pow(size))
+            .find(|val| computer(Registers::new(*val, reg.1, reg.2), &instructions) == expected_out)
+            .unwrap();
+    }
 
     // Try to find the value, assuming each value is locked in place one it prints
     let mut val = 0;
-    for i in 0..(expected_out.len()) {
+    for i in 0..expected_out.len() {
         val *= 8;
         for _ in 0..8 {
             val += 1;
