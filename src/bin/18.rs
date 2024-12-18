@@ -13,8 +13,6 @@ use petgraph::{
     prelude::*,
 };
 
-type Int = usize;
-
 fn read_input(input: &str) -> Vec<(usize, usize)> {
     use aoc_parse::{parser, prelude::*};
 
@@ -50,7 +48,7 @@ fn make_graph(map: &Grid<bool>) -> UnGraphMap<(usize, usize), ()> {
     ))
 }
 
-fn solution_a(input: &str) -> Int {
+fn solution_a(input: &str) -> usize {
     let coords = read_input(input);
     let size = if coords.len() < 1000 { 7 } else { 71 };
     let nbytes = if coords.len() < 1000 { 12 } else { 1024 };
@@ -90,6 +88,6 @@ mod tests {
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(super::solution_b(INPUT), "6,1".to_string());
+        assert_eq!(super::solution_b(INPUT), "6,1");
     }
 }
