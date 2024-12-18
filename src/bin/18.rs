@@ -36,23 +36,18 @@ fn make_grid(coords: &[(usize, usize)], size: usize) -> Grid<bool> {
 }
 
 fn make_graph(map: &Grid<bool>) -> UnGraphMap<(usize, usize), ()> {
-    let mut graph = GraphMap::new();
-    for ((y, x), valid) in map.indexed_iter() {
-        if !*valid {
-            graph.add_node((x, y));
-        }
-    }
-    for ((y, x), valid) in map.indexed_iter() {
-        if !*valid {
-            for (dy, dx) in &[(0, 1), (1, 0)] {
+    GraphMap::from_edges(map.indexed_iter().filter(|(_, valid)| !**valid).flat_map(
+        |((y, x), _)| {
+            [(0, 1), (1, 0)].iter().filter_map(move |(dy, dx)| {
                 let (ny, nx) = (y + dy, x + dx);
                 if map.get(ny, nx) == Some(&false) {
-                    graph.add_edge((x, y), (nx, ny), ());
+                    Some(((x, y), (nx, ny)))
+                } else {
+                    None
                 }
-            }
-        }
-    }
-    graph
+            })
+        },
+    ))
 }
 
 fn solution_a(input: &str) -> Int {
