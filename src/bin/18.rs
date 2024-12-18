@@ -1,14 +1,17 @@
 /*!
-# 2024 Day 18: Sample
-## Simple template
+# 2024 Day 18: RAM Run
+## Shortest path on grid
 
 <https://adventofcode.com/2024/day/18>
 
-This is a small example to get started, also functions as a template for new days.
+This was trival with a graph library.
 */
 
 use grid::Grid;
-use petgraph::{algo::dijkstra, prelude::*};
+use petgraph::{
+    algo::{dijkstra, has_path_connecting},
+    prelude::*,
+};
 
 type Int = usize;
 
@@ -70,8 +73,7 @@ fn solution_b(input: &str) -> String {
     let mut graph = make_graph(&map);
     for (x, y) in &coords[nbytes..] {
         graph.remove_node((*x, *y));
-        let costs = dijkstra(&graph, (0, 0), Some((size - 1, size - 1)), |_| 1);
-        if !costs.contains_key(&(size - 1, size - 1)) {
+        if !has_path_connecting(&graph, (0, 0), (size - 1, size - 1), None) {
             return format!("{x},{y}");
         }
     }
