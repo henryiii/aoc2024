@@ -64,7 +64,7 @@ fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     let size = (X, Y);
     let new_robots = robots
         .into_iter()
-        .map(|(pos, vel)| ((pos + vel * 100).rem_euclid(size), vel));
+        .map(|(pos, vel)| ((pos + vel * 100).rem_euclid(&size), vel));
 
     #[cfg(test)]
     {
@@ -86,7 +86,7 @@ fn solution_b(input: &str, vis: bool) -> usize {
     let mut grid = Grid::new(103, 101);
     for i in 1..=10000 {
         for (pos, vel) in &mut robots {
-            *pos = (*pos + *vel).rem_euclid(size);
+            *pos = (*pos + *vel).rem_euclid(&size);
         }
 
         grid.fill(0);

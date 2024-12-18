@@ -9,6 +9,7 @@ use std::fmt::Debug;
 use std::ops::{Index, IndexMut};
 
 use derive_more::{Add, From, Mul};
+use num::traits::Euclid;
 
 use grid::Grid;
 
@@ -16,12 +17,12 @@ use grid::Grid;
 #[derive(Debug, From, Clone, Copy, Add, Mul)]
 pub struct Point<I>(pub I, pub I);
 
-impl Point<i32> {
+impl<T: Euclid> Point<T> {
     /// Calculate the Euclidean remainder
     #[inline]
     #[must_use]
-    pub const fn rem_euclid(&self, rhs: (i32, i32)) -> Self {
-        Self(self.0.rem_euclid(rhs.0), self.1.rem_euclid(rhs.1))
+    pub fn rem_euclid(&self, rhs: &(T, T)) -> Self {
+        Self(self.0.rem_euclid(&rhs.0), self.1.rem_euclid(&rhs.1))
     }
 }
 
