@@ -26,6 +26,7 @@ getdata = { path = "crates/getdata" }
 
 [dependencies]
 aoc-parse = "0.2.18"
+cached = "0.54.0"
 clap.workspace = true
 counter = "0.6.0"
 derive-new.workspace = true
