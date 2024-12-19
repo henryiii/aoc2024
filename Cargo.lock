@@ -39,13 +39,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "alldays"
-version = "0.1.0"
-dependencies = [
- "inline_colorization",
-]
-
-[[package]]
 name = "allocator-api2"
 version = "0.2.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -118,20 +111,14 @@ dependencies = [
 name = "aoc2024"
 version = "0.1.0"
 dependencies = [
- "aoc-parse",
- "cached",
  "clap",
- "counter",
  "derive-new",
  "derive_more",
  "grid",
  "inline_colorization",
- "itertools",
  "num",
  "paste",
- "petgraph",
  "rayon",
- "regex",
  "strum",
 ]
 
@@ -1402,6 +1389,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "seq-macro"
+version = "0.3.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3f0bf26fd526d2a95683cd0f87bf103b8539e2ca1ef48ce002d67aad59aa0b4"
+
+[[package]]
 name = "serde"
 version = "1.0.215"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2010,6 +2003,27 @@ name = "writeable"
 version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51"
+
+[[package]]
+name = "year_2024"
+version = "0.1.0"
+dependencies = [
+ "aoc-parse",
+ "aoc2024",
+ "cached",
+ "clap",
+ "counter",
+ "derive-new",
+ "derive_more",
+ "grid",
+ "inline_colorization",
+ "itertools",
+ "paste",
+ "petgraph",
+ "regex",
+ "seq-macro",
+ "strum",
+]
 
 [[package]]
 name = "yoke"

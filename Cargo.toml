@@ -18,28 +18,35 @@ pedantic = "warn"
 nursery = "warn"
 
 [workspace.dependencies]
-clap = { version = "4.5.22", features = ["derive"] }
-derive-new = { version = "0.7.0", default-features = false }
-inline_colorization = "0.1.6"
-
-getdata = { path = "crates/getdata" }
-
-[dependencies]
 aoc-parse = "0.2.18"
 cached = "0.54.0"
-clap.workspace = true
+clap = { version = "4.5.22", features = ["derive"] }
 counter = "0.6.0"
-derive-new.workspace = true
+derive-new = { version = "0.7.0", default-features = false }
 derive_more = { version = "1.0.0", features = ["add", "from", "mul", "try_from"] }
 grid = "0.15.0"
-inline_colorization.workspace = true
+inline_colorization = "0.1.6"
 itertools = "0.13.0"
 num = { version = "0.4.3", default-features = false }
 paste = "1.0.15"
 petgraph = { version = "0.6.5", default-features = false, features = ["graphmap"] }
-rayon = { version = "1.10.0", optional = true }
 regex = { version = "1.11.1", default-features = false }
+seq-macro = "0.3.5"
 strum = { version = "0.26.3", features = ["derive"] }
+
+getdata = { path = "crates/getdata" }
+aoc2024 = { path = "."}
+
+[dependencies]
+clap.workspace = true
+derive-new.workspace = true
+derive_more.workspace = true
+grid.workspace = true
+inline_colorization.workspace = true
+num.workspace = true
+paste.workspace = true
+rayon = { version = "1.10.0", optional = true}
+strum.workspace = true
 
 [features]
 default = ["par"]

@@ -63,22 +63,22 @@ fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
         .sum()
 }
 
-fn solution_a(input: &str) -> u64 {
+pub fn solution_a(input: &str) -> u64 {
     let vals = read_data(input);
     compute(&vals, &[Ops::Add, Ops::Mul])
 }
 
-fn solution_b(input: &str) -> u64 {
+pub fn solution_b(input: &str) -> u64 {
     let vals = read_data(input);
     compute(&vals, &[Ops::Add, Ops::Mul, Ops::Cat])
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("07", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "07.txt", 3749);
-    aoc2024::make_test!("b", "07.txt", 11387);
+    aoc2024::make_test!("a", "2024/07.txt", 3749);
+    aoc2024::make_test!("b", "2024/07.txt", 11387);
 }

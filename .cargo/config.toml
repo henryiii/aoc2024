@@ -1,6 +1,6 @@
 [alias]
-alldays = "run --release --package alldays"
 clippy-all = "clippy --all-targets --all-features --workspace"
-day = "run --release --bin"
+day = "run --release --package year_2024 --"
+"2024" = "run --release --package year_2024 --"
 newday = "run --release --package newday --"
 getdata = "run --release --package getdata --"

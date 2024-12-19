@@ -24,25 +24,25 @@ fn lists(input: &str) -> (Vec<usize>, Vec<usize>) {
         .unzip()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let (mut row1, mut row2) = lists(input);
     row1.sort_unstable();
     row2.sort_unstable();
     row1.into_iter().zip(row2).map(|(a, b)| a.abs_diff(b)).sum()
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let (row1, row2) = lists(input);
     let counts: Counter<_> = row2.iter().collect();
     row1.iter().map(|x| counts[x] * x).sum()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("01", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "01.txt", 11);
-    aoc2024::make_test!("b", "01.txt", 31);
+    aoc2024::make_test!("a", "2024/01.txt", 11);
+    aoc2024::make_test!("b", "2024/01.txt", 31);
 }

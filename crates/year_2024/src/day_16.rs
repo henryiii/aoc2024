@@ -100,7 +100,7 @@ fn track(
     res
 }
 
-fn solution_a(input: &str) -> Int {
+pub fn solution_a(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
     let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
@@ -113,7 +113,7 @@ fn solution_a(input: &str) -> Int {
         .unwrap()
 }
 
-fn solution_b(input: &str) -> Int {
+pub fn solution_b(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
     let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
@@ -149,14 +149,14 @@ fn solution_b(input: &str) -> Int {
     tracker.iter().filter(|&&t| t).count() + 1
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("16", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    const INPUT1: &str = include_str!("../../samples/16.txt");
-    const INPUT2: &str = include_str!("../../samples/16-2.txt");
+    const INPUT1: &str = include_str!("../../../samples/2024/16.txt");
+    const INPUT2: &str = include_str!("../../../samples/2024/16-2.txt");
 
     #[test]
     fn test_sample_a() {

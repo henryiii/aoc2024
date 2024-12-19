@@ -48,7 +48,7 @@ fn make_graph(map: &Grid<bool>) -> UnGraphMap<(usize, usize), ()> {
     ))
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let coords = read_input(input);
     let size = if coords.len() < 1000 { 7 } else { 71 };
     let nbytes = if coords.len() < 1000 { 12 } else { 1024 };
@@ -58,7 +58,7 @@ fn solution_a(input: &str) -> usize {
     *costs.get(&(size - 1, size - 1)).unwrap()
 }
 
-fn solution_b(input: &str) -> String {
+pub fn solution_b(input: &str) -> String {
     let coords = read_input(input);
     let size = if coords.len() < 1000 { 7 } else { 71 };
     let nbytes = if coords.len() < 1000 { 12 } else { 1024 };
@@ -73,12 +73,12 @@ fn solution_b(input: &str) -> String {
     unreachable!();
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("18", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "18.txt", 22);
-    aoc2024::make_test!("b", "18.txt", "6,1");
+    aoc2024::make_test!("a", "2024/18.txt", 22);
+    aoc2024::make_test!("b", "2024/18.txt", "6,1");
 }

@@ -1,8 +1,8 @@
 /*!
-# 2024 Day {day | simplify}: Sample
+# {year} Day {day | simplify}: Sample
 ## Simple template
 
-<https://adventofcode.com/2024/day/{day | simplify}>
+<https://adventofcode.com/{year}/day/{day | simplify}>
 
 This is a small example to get started, also functions as a template for new days.
 */
@@ -21,20 +21,20 @@ fn read_input(input: &str) -> Vec<String> \{
     .unwrap()
 }
 
-fn solution_a(input: &str) -> Int \{
+pub fn solution_a(input: &str) -> Int \{
     todo!();
 }
 
-fn solution_b(input: &str) -> Int \{
+pub fn solution_b(input: &str) -> Int \{
     todo!();
 }
 
-fn main() \{
+pub fn main(_: bool) \{
     aoc2024::run("{day}", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests \{
-    aoc2024::make_test!("a", "{day}.txt", 0);
-    aoc2024::make_test!("b", "{day}.txt", 0);
+    aoc2024::make_test!("a", "{year}/{day}.txt", 0);
+    aoc2024::make_test!("b", "{year}/{day}.txt", 0);
 }

@@ -36,14 +36,14 @@ fn get_mas(grid: &Grid<char>, a: i64, b: i64) -> usize {
         .count()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let grid = read_char(input);
     grid.indexed_iter()
         .map(|((a, b), _)| get_xmas(&grid, a.try_into().unwrap(), b.try_into().unwrap()))
         .sum()
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let grid = read_char(input);
     grid.indexed_iter()
         .filter(|((a, b), _)| {
@@ -52,12 +52,12 @@ fn solution_b(input: &str) -> usize {
         .count()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("04", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "04.txt", 18);
-    aoc2024::make_test!("b", "04.txt", 9);
+    aoc2024::make_test!("a", "2024/04.txt", 18);
+    aoc2024::make_test!("b", "2024/04.txt", 9);
 }

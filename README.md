@@ -6,6 +6,8 @@ year to learn more Rust. I'm not trying to be fast and place on the leaderboards
 doing), I'm trying to be somewhat elegant and learn new things in Rust. The
 documentation is [live here](https://henryiii.github.io/aoc2024).
 
+The focus of these solutions is a balance of speed and readability.
+
 I highly recommend loading this up in a good editor, like Visual Studio Code or
 VIM with the ALE plugin. It will add type information to all inferred types,
 autocomplete, show documentation, etc.
@@ -36,10 +38,10 @@ regex, though it doesn't handle workspaces, sadly.
 Use:
 
 ```bash
-cargo test
+cargo test --package year_2024
 ```
 
-Useful flags include `-- --nocapture` and `--bin <NUMBER>` for just one set of tests.
+Useful flags include `-- --nocapture` and `-- day_<NUMBER>` for just one set of tests.
 
 If you have `cargo-nextest` (say, from `brew install cargo-nextest`), then
 `cargo nextest run` also works.
@@ -62,7 +64,7 @@ Download the input files to `data/<number>.txt`. For example, `data/01.txt`.
 To download the input from the CLI, use:
 
 ```bash
-cargo getdata 2024 01 --session $AOC_TOKEN > data/01.txt
+cargo getdata 2024 01 --session $AOC_TOKEN > data/2024/01.txt
 ```
 
 The AOC token is in your cookies, and you can get it from the browser. You can
@@ -80,17 +82,17 @@ pane.
 Use:
 
 ```bash
-cargo day 01
+cargo 2024 01
 ```
 
-A few days accept `-- --vis` to add a visual.
+A few days accept `--vis` to add a visual.
 
 ## Docs
 
 You can build with:
 
 ```bash
-cargo docs --no-deps
+cargo docs --no-deps --workspace
 ```
 
 ## Profiling
@@ -108,9 +110,9 @@ feature to automate this, but I think keeping usage simple is fine.
 To use lldb, just do the following:
 
 ```console
-$ cargo build --bin XX
+$ cargo build --package year_2024 --bin XX
 $ lldb target/debug/XX
-> breakpoint set -f src/bin/XX.rs -l YY
+> breakpoint set -f crates/year_2024/src/XX.rs -l YY
 > r
 ```
 

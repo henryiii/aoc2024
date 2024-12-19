@@ -29,14 +29,14 @@ fn valid<'a, T: DoubleEndedIterator<Item = &'a u64> + Clone>(row: &T) -> bool {
             .all(|(&a, &b)| range.contains(&a.abs_diff(b)))
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     lists(input)
         .into_iter()
         .filter(|row| valid(&row.iter()))
         .count()
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     lists(input)
         .into_iter()
         .filter(|row| {
@@ -53,12 +53,12 @@ fn solution_b(input: &str) -> usize {
         .count()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("02", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "02.txt", 2);
-    aoc2024::make_test!("b", "02.txt", 4);
+    aoc2024::make_test!("a", "2024/02.txt", 2);
+    aoc2024::make_test!("b", "2024/02.txt", 4);
 }

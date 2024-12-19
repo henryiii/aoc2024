@@ -12,19 +12,11 @@ but finding and moving the blocks would be easier, I think.
 
 use aoc2024::grid::{visualize, Direction};
 
-use clap::Parser;
 use grid::Grid;
 use itertools::Itertools;
 use strum::IntoEnumIterator;
 
 type Int = usize;
-
-#[derive(Parser, Debug)]
-#[command()]
-struct Opts {
-    #[clap(long)]
-    vis: bool,
-}
 
 fn read_input(input: &str) -> (Grid<char>, Vec<Direction>) {
     use aoc_parse::{parser, prelude::*};
@@ -103,7 +95,7 @@ fn push_vertical(
     Some(ret)
 }
 
-fn solution_a(input: &str, vis: bool) -> Int {
+pub fn solution_a(input: &str, vis: bool) -> Int {
     let (mut grid, dirs) = read_input(input);
     let (mut pos, _) = grid.indexed_iter().find(|(_, &c)| c == '@').unwrap();
     vis.then(|| visualize(&grid, |c| *c));
@@ -119,7 +111,7 @@ fn solution_a(input: &str, vis: bool) -> Int {
         .sum()
 }
 
-fn solution_b(input: &str, vis: bool) -> Int {
+pub fn solution_b(input: &str, vis: bool) -> Int {
     let (grid, dirs) = read_input(input);
     let mut grid = Grid::from_vec(
         grid.iter()
@@ -157,19 +149,18 @@ fn solution_b(input: &str, vis: bool) -> Int {
         .sum()
 }
 
-fn main() {
-    let opts = Opts::parse();
+pub fn main(vis: bool) {
     aoc2024::run(
         "15",
-        |input| solution_a(input, opts.vis),
-        |input| solution_b(input, opts.vis),
+        |input| solution_a(input, vis),
+        |input| solution_b(input, vis),
     );
 }
 
 #[cfg(test)]
 mod tests {
 
-    const INPUT: &str = include_str!("../../samples/15.txt");
+    const INPUT: &str = include_str!("../../../samples/2024/15.txt");
 
     #[test]
     fn test_sample_a() {

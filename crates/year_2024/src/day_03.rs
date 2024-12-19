@@ -16,7 +16,7 @@ enum Instruction {
     Mul(u64, u64),
 }
 
-fn solution_a(input: &str) -> u64 {
+pub fn solution_a(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap();
     reg.captures_iter(input)
         .map(|cap| {
@@ -27,7 +27,7 @@ fn solution_a(input: &str) -> u64 {
         .sum()
 }
 
-fn solution_b(input: &str) -> u64 {
+pub fn solution_b(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)|do\(\)|don't\(\)").unwrap();
     reg.captures_iter(input)
         .map(|cap| match &cap[0] {
@@ -43,12 +43,12 @@ fn solution_b(input: &str) -> u64 {
         .0
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("03", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "03.txt", 161);
-    aoc2024::make_test!("b", "03b.txt", 48);
+    aoc2024::make_test!("a", "2024/03.txt", 161);
+    aoc2024::make_test!("b", "2024/03b.txt", 48);
 }
