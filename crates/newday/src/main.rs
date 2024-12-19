@@ -17,7 +17,7 @@ use getdata::get_input;
 #[command()]
 struct Opts {
     /// The day to create
-    day: u32,
+    day: u8,
 
     /// The session token to use. Will use the `AOC_SESSION` environment variable if not provided.
     #[clap(long, env = "AOC_SESSION")]
@@ -52,7 +52,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     File::create_new(format!("samples/{day}.txt"))?.write_all(b"")?;
 
     let data = if let Some(session) = opts.session {
-        get_input(opts.day as u8, 2024, &session)?
+        get_input(opts.day, 2024, &session)?
     } else {
         String::new()
     };
