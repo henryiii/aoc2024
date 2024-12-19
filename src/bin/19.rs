@@ -1,10 +1,16 @@
 /*!
-# 2024 Day 19: Sample
-## Simple template
+# 2024 Day 19: Linen Layout
+## Pattern matching
 
 <https://adventofcode.com/2024/day/19>
 
-This is a small example to get started, also functions as a template for new days.
+The key to this is caching. You could also do it by tracking lengths; once a
+specific lencgth has been seen, you don't need to match it again. But I'm using
+a cache (like Python's `functools.lru_cache`) to store the results to make it simple.
+
+You could use `count_match` for both parts, which makes part 1 take a long as part 2,
+but then part 2 is 60x faster, as it's just reading the cache. But it's not really
+acturate for how long it really takes, and this has a faster part 1, so doing it this way.
 */
 
 use cached::proc_macro::cached;
@@ -37,6 +43,22 @@ fn has_match(patterns: &[Vec<char>], line: &[char]) -> bool {
     false
 }
 
+#[cached(key = "Vec<char>", convert = "{Vec::from(line)}")]
+fn count_match(patterns: &[Vec<char>], line: &[char]) -> Int {
+    patterns
+        .iter()
+        .map(|pattern| {
+            line.strip_prefix(&pattern[..]).map_or(0, |slice| {
+                if slice.is_empty() {
+                    1
+                } else {
+                    count_match(patterns, slice)
+                }
+            })
+        })
+        .sum()
+}
+
 fn solution_a(input: &str) -> Int {
     let (patterns, lines) = read_input(input);
     lines
@@ -46,7 +68,8 @@ fn solution_a(input: &str) -> Int {
 }
 
 fn solution_b(input: &str) -> Int {
-    todo!();
+    let (patterns, lines) = read_input(input);
+    lines.iter().map(|line| count_match(&patterns, line)).sum()
 }
 
 fn main() {
@@ -64,6 +87,6 @@ mod tests {
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(super::solution_b(INPUT), 0);
+        assert_eq!(super::solution_b(INPUT), 16);
     }
 }
