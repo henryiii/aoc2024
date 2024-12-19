@@ -168,6 +168,7 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+
     const INPUT: &str = include_str!("../../samples/15.txt");
 
     #[test]

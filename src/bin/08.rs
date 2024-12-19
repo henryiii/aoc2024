@@ -64,15 +64,6 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    const INPUT: &str = include_str!("../../samples/08.txt");
-
-    #[test]
-    fn test_sample_a() {
-        assert_eq!(super::solution_a(INPUT), 14);
-    }
-
-    #[test]
-    fn test_sample_b() {
-        assert_eq!(super::solution_b(INPUT), 34);
-    }
+    aoc2024::make_test!("a", "08.txt", 14);
+    aoc2024::make_test!("b", "08.txt", 34);
 }
