@@ -30,17 +30,11 @@ fn read_input(input: &str) -> (Vec<Vec<char>>, Vec<Vec<char>>) {
 
 #[cached(key = "Vec<char>", convert = "{Vec::from(line)}")]
 fn has_match(patterns: &[Vec<char>], line: &[char]) -> bool {
-    for pattern in patterns {
-        if let Some(slice) = line.strip_prefix(&pattern[..]) {
-            if slice.is_empty() {
-                return true;
-            }
-            if has_match(patterns, slice) {
-                return true;
-            }
-        }
-    }
-    false
+    patterns.iter().any(|pattern| {
+        line.strip_prefix(&pattern[..]).map_or(false, |slice| {
+            slice.is_empty() || has_match(patterns, slice)
+        })
+    })
 }
 
 #[cached(key = "Vec<char>", convert = "{Vec::from(line)}")]
