@@ -11,10 +11,17 @@ use derive_new::new;
 use serde::Serialize;
 use tinytemplate::TinyTemplate;
 
+use getdata::get_input;
+
 #[derive(Parser, Debug)]
 #[command()]
 struct Opts {
+    /// The day to create
     day: u32,
+
+    /// The session token to use. Will use the `AOC_SESSION` environment variable if not provided.
+    #[clap(long, env = "AOC_SESSION")]
+    session: Option<String>,
 }
 
 #[derive(Serialize, new)]
@@ -42,7 +49,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rendered = tt.render("template", &data)?;
     // Using create_new to avoid overwriting existing files, instead of simpler std::fs::write
     File::create_new(format!("src/bin/{day}.rs"))?.write_all(rendered.as_bytes())?;
-    File::create_new(format!("data/{day}.txt"))?.write_all(b"")?;
     File::create_new(format!("samples/{day}.txt"))?.write_all(b"")?;
+
+    let data = if let Some(session) = opts.session {
+        get_input(opts.day as u8, 2024, &session)?
+    } else {
+        String::new()
+    };
+    File::create_new(format!("data/{day}.txt"))?.write_all(data.as_bytes())?;
     Ok(())
 }

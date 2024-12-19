@@ -22,11 +22,11 @@ fn read_input(input: &str) -> Vec<String> \{
 }
 
 fn solution_a(input: &str) -> Int \{
-    read_input(input).len()
+    todo!();
 }
 
 fn solution_b(input: &str) -> Int \{
-    read_input(input).len()
+    todo!();
 }
 
 fn main() \{

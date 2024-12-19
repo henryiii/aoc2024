@@ -17,7 +17,7 @@ Feel free to check out my 2023 repo at <https://github.com/henryiii/aoc2023>.
 Use:
 
 ```bash
-cargo fmt && cargo clippy-all
+cargo fmt --all && cargo clippy-all
 ```
 
 If you want to auto-fix anything, you can:
@@ -29,7 +29,7 @@ cargo clippy --fix --allow-dirty --allow-staged
 I also looked for removable features using
 [unused-features](https://crates.io/crates/cargo-unused-features), both to
 speed up compilation and it helped removed a small dependence on unicode in
-regex.
+regex, though it doesn't handle workspaces, sadly.
 
 ## Tests
 
@@ -55,15 +55,35 @@ cargo newday 01
 This will make three files for you, the `src/bin` file, the `samples` file, and
 the `data` file.
 
-## Running
+## Downloading input
 
 Download the input files to `data/<number>.txt`. For example, `data/01.txt`.
+
+To download the input from the CLI, use:
+
+```bash
+cargo getdata 2024 01 --session $AOC_TOKEN > data/01.txt
+```
+
+The AOC token is in your cookies, and you can get it from the browser. You can
+set the environment variable `AOC_TOKEN` to avoid typing it each time.
+
+The `newday` command above also accepts `--session`/`AOC_TOKEN`, which will
+cause it to download the input for you if it's available.
+
+See <https://github.com/gobanos/cargo-aoc> which inspired this feature and has
+more info about getting your token. In Safari, it's in the devtools inspection
+pane.
+
+## Running
 
 Use:
 
 ```bash
 cargo day 01
 ```
+
+A few days accept `-- --vis` to add a visual.
 
 ## Docs
 
@@ -95,7 +115,10 @@ $ lldb target/debug/XX
 ```
 
 It should work like any other executable, mostly. The visual debugger in VSCode
-should work too (haven't checked yet).
+might work, though I had a hard time telling it to run the correct executable.
+Note that LLDB only supports the subset of Rust and C for conditional
+breakpoints, so you might have to manually add code and use line based
+breakpoints instead. 
 
 ## Notes
 
