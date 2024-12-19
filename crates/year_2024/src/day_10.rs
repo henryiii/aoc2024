@@ -40,7 +40,7 @@ fn find_path(map: &Grid<u32>, start_pos: (i64, i64)) -> Vec<(i64, i64)> {
         .collect()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let map = read_int(input);
     let starts = find_starts(&map);
     starts
@@ -49,7 +49,7 @@ fn solution_a(input: &str) -> usize {
         .sum()
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let map = read_int(input);
     let starts = find_starts(&map);
     starts
@@ -58,12 +58,12 @@ fn solution_b(input: &str) -> usize {
         .sum()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("10", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "10.txt", 36);
-    aoc2024::make_test!("b", "10.txt", 81);
+    aoc2024::make_test!("a", "2024/10.txt", 36);
+    aoc2024::make_test!("b", "2024/10.txt", 81);
 }

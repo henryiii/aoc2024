@@ -4,7 +4,7 @@
 This module has some setup to make each file slightly simpler.
 */
 
-use inline_colorization::{color_blue, color_green, color_reset};
+use inline_colorization::{color_blue, color_green, color_reset, style_bold, style_reset};
 use std::fmt::Display;
 use std::time::Instant;
 
@@ -23,8 +23,11 @@ where
     F1: FnOnce(&str) -> T1,
     F2: FnOnce(&str) -> T2,
 {
+    println!("{style_bold}Day {name}{style_reset}");
     let now = Instant::now();
-    let input = std::fs::read_to_string(format!("data/{name}.txt")).unwrap();
+    let path = format!("data/2024/{name}.txt");
+    let input =
+        std::fs::read_to_string(&path).unwrap_or_else(|_| panic!("Data file {path} not found"));
 
     let sol_a_time = Instant::now();
     let solution_a = solution_a(&input);

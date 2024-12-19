@@ -47,7 +47,7 @@ fn put_in_order<'a>(rules: &HashSet<(u64, u64)>, order: &'a [u64]) -> Vec<&'a u6
         .collect()
 }
 
-fn solution_a(input: &str) -> u64 {
+pub fn solution_a(input: &str) -> u64 {
     let (rules, orders) = read_input(input);
     orders
         .iter()
@@ -56,7 +56,7 @@ fn solution_a(input: &str) -> u64 {
         .sum()
 }
 
-fn solution_b(input: &str) -> u64 {
+pub fn solution_b(input: &str) -> u64 {
     let (rules, orders) = read_input(input);
     orders
         .iter()
@@ -64,12 +64,12 @@ fn solution_b(input: &str) -> u64 {
         .map(|order| put_in_order(&rules, order)[(order.len() - 1) / 2])
         .sum()
 }
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("05", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "05.txt", 143);
-    aoc2024::make_test!("b", "05.txt", 123);
+    aoc2024::make_test!("a", "2024/05.txt", 143);
+    aoc2024::make_test!("b", "2024/05.txt", 123);
 }

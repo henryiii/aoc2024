@@ -96,14 +96,14 @@ fn computer(mut reg: Registers, instructions: &[OpCode]) -> Vec<u8> {
     out
 }
 
-fn solution_a(input: &str) -> String {
+pub fn solution_a(input: &str) -> String {
     let (reg, instructions) = read_input(input);
     let reg = Registers::new(reg.0, reg.1, reg.2);
     let out = computer(reg, &instructions);
     out.iter().join(",")
 }
 
-fn solution_b(input: &str) -> u64 {
+pub fn solution_b(input: &str) -> u64 {
     let (reg, instructions) = read_input(input);
     let expected_out = instructions.iter().map(|x| *x as u8).collect_vec();
     let size: u32 = expected_out.len().try_into().unwrap();
@@ -140,12 +140,12 @@ fn solution_b(input: &str) -> u64 {
     unreachable!();
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("17", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "17.txt", "4,6,3,5,6,3,5,2,1,0");
-    aoc2024::make_test!("b", "17b.txt", 117_440);
+    aoc2024::make_test!("a", "2024/17.txt", "4,6,3,5,6,3,5,2,1,0");
+    aoc2024::make_test!("b", "2024/17b.txt", 117_440);
 }

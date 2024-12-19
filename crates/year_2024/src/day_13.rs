@@ -57,14 +57,14 @@ fn read_input(input: &str) -> Vec<Machine> {
     .unwrap()
 }
 
-fn solution_a(input: &str) -> i64 {
+pub fn solution_a(input: &str) -> i64 {
     read_input(input)
         .iter()
         .filter_map(|m| m.chk_all(0..=100).map(|(a, b)| a * 3 + b))
         .sum()
 }
 
-fn solution_b(input: &str) -> i64 {
+pub fn solution_b(input: &str) -> i64 {
     let add = 10_000_000_000_000;
     read_input(input)
         .iter()
@@ -73,12 +73,12 @@ fn solution_b(input: &str) -> i64 {
         .sum()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("13", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "13.txt", 480);
-    aoc2024::make_test!("b", "13.txt", 875_318_608_908);
+    aoc2024::make_test!("a", "2024/13.txt", 480);
+    aoc2024::make_test!("b", "2024/13.txt", 875_318_608_908);
 }

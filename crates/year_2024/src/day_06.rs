@@ -55,7 +55,7 @@ fn solve(map: &Grid<char>) -> Result {
     Result::Exited(visited)
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     if let Result::Exited(visited) = solve(&map) {
         visited.iter().filter(|&v| *v > 0).count()
@@ -64,7 +64,7 @@ fn solution_a(input: &str) -> usize {
     }
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let orig_map = read_char(input);
     // Only place barriers on the original walking path
     let starting_pos = get_pos(&orig_map);
@@ -86,12 +86,12 @@ fn solution_b(input: &str) -> usize {
     }
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("06", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "06.txt", 41);
-    aoc2024::make_test!("b", "06.txt", 6);
+    aoc2024::make_test!("a", "2024/06.txt", 41);
+    aoc2024::make_test!("b", "2024/06.txt", 6);
 }

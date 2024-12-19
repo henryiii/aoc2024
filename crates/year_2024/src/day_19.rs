@@ -53,7 +53,7 @@ fn count_match(patterns: &[Vec<char>], line: &[char]) -> Int {
         .sum()
 }
 
-fn solution_a(input: &str) -> Int {
+pub fn solution_a(input: &str) -> Int {
     let (patterns, lines) = read_input(input);
     lines
         .iter()
@@ -61,17 +61,17 @@ fn solution_a(input: &str) -> Int {
         .count()
 }
 
-fn solution_b(input: &str) -> Int {
+pub fn solution_b(input: &str) -> Int {
     let (patterns, lines) = read_input(input);
     lines.iter().map(|line| count_match(&patterns, line)).sum()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("19", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "19.txt", 6);
-    aoc2024::make_test!("b", "19.txt", 16);
+    aoc2024::make_test!("a", "2024/19.txt", 6);
+    aoc2024::make_test!("b", "2024/19.txt", 16);
 }

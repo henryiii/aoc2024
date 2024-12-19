@@ -53,26 +53,26 @@ fn blink_counter(stones: &Counter<usize, usize>) -> Counter<usize, usize> {
     new_stones
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let stones = read_stones(input);
     (0..25)
         .fold(stones, |stones, _| blink_counter(&stones))
         .total()
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let stones = read_stones(input);
     (0..75)
         .fold(stones, |stones, _| blink_counter(&stones))
         .total()
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("11", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "11.txt", 55_312);
-    aoc2024::make_test!("b", "11.txt", 65_601_038_650_482);
+    aoc2024::make_test!("a", "2024/11.txt", 55_312);
+    aoc2024::make_test!("b", "2024/11.txt", 65_601_038_650_482);
 }

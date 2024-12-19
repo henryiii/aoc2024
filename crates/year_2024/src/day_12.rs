@@ -73,7 +73,7 @@ fn get_sides(region: &HashSet<(i64, i64)>) -> usize {
     i
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     let mut seen = Grid::new(map.rows(), map.cols());
     map.indexed_iter()
@@ -88,7 +88,7 @@ fn solution_a(input: &str) -> usize {
         .fold(0, |acc, (a, p)| acc + a * p)
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let map = read_char(input);
     let mut seen = Grid::new(map.rows(), map.cols());
     map.indexed_iter()
@@ -103,12 +103,12 @@ fn solution_b(input: &str) -> usize {
         .fold(0, |acc, (a, p)| acc + a * p)
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("12", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "12.txt", 140);
-    aoc2024::make_test!("b", "12.txt", 80);
+    aoc2024::make_test!("a", "2024/12.txt", 140);
+    aoc2024::make_test!("b", "2024/12.txt", 80);
 }

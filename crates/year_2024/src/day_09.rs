@@ -52,7 +52,7 @@ fn checksum(filesystem_iter: impl Iterator<Item = Option<usize>>) -> usize {
         .sum()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let numbers = read(input);
     let data = mk_data(&numbers);
     let filesystem = expand_filesystem(&data);
@@ -65,7 +65,7 @@ fn solution_a(input: &str) -> usize {
     checksum(compact)
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let numbers = read(input);
     let data = mk_data(&numbers);
     let mut compact = data.clone();
@@ -91,12 +91,12 @@ fn solution_b(input: &str) -> usize {
     checksum(filesystem.into_iter())
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("09", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "09.txt", 1928);
-    aoc2024::make_test!("b", "09.txt", 2858);
+    aoc2024::make_test!("a", "2024/09.txt", 1928);
+    aoc2024::make_test!("b", "2024/09.txt", 2858);
 }

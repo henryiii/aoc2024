@@ -48,22 +48,22 @@ fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
     antinodes.iter().filter(|&v| *v).count()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     solution(&map, 1..2)
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let map = read_char(input);
     solution(&map, 0..(map.cols().max(map.rows())))
 }
 
-fn main() {
+pub fn main(_: bool) {
     aoc2024::run("08", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "08.txt", 14);
-    aoc2024::make_test!("b", "08.txt", 34);
+    aoc2024::make_test!("a", "2024/08.txt", 14);
+    aoc2024::make_test!("b", "2024/08.txt", 34);
 }

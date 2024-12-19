@@ -9,18 +9,10 @@ included last year. I made an assumption to find the answer, and the assumption
 seems to work on my data, not sure if it's always true, though.
 */
 
-use clap::Parser;
 use counter::Counter;
 use grid::Grid;
 
 use aoc2024::geom::Point;
-
-#[derive(Parser, Debug)]
-#[command()]
-struct Opts {
-    #[clap(long)]
-    vis: bool,
-}
 
 type Int = i32;
 
@@ -59,7 +51,7 @@ fn vis_grid(grid: &Grid<usize>) {
     }
 }
 
-fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
+pub fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     let robots = read_input(input);
     let size = (X, Y);
     let new_robots = robots
@@ -80,7 +72,7 @@ fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     counts.values().product()
 }
 
-fn solution_b(input: &str, vis: bool) -> usize {
+pub fn solution_b(input: &str, vis: bool) -> usize {
     let mut robots = read_input(input);
     let size = (101, 103);
     let mut grid = Grid::new(103, 101);
@@ -103,16 +95,15 @@ fn solution_b(input: &str, vis: bool) -> usize {
     0
 }
 
-fn main() {
-    let opts: Opts = Opts::parse();
+pub fn main(vis: bool) {
     aoc2024::run("14", solution_a::<101, 103>, |input| {
-        solution_b(input, opts.vis)
+        solution_b(input, vis)
     });
 }
 
 #[cfg(test)]
 mod tests {
-    const INPUT: &str = include_str!("../../samples/14.txt");
+    const INPUT: &str = include_str!("../../../samples/2024/14.txt");
 
     #[test]
     fn test_sample_a() {
