@@ -20,17 +20,13 @@ type Int = usize;
 fn make_graph(map: &Grid<char>) -> UnGraphMap<(usize, usize), ()> {
     GraphMap::from_edges(
         map.indexed_iter()
-            .filter(|(_, c)| **c == '.' || **c == 'S' || **c == 'E')
+            .filter(|(_, c)| matches!(**c, '.' | 'S' | 'E'))
             .flat_map(|((y, x), _)| {
                 [(0, 1), (1, 0)].iter().filter_map(move |(dy, dx)| {
                     let (ny, nx) = (y + dy, x + dx);
-                    if map.get(ny, nx) == Some(&'.')
-                        || map.get(ny, nx) == Some(&'S')
-                        || map.get(ny, nx) == Some(&'E')
-                    {
-                        Some(((y, x), (ny, nx)))
-                    } else {
-                        None
+                    match map.get(ny, nx)? {
+                        '.' | 'S' | 'E' => Some(((y, x), (ny, nx))),
+                        _ => None,
                     }
                 })
             }),
