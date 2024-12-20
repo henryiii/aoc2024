@@ -4,7 +4,7 @@
 
 <https://adventofcode.com/2024/day/18>
 
-This was trival with a graph library.
+This was trivial with a graph library.
 */
 
 use grid::Grid;

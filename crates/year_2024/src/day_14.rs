@@ -96,9 +96,7 @@ pub fn solution_b(input: &str, vis: bool) -> usize {
 }
 
 pub fn main(vis: bool) {
-    aoc::run("14", solution_a::<101, 103>, |input| {
-        solution_b(input, vis)
-    });
+    aoc::run("14", solution_a::<101, 103>, |input| solution_b(input, vis));
 }
 
 #[cfg(test)]
