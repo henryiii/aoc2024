@@ -85,7 +85,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     File::create_new(format!("data/{year}/{day}.txt"))?.write_all(data.as_bytes())?;
 
     let mut lib_txt = std::fs::read(format!("crates/year_{year}/src/lib.rs"))?;
-    lib_txt.extend_from_slice(&format!("pub mod day_{day};\n").as_bytes());
+    lib_txt.extend_from_slice(format!("pub mod day_{day};\n").as_bytes());
     std::fs::write(format!("crates/year_{year}/src/lib.rs"), &lib_txt)?;
 
     let mut main_txt = std::fs::read(format!("crates/year_{year}/src/main.rs"))?;
