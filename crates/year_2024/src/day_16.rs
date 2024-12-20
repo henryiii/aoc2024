@@ -11,8 +11,8 @@ direction pair, and a 1000 cost to move between them.
 */
 
 #[cfg(test)]
-use aoc2024::grid::dual_visualize;
-use aoc2024::grid::{read_char, Direction};
+use aoc::grid::dual_visualize;
+use aoc::grid::{read_char, Direction};
 
 use grid::Grid;
 #[cfg(test)]
@@ -150,7 +150,7 @@ pub fn solution_b(input: &str) -> Int {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("16", solution_a, solution_b);
+    aoc::run("16", solution_a, solution_b);
 }
 
 #[cfg(test)]

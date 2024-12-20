@@ -12,7 +12,7 @@ use std::collections::HashSet;
 use grid::Grid;
 use strum::IntoEnumIterator;
 
-use aoc2024::grid::{read_int, Direction};
+use aoc::grid::{read_int, Direction};
 
 fn find_starts(map: &Grid<u32>) -> Vec<(i64, i64)> {
     map.indexed_iter()
@@ -59,11 +59,11 @@ pub fn solution_b(input: &str) -> usize {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("10", solution_a, solution_b);
+    aoc::run("10", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/10.txt", 36);
-    aoc2024::make_test!("b", "2024/10.txt", 81);
+    aoc::make_test!("a", "2024/10.txt", 36);
+    aoc::make_test!("b", "2024/10.txt", 81);
 }

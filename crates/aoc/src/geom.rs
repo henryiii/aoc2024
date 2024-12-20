@@ -31,7 +31,7 @@ impl<T: Euclid> Point<T> {
 /// # Examples
 ///
 /// ```
-/// use aoc2024::geom::*;
+/// use aoc::geom::*;
 /// use grid::*;
 ///
 /// let g = grid![[1,2][3,4]];

@@ -4,7 +4,7 @@
 This contains a simple wrapper on Rayon to allow it to be optional. Only the
 required bits are wrapped, currently `.into_par_iter()` and `.par_iter()`.
 
-Use by changing `rayon::prelude::*` to `aoc2024::par::prelude::*`.
+Use by changing `rayon::prelude::*` to `aoc::par::prelude::*`.
 */
 
 pub trait IntoParallelIterator {

@@ -13,7 +13,7 @@ use std::ops::Range;
 use grid::Grid;
 use itertools::Itertools;
 
-use aoc2024::grid::read_char;
+use aoc::grid::read_char;
 
 fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
     let mut antinodes: Grid<bool> = Grid::new(map.rows(), map.cols());
@@ -59,11 +59,11 @@ pub fn solution_b(input: &str) -> usize {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("08", solution_a, solution_b);
+    aoc::run("08", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/08.txt", 14);
-    aoc2024::make_test!("b", "2024/08.txt", 34);
+    aoc::make_test!("a", "2024/08.txt", 14);
+    aoc::make_test!("b", "2024/08.txt", 34);
 }

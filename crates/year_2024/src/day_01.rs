@@ -38,11 +38,11 @@ pub fn solution_b(input: &str) -> usize {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("01", solution_a, solution_b);
+    aoc::run("01", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/01.txt", 11);
-    aoc2024::make_test!("b", "2024/01.txt", 31);
+    aoc::make_test!("a", "2024/01.txt", 11);
+    aoc::make_test!("b", "2024/01.txt", 31);
 }

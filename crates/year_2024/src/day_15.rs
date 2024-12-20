@@ -10,7 +10,7 @@ require searching through the (moving) blocks, which would might be a bit slow,
 but finding and moving the blocks would be easier, I think.
 */
 
-use aoc2024::grid::{visualize, Direction};
+use aoc::grid::{visualize, Direction};
 
 use grid::Grid;
 use itertools::Itertools;
@@ -150,7 +150,7 @@ pub fn solution_b(input: &str, vis: bool) -> Int {
 }
 
 pub fn main(vis: bool) {
-    aoc2024::run(
+    aoc::run(
         "15",
         |input| solution_a(input, vis),
         |input| solution_b(input, vis),

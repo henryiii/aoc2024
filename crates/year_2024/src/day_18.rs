@@ -74,11 +74,11 @@ pub fn solution_b(input: &str) -> String {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("18", solution_a, solution_b);
+    aoc::run("18", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/18.txt", 22);
-    aoc2024::make_test!("b", "2024/18.txt", "6,1");
+    aoc::make_test!("a", "2024/18.txt", 22);
+    aoc::make_test!("b", "2024/18.txt", "6,1");
 }

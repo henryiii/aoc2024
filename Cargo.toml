@@ -1,16 +1,11 @@
-[package]
-name = "aoc2024"
-version.workspace = true
-edition.workspace = true
-publish = false
-rust-version = "1.82"
-
 [workspace]
 members = ["crates/*"]
+resolver = "2"
 
 [workspace.package]
 edition = "2021"
 version = "0.1.0"
+rust-version = "1.82"
 
 [workspace.lints.clippy]
 all = "warn"
@@ -36,28 +31,8 @@ strum = { version = "0.26.3", features = ["derive"] }
 thiserror = "2.0.8"
 
 getdata = { path = "crates/getdata" }
-aoc2024 = { path = "."}
+aoc = { path = "crates/aoc"}
 
-[dependencies]
-clap.workspace = true
-derive-new.workspace = true
-derive_more.workspace = true
-grid.workspace = true
-inline_colorization.workspace = true
-num.workspace = true
-paste.workspace = true
-rayon = { version = "1.10.0", optional = true}
-strum.workspace = true
-
-[features]
-default = ["par"]
-par = ["dep:rayon"]
-
-[lints]
-workspace = true
-
-[lib]
-doctest = false
 
 [profile.release]
 debug = 1

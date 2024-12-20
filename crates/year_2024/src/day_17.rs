@@ -141,11 +141,11 @@ pub fn solution_b(input: &str) -> u64 {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("17", solution_a, solution_b);
+    aoc::run("17", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/17.txt", "4,6,3,5,6,3,5,2,1,0");
-    aoc2024::make_test!("b", "2024/17b.txt", 117_440);
+    aoc::make_test!("a", "2024/17.txt", "4,6,3,5,6,3,5,2,1,0");
+    aoc::make_test!("b", "2024/17b.txt", 117_440);
 }

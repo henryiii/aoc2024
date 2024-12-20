@@ -15,8 +15,8 @@ Direction by removing Position, which now only helps very slightly, due to
 
 use grid::Grid;
 
-use aoc2024::grid::{read_char, Direction};
-use aoc2024::par::prelude::*;
+use aoc::grid::{read_char, Direction};
+use aoc::par::prelude::*;
 
 enum Result {
     Exited(Grid<u8>),
@@ -87,11 +87,11 @@ pub fn solution_b(input: &str) -> usize {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("06", solution_a, solution_b);
+    aoc::run("06", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/06.txt", 41);
-    aoc2024::make_test!("b", "2024/06.txt", 6);
+    aoc::make_test!("a", "2024/06.txt", 41);
+    aoc::make_test!("b", "2024/06.txt", 6);
 }

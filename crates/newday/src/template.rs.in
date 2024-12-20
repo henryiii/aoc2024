@@ -30,11 +30,11 @@ pub fn solution_b(input: &str) -> Int \{
 }
 
 pub fn main(_: bool) \{
-    aoc2024::run("{day}", solution_a, solution_b);
+    aoc::run("{day}", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests \{
-    aoc2024::make_test!("a", "{year}/{day}.txt", 0);
-    aoc2024::make_test!("b", "{year}/{day}.txt", 0);
+    aoc::make_test!("a", "{year}/{day}.txt", 0);
+    aoc::make_test!("b", "{year}/{day}.txt", 0);
 }
