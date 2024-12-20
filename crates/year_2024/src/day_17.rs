@@ -1,10 +1,10 @@
 /*!
-# 2024 Day 17: Sample
-## Simple template
+# 2024 Day 17: Chronospatial Computer
+## Instructions and registers
 
 <https://adventofcode.com/2024/day/17>
 
-This is a small example to get started, also functions as a template for new days.
+My part 2 just happens to work for my input, but it's not general enough.
 */
 
 use std::ops::BitXor;
