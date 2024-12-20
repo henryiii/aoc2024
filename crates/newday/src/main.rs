@@ -48,8 +48,10 @@ fn replace_end_day(s: &mut [u8], day: u8) -> Result<(), NoReplaceError> {
         .position(|w| w == snippet)
         .ok_or(NoReplaceError {})?;
     let loc = loc + snippet.len();
-    s[loc] = format!("{:02}", day).as_bytes()[0];
-    s[loc + 1] = format!("{:02}", day).as_bytes()[1];
+    let day_str = format!("{day:02}");
+    let day_bytes = day_str.as_bytes();
+    s[loc] = day_bytes[0];
+    s[loc + 1] = day_bytes[1];
     Ok(())
 }
 
