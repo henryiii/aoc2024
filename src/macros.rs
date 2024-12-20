@@ -4,7 +4,7 @@ macro_rules! make_test {
         paste::paste! {
             #[test]
             fn [<test_part $part>]() {
-                assert_eq!(super::[<solution_ $part>](include_str!(concat!("../../../samples/2024/", $input))), $answer);
+                assert_eq!(super::[<solution_ $part>](include_str!(concat!("../../../samples/", $input))), $answer);
             }
         }
     };
