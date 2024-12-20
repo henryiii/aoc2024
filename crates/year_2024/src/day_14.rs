@@ -12,7 +12,7 @@ seems to work on my data, not sure if it's always true, though.
 use counter::Counter;
 use grid::Grid;
 
-use aoc2024::geom::Point;
+use aoc::geom::Point;
 
 type Int = i32;
 
@@ -96,7 +96,7 @@ pub fn solution_b(input: &str, vis: bool) -> usize {
 }
 
 pub fn main(vis: bool) {
-    aoc2024::run("14", solution_a::<101, 103>, |input| {
+    aoc::run("14", solution_a::<101, 103>, |input| {
         solution_b(input, vis)
     });
 }

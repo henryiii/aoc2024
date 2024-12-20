@@ -9,7 +9,7 @@ This does a few variations on wordsearch.
 
 use grid::Grid;
 
-use aoc2024::grid::{read_char, DIRECTIONS, XDIRECTIONS};
+use aoc::grid::{read_char, DIRECTIONS, XDIRECTIONS};
 
 const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
 const MAS: [char; 3] = ['M', 'A', 'S'];
@@ -53,11 +53,11 @@ pub fn solution_b(input: &str) -> usize {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("04", solution_a, solution_b);
+    aoc::run("04", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/04.txt", 18);
-    aoc2024::make_test!("b", "2024/04.txt", 9);
+    aoc::make_test!("a", "2024/04.txt", 18);
+    aoc::make_test!("b", "2024/04.txt", 9);
 }

@@ -16,7 +16,7 @@ use std::collections::HashSet;
 use grid::Grid;
 use strum::IntoEnumIterator;
 
-use aoc2024::grid::{read_char, Direction};
+use aoc::grid::{read_char, Direction};
 
 fn find_region(seen: &mut Grid<bool>, map: &Grid<char>, start: (i64, i64)) -> Vec<(i64, i64)> {
     *seen.get_mut(start.0, start.1).unwrap() = true;
@@ -104,11 +104,11 @@ pub fn solution_b(input: &str) -> usize {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("12", solution_a, solution_b);
+    aoc::run("12", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/12.txt", 140);
-    aoc2024::make_test!("b", "2024/12.txt", 80);
+    aoc::make_test!("a", "2024/12.txt", 140);
+    aoc::make_test!("b", "2024/12.txt", 80);
 }

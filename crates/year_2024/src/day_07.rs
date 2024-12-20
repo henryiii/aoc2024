@@ -12,7 +12,7 @@ Okay, now it's much faster by short circuiting and avoiding the cartesian
 product, using recursion instead.
 */
 
-use aoc2024::par::prelude::*;
+use aoc::par::prelude::*;
 
 #[derive(Debug, Clone, Copy)]
 enum Ops {
@@ -74,11 +74,11 @@ pub fn solution_b(input: &str) -> u64 {
 }
 
 pub fn main(_: bool) {
-    aoc2024::run("07", solution_a, solution_b);
+    aoc::run("07", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/07.txt", 3749);
-    aoc2024::make_test!("b", "2024/07.txt", 11387);
+    aoc::make_test!("a", "2024/07.txt", 3749);
+    aoc::make_test!("b", "2024/07.txt", 11387);
 }

@@ -65,11 +65,11 @@ pub fn solution_b(input: &str) -> u64 {
         .sum()
 }
 pub fn main(_: bool) {
-    aoc2024::run("05", solution_a, solution_b);
+    aoc::run("05", solution_a, solution_b);
 }
 
 #[cfg(test)]
 mod tests {
-    aoc2024::make_test!("a", "2024/05.txt", 143);
-    aoc2024::make_test!("b", "2024/05.txt", 123);
+    aoc::make_test!("a", "2024/05.txt", 143);
+    aoc::make_test!("b", "2024/05.txt", 123);
 }

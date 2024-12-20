@@ -1,35 +1,25 @@
 [package]
-name = "year_2024"
+name = "aoc"
 edition.workspace = true
 version.workspace = true
 
 [dependencies]
-aoc-parse.workspace = true
-aoc.workspace = true
-cached.workspace = true
 clap.workspace = true
-counter.workspace = true
 derive-new.workspace = true
 derive_more.workspace = true
 grid.workspace = true
 inline_colorization.workspace = true
-itertools.workspace = true
+num.workspace = true
 paste.workspace = true
-petgraph.workspace = true
-regex.workspace = true
-seq-macro.workspace = true
+rayon = { version = "1.10.0", optional = true}
 strum.workspace = true
+
+[features]
+default = ["par"]
+par = ["dep:rayon"]
 
 [lints]
 workspace = true
 
-[features]
-default = ["par"]
-par = ["aoc/par"]
-
 [lib]
 doctest = false
-
-[[bin]]
-name = "year_2024"
-test = false
