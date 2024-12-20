@@ -8,7 +8,7 @@ I'm using the direction code from my 2023 solutions. The first solution was
 really slow, from using `HashMap`. Switching to the bitflag-like solution sped
 it up, but it was still slow due to rerunning iterators. Using a little memory
 is okay! Finally it was quite fast. The current solution adds parallel
-processing for part 2, which works really well. I've simplifed the 2023
+processing for part 2, which works really well. I've simplified the 2023
 Direction by removing Position, which now only helps very slightly, due to
 `.get` being smarter in Grid this year.
 */

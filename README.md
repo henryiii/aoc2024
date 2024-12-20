@@ -120,7 +120,7 @@ It should work like any other executable, mostly. The visual debugger in VSCode
 might work, though I had a hard time telling it to run the correct executable.
 Note that LLDB only supports the subset of Rust and C for conditional
 breakpoints, so you might have to manually add code and use line based
-breakpoints instead. 
+breakpoints instead.
 
 ## Notes
 
