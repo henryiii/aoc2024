@@ -13,3 +13,4 @@ derive-new.workspace = true
 serde = { version = "1.0.215", features = ["derive"] }
 tinytemplate = "1.2.1"
 getdata.workspace = true
+thiserror.workspace = true

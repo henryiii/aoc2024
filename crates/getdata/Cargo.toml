@@ -7,7 +7,7 @@ publish = false
 [dependencies]
 clap = { workspace = true, features = ["derive", "env"] }
 reqwest = { version = "0.12.9", features = ["blocking"] }
-thiserror = "2.0.8"
+thiserror.workspace = true
 
 [lints]
 workspace = true
