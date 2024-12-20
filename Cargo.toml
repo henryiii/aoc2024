@@ -32,7 +32,7 @@ strum = { version = "0.26.3", features = ["derive"] }
 thiserror = "2.0.8"
 
 getdata = { path = "crates/getdata" }
-aoc = { path = "crates/aoc"}
+aoc = { path = "crates/aoc", default-features = false }
 
 
 [profile.release]

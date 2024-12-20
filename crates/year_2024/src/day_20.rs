@@ -9,10 +9,11 @@ mostly because I already have tooling set up. A simple search to make the path
 list would be fine too, there's only one unique path through.
 */
 
-use aoc::grid::read_char;
-use counter::Counter;
 use grid::Grid;
 use petgraph::{algo::astar, prelude::*};
+
+use aoc::grid::read_char;
+use aoc::par::prelude::*;
 
 type Int = usize;
 
@@ -36,11 +37,11 @@ fn make_graph(map: &Grid<char>) -> UnGraphMap<(usize, usize), ()> {
     )
 }
 
-fn find_costs(path: &[(usize, usize)], cheat: usize) -> Counter<usize> {
+fn find_costs(path: &[(usize, usize)], cheat: usize, limit: usize) -> usize {
     path[0..path.len() - cheat]
-        .iter()
+        .par_iter()
         .enumerate()
-        .flat_map(|(cur_i, cur_pos)| {
+        .map(|(cur_i, cur_pos)| {
             path[cur_i..]
                 .iter()
                 .zip(cur_i..)
@@ -48,8 +49,10 @@ fn find_costs(path: &[(usize, usize)], cheat: usize) -> Counter<usize> {
                     let dist = pos.0.abs_diff(cur_pos.0) + pos.1.abs_diff(cur_pos.1);
                     (dist <= cheat).then_some(i - cur_i - dist)
                 })
+                .filter(|&dist| dist >= limit)
+                .count()
         })
-        .collect()
+        .sum()
 }
 
 fn solution(input: &str, cheat: usize, limit: usize) -> Int {
@@ -58,12 +61,7 @@ fn solution(input: &str, cheat: usize, limit: usize) -> Int {
     let start = map.indexed_iter().find(|(_, c)| **c == 'S').unwrap().0;
     let end = map.indexed_iter().find(|(_, c)| **c == 'E').unwrap().0;
     let (_, path) = astar::astar(&graph, start, |n| n == end, |_| 1usize, |_| 0).unwrap();
-    let costs = find_costs(&path, cheat);
-    costs
-        .iter()
-        .filter(|(save, _)| **save >= limit)
-        .map(|(_, count)| *count)
-        .sum()
+    find_costs(&path, cheat, limit)
 }
 
 pub fn solution_a(input: &str) -> Int {
