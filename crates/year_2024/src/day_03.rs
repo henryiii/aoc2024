@@ -16,7 +16,7 @@ enum Instruction {
     Mul(u64, u64),
 }
 
-pub fn solution_a(input: &str) -> u64 {
+fn solution_a(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap();
     reg.captures_iter(input)
         .map(|cap| {
@@ -27,7 +27,7 @@ pub fn solution_a(input: &str) -> u64 {
         .sum()
 }
 
-pub fn solution_b(input: &str) -> u64 {
+fn solution_b(input: &str) -> u64 {
     let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)|do\(\)|don't\(\)").unwrap();
     reg.captures_iter(input)
         .map(|cap| match &cap[0] {

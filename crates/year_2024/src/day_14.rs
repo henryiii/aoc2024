@@ -51,7 +51,7 @@ fn vis_grid(grid: &Grid<usize>) {
     }
 }
 
-pub fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
+fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     let robots = read_input(input);
     let size = (X, Y);
     let new_robots = robots
@@ -72,7 +72,7 @@ pub fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     counts.values().product()
 }
 
-pub fn solution_b(input: &str, vis: bool) -> usize {
+fn solution_b(input: &str, vis: bool) -> usize {
     let mut robots = read_input(input);
     let size = (101, 103);
     let mut grid = Grid::new(103, 101);

@@ -48,7 +48,7 @@ fn make_graph(map: &Grid<bool>) -> UnGraphMap<(usize, usize), ()> {
     ))
 }
 
-pub fn solution_a(input: &str) -> usize {
+fn solution_a(input: &str) -> usize {
     let coords = read_input(input);
     let size = if coords.len() < 1000 { 7 } else { 71 };
     let nbytes = if coords.len() < 1000 { 12 } else { 1024 };
@@ -58,7 +58,7 @@ pub fn solution_a(input: &str) -> usize {
     *costs.get(&(size - 1, size - 1)).unwrap()
 }
 
-pub fn solution_b(input: &str) -> String {
+fn solution_b(input: &str) -> String {
     let coords = read_input(input);
     let size = if coords.len() < 1000 { 7 } else { 71 };
     let nbytes = if coords.len() < 1000 { 12 } else { 1024 };

@@ -29,14 +29,14 @@ fn valid<'a, T: DoubleEndedIterator<Item = &'a u64> + Clone>(row: &T) -> bool {
             .all(|(&a, &b)| range.contains(&a.abs_diff(b)))
 }
 
-pub fn solution_a(input: &str) -> usize {
+fn solution_a(input: &str) -> usize {
     lists(input)
         .into_iter()
         .filter(|row| valid(&row.iter()))
         .count()
 }
 
-pub fn solution_b(input: &str) -> usize {
+fn solution_b(input: &str) -> usize {
     lists(input)
         .into_iter()
         .filter(|row| {

@@ -55,7 +55,7 @@ fn solve(map: &Grid<char>) -> Result {
     Result::Exited(visited)
 }
 
-pub fn solution_a(input: &str) -> usize {
+fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     if let Result::Exited(visited) = solve(&map) {
         visited.iter().filter(|&v| *v > 0).count()
@@ -64,7 +64,7 @@ pub fn solution_a(input: &str) -> usize {
     }
 }
 
-pub fn solution_b(input: &str) -> usize {
+fn solution_b(input: &str) -> usize {
     let orig_map = read_char(input);
     // Only place barriers on the original walking path
     let starting_pos = get_pos(&orig_map);

@@ -36,14 +36,14 @@ fn get_mas(grid: &Grid<char>, a: i64, b: i64) -> usize {
         .count()
 }
 
-pub fn solution_a(input: &str) -> usize {
+fn solution_a(input: &str) -> usize {
     let grid = read_char(input);
     grid.indexed_iter()
         .map(|((a, b), _)| get_xmas(&grid, a.try_into().unwrap(), b.try_into().unwrap()))
         .sum()
 }
 
-pub fn solution_b(input: &str) -> usize {
+fn solution_b(input: &str) -> usize {
     let grid = read_char(input);
     grid.indexed_iter()
         .filter(|((a, b), _)| {

@@ -95,7 +95,7 @@ fn push_vertical(
     Some(ret)
 }
 
-pub fn solution_a(input: &str, vis: bool) -> Int {
+fn solution_a(input: &str, vis: bool) -> Int {
     let (mut grid, dirs) = read_input(input);
     let (mut pos, _) = grid.indexed_iter().find(|(_, &c)| c == '@').unwrap();
     vis.then(|| visualize(&grid, |c| *c));
@@ -111,7 +111,7 @@ pub fn solution_a(input: &str, vis: bool) -> Int {
         .sum()
 }
 
-pub fn solution_b(input: &str, vis: bool) -> Int {
+fn solution_b(input: &str, vis: bool) -> Int {
     let (grid, dirs) = read_input(input);
     let mut grid = Grid::from_vec(
         grid.iter()

@@ -53,7 +53,7 @@ fn count_match(patterns: &[Vec<char>], line: &[char]) -> Int {
         .sum()
 }
 
-pub fn solution_a(input: &str) -> Int {
+fn solution_a(input: &str) -> Int {
     let (patterns, lines) = read_input(input);
     lines
         .iter()
@@ -61,7 +61,7 @@ pub fn solution_a(input: &str) -> Int {
         .count()
 }
 
-pub fn solution_b(input: &str) -> Int {
+fn solution_b(input: &str) -> Int {
     let (patterns, lines) = read_input(input);
     lines.iter().map(|line| count_match(&patterns, line)).sum()
 }

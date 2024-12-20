@@ -21,11 +21,11 @@ fn read_input(input: &str) -> Vec<String> \{
     .unwrap()
 }
 
-pub fn solution_a(input: &str) -> Int \{
+fn solution_a(input: &str) -> Int \{
     todo!();
 }
 
-pub fn solution_b(input: &str) -> Int \{
+fn solution_b(input: &str) -> Int \{
     todo!();
 }
 

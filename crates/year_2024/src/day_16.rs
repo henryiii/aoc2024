@@ -100,7 +100,7 @@ fn track(
     res
 }
 
-pub fn solution_a(input: &str) -> Int {
+fn solution_a(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
     let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
@@ -113,7 +113,7 @@ pub fn solution_a(input: &str) -> Int {
         .unwrap()
 }
 
-pub fn solution_b(input: &str) -> Int {
+fn solution_b(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
     let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());

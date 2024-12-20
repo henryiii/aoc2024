@@ -53,14 +53,14 @@ fn blink_counter(stones: &Counter<usize, usize>) -> Counter<usize, usize> {
     new_stones
 }
 
-pub fn solution_a(input: &str) -> usize {
+fn solution_a(input: &str) -> usize {
     let stones = read_stones(input);
     (0..25)
         .fold(stones, |stones, _| blink_counter(&stones))
         .total()
 }
 
-pub fn solution_b(input: &str) -> usize {
+fn solution_b(input: &str) -> usize {
     let stones = read_stones(input);
     (0..75)
         .fold(stones, |stones, _| blink_counter(&stones))

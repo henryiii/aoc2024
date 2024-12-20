@@ -73,7 +73,7 @@ fn get_sides(region: &HashSet<(i64, i64)>) -> usize {
     i
 }
 
-pub fn solution_a(input: &str) -> usize {
+fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     let mut seen = Grid::new(map.rows(), map.cols());
     map.indexed_iter()
@@ -88,7 +88,7 @@ pub fn solution_a(input: &str) -> usize {
         .fold(0, |acc, (a, p)| acc + a * p)
 }
 
-pub fn solution_b(input: &str) -> usize {
+fn solution_b(input: &str) -> usize {
     let map = read_char(input);
     let mut seen = Grid::new(map.rows(), map.cols());
     map.indexed_iter()

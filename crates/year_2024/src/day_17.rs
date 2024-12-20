@@ -96,14 +96,14 @@ fn computer(mut reg: Registers, instructions: &[OpCode]) -> Vec<u8> {
     out
 }
 
-pub fn solution_a(input: &str) -> String {
+fn solution_a(input: &str) -> String {
     let (reg, instructions) = read_input(input);
     let reg = Registers::new(reg.0, reg.1, reg.2);
     let out = computer(reg, &instructions);
     out.iter().join(",")
 }
 
-pub fn solution_b(input: &str) -> u64 {
+fn solution_b(input: &str) -> u64 {
     let (reg, instructions) = read_input(input);
     let expected_out = instructions.iter().map(|x| *x as u8).collect_vec();
     let size: u32 = expected_out.len().try_into().unwrap();

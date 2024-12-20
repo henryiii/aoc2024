@@ -47,7 +47,7 @@ fn put_in_order<'a>(rules: &HashSet<(u64, u64)>, order: &'a [u64]) -> Vec<&'a u6
         .collect()
 }
 
-pub fn solution_a(input: &str) -> u64 {
+fn solution_a(input: &str) -> u64 {
     let (rules, orders) = read_input(input);
     orders
         .iter()
@@ -56,7 +56,7 @@ pub fn solution_a(input: &str) -> u64 {
         .sum()
 }
 
-pub fn solution_b(input: &str) -> u64 {
+fn solution_b(input: &str) -> u64 {
     let (rules, orders) = read_input(input);
     orders
         .iter()
