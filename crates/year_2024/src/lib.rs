@@ -1,8 +1,26 @@
 #![allow(clippy::must_use_candidate)]
 #![allow(clippy::missing_panics_doc)]
 
-use seq_macro::seq;
+// I used seq macro here first, but cargo fmt doesn't expand it and therefore
+// misses the modules.
 
-seq!(N in 01..=20 {
-    pub mod day_~N;
-});
+pub mod day_01;
+pub mod day_02;
+pub mod day_03;
+pub mod day_04;
+pub mod day_05;
+pub mod day_06;
+pub mod day_07;
+pub mod day_08;
+pub mod day_09;
+pub mod day_10;
+pub mod day_11;
+pub mod day_12;
+pub mod day_13;
+pub mod day_14;
+pub mod day_15;
+pub mod day_16;
+pub mod day_17;
+pub mod day_18;
+pub mod day_19;
+pub mod day_20;
