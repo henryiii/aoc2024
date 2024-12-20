@@ -1,6 +1,7 @@
 [workspace]
 members = ["crates/*"]
 resolver = "2"
+default-members = ["crates/aoc", "crates/year_2024"]
 
 [workspace.package]
 edition = "2021"
