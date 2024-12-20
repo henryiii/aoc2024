@@ -15,7 +15,7 @@ def timer() -> Generator[None, None, None]:
 
 
 def run(name: str, solution_a: Callable[[str], int], solution_b: Callable[[str], int]):
-    input = DIR.joinpath(f"../data/{name}.txt").read_text()
+    input = DIR.joinpath(f"../../data/{name}.txt").read_text()
     with timer():
         print("Solution A:", solution_a(input), end = " ")
     with timer():
@@ -28,7 +28,7 @@ class test:
     answer: int
 
     def __call__[T: Callable[[str], int]](self, solution: T) -> T:
-        input = DIR.joinpath(f"../samples/{self.name}.txt").read_text()
+        input = DIR.joinpath(f"../../samples/{self.name}.txt").read_text()
         total = solution(input)
         assert total == self.answer, f"{total} not {self.answer}"
         print(f"Test {self.name}:{solution.__name__} passed")

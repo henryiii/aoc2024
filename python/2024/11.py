@@ -3,12 +3,10 @@
 # This was based on the Rust version.
 
 from collections.abc import Generator
-from pathlib import Path
 from problems import run, test
 from collections import Counter
 import math
 
-DIR = Path(__file__).parent
 
 def parse(input: str) -> Counter[int]:
     return Counter(int(x) for x in input.split())
@@ -32,7 +30,7 @@ def blink_counter(stones: Counter[int]) -> None:
             for new_stone in blink(stone):
                 stones[new_stone] += count
 
-@test("11", 55_312)
+@test("2024/11", 55_312)
 def solution_a(input: str) -> int:
     stones = parse(input)
     for _ in range(25):
@@ -40,7 +38,7 @@ def solution_a(input: str) -> int:
     return sum(stones.values())
 
 
-@test("11", 65_601_038_650_482)
+@test("2024/11", 65_601_038_650_482)
 def solution_b(input: str) -> int:
     stones = parse(input)
     for _ in range(75):
@@ -49,4 +47,4 @@ def solution_b(input: str) -> int:
 
 
 if __name__ == "__main__":
-    run("11", solution_a, solution_b)
+    run("2024/11", solution_a, solution_b)

@@ -8,11 +8,8 @@
 # I rewrote the Rust solution later to match this. Note there's a huge
 # performance gain using a set instead of a list.
 
-from pathlib import Path
 from problems import run, test
 import functools
-
-DIR = Path(__file__).parent
 
 
 def parse_rules(input: str) -> frozenset[tuple[int, int]]:
@@ -37,7 +34,7 @@ def in_order(rules: frozenset[tuple[int, int]], order: list[int]) -> bool:
     )
 
 
-@test("05", 143)
+@test("2024/05", 143)
 def solution_a(input: str) -> int:
     rules = parse_rules(input)
     orders = parse_orders(input)
@@ -55,7 +52,7 @@ def put_in_order(rules: frozenset[tuple[int, int]], order: list[int]) -> list[in
     )
 
 
-@test("05", 123)
+@test("2024/05", 123)
 def solution_b(input: str) -> int:
     rules = parse_rules(input)
     orders = parse_orders(input)
@@ -67,4 +64,4 @@ def solution_b(input: str) -> int:
 
 
 if __name__ == "__main__":
-    run("05", solution_a, solution_b)
+    run("2024/05", solution_a, solution_b)
