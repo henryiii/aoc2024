@@ -987,6 +987,7 @@ dependencies = [
  "derive-new",
  "getdata",
  "serde",
+ "thiserror 2.0.8",
  "tinytemplate",
 ]
 
