@@ -8,6 +8,7 @@ clap.workspace = true
 derive-new.workspace = true
 derive_more.workspace = true
 grid.workspace = true
+indicatif = { version = "0.17.9" }
 inline_colorization.workspace = true
 num.workspace = true
 paste.workspace = true
@@ -16,7 +17,7 @@ strum.workspace = true
 
 [features]
 default = ["par"]
-par = ["dep:rayon"]
+par = ["dep:rayon", "indicatif/rayon"]
 
 [lints]
 workspace = true
