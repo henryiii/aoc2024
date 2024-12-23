@@ -58,10 +58,4 @@ pub mod prelude {
 
     #[cfg(not(feature = "par"))]
     pub use super::IntoParallelRefIterator;
-
-    #[cfg(feature = "par")]
-    pub use indicatif::ParallelProgressIterator;
-
-    #[cfg(not(feature = "par"))]
-    pub use indicatif::ProgressIterator;
 }
