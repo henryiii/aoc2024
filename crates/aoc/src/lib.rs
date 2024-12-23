@@ -8,6 +8,7 @@ This contains things that might get used multiple times.
 pub mod geom;
 pub mod grid;
 pub mod macros;
+pub mod maximal_cliques;
 pub mod par;
 pub mod problems;
 

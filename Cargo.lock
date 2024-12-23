@@ -105,6 +105,7 @@ dependencies = [
  "inline_colorization",
  "num",
  "paste",
+ "petgraph",
  "rayon",
  "strum",
 ]
