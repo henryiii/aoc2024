@@ -1,10 +1,13 @@
 /*!
-# 2024 Day 22: Sample
-## Simple template
+# 2024 Day 22: Monkey Market
+## Finding sequences
 
 <https://adventofcode.com/2024/day/22>
 
-This is a small example to get started, also functions as a template for new days.
+My first attepmt worked, but was _very_ slow. It did have a progress bar and was
+multithreaded, at least. The current version was inspired from looking around at
+other code a bit, and realizing that a histogram was much more performant at the
+cost of some memory.
 */
 
 // 2284 is too high

@@ -1,21 +1,38 @@
 /*!
-# 2024 Day 21: Sample
-## Simple template
+# 2024 Day 21: Keypad Conundrum
+## Chained keypads
 
 <https://adventofcode.com/2024/day/21>
 
-This is a small example to get started, also functions as a template for new days.
+This was really hard at first, largely because I approached it from the other
+direction. Once I flipped the order I was trying to do it in, it became easy.
+Switching from a vector of vectors to an enum of vectors, along with no longer
+building out the paths one by one but instead checking the corner value, made
+this much faster.
 
-This looks great: <https://www.reddit.com/r/adventofcode/comments/1hkc7h7/2024_day_21_button_mashing_greyed_out_memoized/>
+This looks great, by the way, though it's not really accurate to the way I solved it:
+<https://www.reddit.com/r/adventofcode/comments/1hkc7h7/2024_day_21_button_mashing_greyed_out_memoized/>
 */
-
-type Int = usize;
 
 use std::iter;
 
 use counter::Counter;
 use grid::{grid, Grid};
 use itertools::Itertools;
+
+enum Paths {
+    Single(Vec<char>),
+    Double(Vec<char>, Vec<char>),
+}
+
+fn path_to_presses(path: &[char], prev: &Counter<(char, char)>) -> usize {
+    iter::once('A')
+        .chain(path.iter().copied())
+        .chain(iter::once('A'))
+        .tuple_windows()
+        .map(|(i, f)| prev[&(i, f)])
+        .sum()
+}
 
 struct KeyPad {
     pad: Grid<char>,
@@ -54,12 +71,7 @@ impl KeyPad {
         self.indexed_iter().find(|(_, &c)| c == current).unwrap().0
     }
 
-    fn valid_path(&self, current: char, path: &[char]) -> Option<char> {
-        path.iter()
-            .try_fold(current, |acc, key| self.step(acc, *key))
-    }
-
-    fn paths(&self, current: char, target: char) -> Vec<Vec<char>> {
+    fn paths(&self, current: char, target: char) -> Paths {
         let cur_pos = self.pos(current);
         let new_pos = self.pos(target);
 
@@ -74,57 +86,34 @@ impl KeyPad {
             iter::repeat('<').take(cur_pos.1 - new_pos.1)
         };
 
-        let vals1: Vec<_> = vert_chars
-            .clone()
-            .chain(horiz_chars.clone())
-            .chain(iter::once('A'))
-            .collect();
-        let vals2: Vec<_> = horiz_chars
-            .chain(vert_chars)
-            .chain(iter::once('A'))
-            .collect();
-
-        [vals1, vals2]
-            .iter()
-            .unique()
-            .filter(|v| self.valid_path(current, v).is_some())
-            .cloned()
-            .collect()
-    }
-
-    fn step(&self, current: char, key: char) -> Option<char> {
-        let (x, y) = self.pos(current);
-        let new_key = match key {
-            '^' => *self.pad.get(x - 1, y)?,
-            'v' => *self.pad.get(x + 1, y)?,
-            '<' => *self.pad.get(x, y - 1)?,
-            '>' => *self.pad.get(x, y + 1)?,
-            'A' => current,
-            _ => unreachable!(),
-        };
-        if new_key == 'x' {
-            return None;
+        if cur_pos.0 == new_pos.0 {
+            Paths::Single(horiz_chars.collect())
+        } else if cur_pos.1 == new_pos.1 {
+            Paths::Single(vert_chars.collect())
+        } else if self.pad[(cur_pos.0, new_pos.1)] == 'x' {
+            Paths::Single(vert_chars.chain(horiz_chars).collect())
+        } else if self.pad[(new_pos.0, cur_pos.1)] == 'x' {
+            Paths::Single(horiz_chars.chain(vert_chars).collect())
+        } else {
+            Paths::Double(
+                horiz_chars.clone().chain(vert_chars.clone()).collect(),
+                vert_chars.chain(horiz_chars).collect(),
+            )
         }
-        Some(new_key)
     }
 
     fn calc_next(&self, prev: &Counter<(char, char)>) -> Counter<(char, char)> {
         // Compute every possible pair
-        self.indexed_iter()
-            .flat_map(|((_, _), ki)| {
-                self.indexed_iter().map(|((_, _), kf)| {
+        self.iter()
+            .flat_map(|ki| {
+                self.iter().map(|kf| {
                     let paths = self.paths(*ki, *kf);
-                    let key_presses = paths
-                        .into_iter()
-                        .map(|path| {
-                            iter::once('A')
-                                .chain(path)
-                                .tuple_windows()
-                                .map(|(i, f)| prev[&(i, f)])
-                                .sum()
-                        })
-                        .min()
-                        .unwrap();
+                    let key_presses = match paths {
+                        Paths::Single(path) => path_to_presses(&path, prev),
+                        Paths::Double(path1, path2) => {
+                            usize::min(path_to_presses(&path1, prev), path_to_presses(&path2, prev))
+                        }
+                    };
                     ((*ki, *kf), key_presses)
                 })
             })
@@ -140,7 +129,7 @@ fn read_input(input: &str) -> Vec<Vec<char>> {
         .unwrap()
 }
 
-fn solution(input: &str, robots: usize) -> Int {
+fn solution(input: &str, robots: usize) -> usize {
     let numeric_keypad = KeyPad::new_numeric();
     let dir_keypad = KeyPad::new_dir();
 
@@ -155,7 +144,7 @@ fn solution(input: &str, robots: usize) -> Int {
     lines
         .into_iter()
         .map(|line| -> usize {
-            let val: Int = String::from_iter(&line)
+            let val: usize = String::from_iter(&line)
                 .strip_suffix("A")
                 .unwrap()
                 .parse()

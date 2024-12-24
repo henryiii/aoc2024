@@ -1,10 +1,12 @@
 /*!
-# 2024 Day 23: Sample
-## Simple template
+# 2024 Day 23: LAN Party
+## Directly connected nodes
 
 <https://adventofcode.com/2024/day/23>
 
-This is a small example to get started, also functions as a template for new days.
+This is a simple, standard graph problem. The only issue with part 2 was that
+the algorithm I needed was just in a PR to petgraph, so I had to copy the
+contents of the PR (which worked perfectly).
 */
 
 use std::collections::HashSet;
