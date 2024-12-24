@@ -116,7 +116,8 @@ fn calc_next(prev: &Counter<(char, char)>, pad: &Grid<char>) -> Counter<(char, c
                     let key_presses = paths
                         .into_iter()
                         .map(|path| {
-                            path.into_iter()
+                            iter::once('A')
+                            .chain(path.into_iter())
                                 .tuple_windows()
                                 .map(|(i, f)| prev[&(i, f)])
                                 .sum()
@@ -175,8 +176,10 @@ fn solution_b(input: &str, robots: usize) -> Int {
                 .map(move |&kf| ((ki, kf), 1))
         })
         .collect();
-    let rob_presses = (0..robots).fold(my_presses, |prev, _| calc_next(&prev, &DIR_KEYPAD));
-    dbg!(&rob_presses);
+    let rob_presses = (0..robots).fold(my_presses, |prev, _| {
+        let ret = calc_next(&prev, &DIR_KEYPAD);
+        ret
+    });
     let final_presses = calc_next(&rob_presses, &NUMERIC_KEYPAD);
 
     let lines = read_input(input);
@@ -246,10 +249,28 @@ mod tests {
         assert_eq!(paths('A', '>', &DIR_KEYPAD), vec![vec!['v', 'A']]);
         assert_eq!(paths('A', '<', &DIR_KEYPAD), vec![vec!['v', '<', '<', 'A']]);
     }
-    
+
     #[test]
     fn counter_repeated_elements() {
         let counter: Counter<char> = [('A', 1), ('A', 1), ('A', 2)].into_iter().collect();
         assert_eq!(counter[&'A'], 4);
+    }
+
+    #[test]
+    fn leg_lengths() {
+    let my_presses = DIR_KEYPAD
+        .iter()
+        .filter(|&k| *k != 'x')
+        .flat_map(|&ki| {
+            DIR_KEYPAD
+                .iter()
+                .filter(|&k| *k != 'x')
+                .map(move |&kf| ((ki, kf), 1))
+        })
+        .collect();
+    let rob_presses = calc_next(&my_presses, &DIR_KEYPAD);
+    assert_eq!(rob_presses[&('A', 'A')], 1);
+    assert_eq!(rob_presses[&('<', '>')], 3);
+    assert_eq!(rob_presses[&('<', 'A')], 4);
     }
 }
