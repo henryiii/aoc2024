@@ -59,39 +59,6 @@ where
     cliques
 }
 
-/// Find all maximal cliques in a graph using Bron–Kerbosch algorithm
-/// with pivoting.
-///
-/// A clique is a set of nodes such that every node connects to
-/// every other. A maximal clique is a clique that cannot be extended
-/// by including one more adjacent vertex. A graph may have multiple
-/// maximal cliques.
-///
-/// Example
-/// ```
-/// use petgraph::algo::maximal_cliques;
-/// use petgraph::graph::UnGraph;
-/// use std::collections::HashSet;
-///
-/// let mut g = UnGraph::<i32, ()>::from_edges(&[(0, 1), (0, 2), (1, 2), (2, 3)]);
-/// g.add_node(4);
-/// // The example graph:
-/// //
-/// // 0 --- 2 -- 3
-/// //  \   /
-/// //   \ /
-/// //    1       4
-/// //
-/// // maximal cliques: {4}, {2, 3}, {0, 1, 2}
-/// // Output the result
-/// let cliques = maximal_cliques(&g);
-/// println!("{:?}", cliques);
-/// // [
-/// //   {NodeIndex(4)},
-/// //   {NodeIndex(0), NodeIndex(1), NodeIndex(2)},
-/// //   {NodeIndex(2), NodeIndex(3)}
-/// // ]
-/// ```
 pub fn maximal_cliques<G>(g: G) -> Vec<HashSet<G::NodeId>>
 where
     G: GetAdjacencyMatrix + IntoNodeIdentifiers + IntoNeighbors,

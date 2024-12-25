@@ -131,7 +131,7 @@ Also see [Blessed.rs](https://blessed.rs), a curated list of good Rust libraries
 
 On my MacBook (Intel), these are my timings (total program runtime `1223ms`):
 
-```
+```text
 Day 01
 Solution A: 1197984    (0.110ms)
 Solution B: 23387399    (0.139ms)
