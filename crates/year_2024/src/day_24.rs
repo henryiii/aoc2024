@@ -4,7 +4,7 @@
 
 <https://adventofcode.com/2024/day/24>
 
-This is a simple digitial curcuit.
+This is a simple digital circuit.
 
 Part 2 is recrating an adder circuit, so I'm skipping the test, as the same
 wasn't an adder circuit.
@@ -104,7 +104,7 @@ fn solution_b(input: &str) -> String {
     let max_output = max_input + 1;
     let mut bad_connections = HashSet::new();
     // Checking rules for a ripple carry adder
-    // Every output must be connnected via an XOR (except the last one, which is the final carry)
+    // Every output must be connected via an XOR (except the last one, which is the final carry)
     bad_connections.extend(cons.iter().filter(|&(out, (_, op, _))| {
         out.starts_with('z') && *op != Instruction::Xor && *out != format!("z{max_output}")
     }));
