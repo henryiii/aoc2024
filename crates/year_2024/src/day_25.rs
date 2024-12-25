@@ -1,10 +1,10 @@
 /*!
-# 2024 Day 25: Sample
-## Simple template
+# 2024 Day 25: Code Chronicle
+## Locks and Keys
 
 <https://adventofcode.com/2024/day/25>
 
-This is a small example to get started, also functions as a template for new days.
+Simple last day! I did use fixed size arrays in this one.
 */
 
 type Int = usize;

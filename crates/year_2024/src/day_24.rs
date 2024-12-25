@@ -124,15 +124,6 @@ fn solution_b(input: &str) -> String {
             && !matches!(*in1, "x00" | "y00")
             && !matches!(*in2, "x00" | "y00")
     }));
-    println!(
-        "bad_connections: {:?}",
-        bad_connections
-            .iter()
-            .map(|(out, _)| *out)
-            .sorted()
-            .join(",")
-    );
-
     // Make a collection of all OR inputs
     let adder_ors: HashSet<_> = cons
         .iter()
@@ -159,7 +150,6 @@ fn solution_b(input: &str) -> String {
             .filter(|&(out, (_, op, _))| *op != Instruction::And && all_ors.contains(out)),
     );
 
-    println!("bad_connections: {bad_connections:?}");
     bad_connections
         .into_iter()
         .map(|(out, _)| out)
