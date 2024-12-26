@@ -6,8 +6,10 @@
 
 This is a low-cost path traversal, but with turns costing 1000 more than going straight.
 
-This could be solved with a node graph, with two nodes per point, one for each
-direction pair, and a 1000 cost to move between them.
+This can be solved with a node graph, with two nodes per point, one for each
+direction pair, and a 1000 cost to move between them, and since it turned out to be 20x faster,
+I rewrote the solution to do exactly that. Part 2 is likely faster if I rewrote it too, but
+it's fast enough as is, based on the original solution.
 */
 
 #[cfg(test)]
@@ -15,51 +17,54 @@ use aoc::grid::dual_visualize;
 use aoc::grid::{read_char, Direction};
 
 use grid::Grid;
+use itertools::Itertools;
+use petgraph::{algo::dijkstra, prelude::*};
+
 #[cfg(test)]
 use inline_colorization::{color_red, color_reset};
 
 type Int = usize;
 
-fn walk(
-    grid: &Grid<char>,
-    costs: &mut Grid<usize>,
-    mut start: (i64, i64),
-    mut dir: Direction,
-    mut cost: Int,
-) -> Vec<Int> {
-    let mut res = vec![];
-    let mut paths: Vec<_>;
-    loop {
-        *costs.get_mut(start.0, start.1).unwrap() = cost;
-        paths = [
-            (dir, cost + 1),
-            (dir.counter_clockwise(), cost + 1000 + 1),
-            (dir.clockwise(), cost + 1000 + 1),
-        ]
-        .iter()
-        .filter_map(|(dir, cost)| {
-            let new_pos = start + *dir;
-            let char = *grid.get(new_pos.0, new_pos.1)?;
-            if char == 'E' {
-                res.push(*cost);
-            }
-            if char == '.' && *costs.get(new_pos.0, new_pos.1)? > *cost {
-                return Some((*dir, new_pos, *cost));
-            }
-            None
+fn make_graph(grid: &Grid<char>) -> UnGraphMap<(usize, usize, bool), usize> {
+    let horiz = grid.iter_rows().enumerate().flat_map(|(row, rows)| {
+        rows.enumerate()
+            .tuple_windows()
+            .filter_map(move |((col_n, &a), (col_m, &b))| {
+                (a != '#' && b != '#').then_some(((row, col_n, false), (row, col_m, false)))
+            })
+    });
+    let vert = grid.iter_cols().enumerate().flat_map(|(col, cols)| {
+        cols.enumerate()
+            .tuple_windows()
+            .filter_map(move |((row_n, &a), (row_m, &b))| {
+                (a != '#' && b != '#').then_some(((row_n, col, true), (row_m, col, true)))
+            })
+    });
+    let cons = grid
+        .indexed_iter()
+        .filter(|(pos, &c)| {
+            c != '#'
+                && (!(grid[(pos.0 + 1, pos.1)] != '#'
+                    && grid[(pos.0 - 1, pos.1)] != '#'
+                    && grid[(pos.0, pos.1 + 1)] == '#'
+                    && grid[(pos.0, pos.1 - 1)] == '#')
+                    && !(grid[(pos.0 + 1, pos.1)] == '#'
+                        && grid[(pos.0 - 1, pos.1)] == '#'
+                        && grid[(pos.0, pos.1 + 1)] != '#'
+                        && grid[(pos.0, pos.1 - 1)] != '#'))
         })
-        .collect();
-
-        if paths.len() == 1 {
-            (dir, start, cost) = paths[0];
-        } else {
-            break;
-        }
-    }
-    for (dir, path, cost) in paths {
-        res.extend(walk(grid, costs, path, dir, cost));
-    }
-    res
+        .map(|(pos, &c)| {
+            (
+                (pos.0, pos.1, false),
+                (pos.0, pos.1, true),
+                if c == 'E' { 0 } else { 1000 },
+            )
+        });
+    horiz
+        .chain(vert)
+        .map(|(a, b)| (a, b, 1))
+        .chain(cons)
+        .collect()
 }
 
 fn track(
@@ -112,36 +117,38 @@ fn track(
 fn solution_a(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
-    let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
-    let mut costs = Grid::new(grid.rows(), grid.cols());
-    costs.fill(usize::MAX);
-
-    walk(&grid, &mut costs, start, Direction::Right, 0)
-        .into_iter()
-        .min()
-        .unwrap()
+    let end = grid.indexed_iter().find(|&(_, c)| *c == 'E').unwrap().0;
+    let graph = make_graph(&grid);
+    let costs = dijkstra(
+        &graph,
+        (start.0, start.1, false),
+        Some((end.0, end.1, false)),
+        |(_, _, c)| *c,
+    );
+    costs[&(end.0, end.1, false)]
 }
 
 fn solution_b(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
-    let start = (start.0.try_into().unwrap(), start.1.try_into().unwrap());
+    let end = grid.indexed_iter().find(|&(_, c)| *c == 'E').unwrap().0;
+    let graph = make_graph(&grid);
+    let node_costs = dijkstra(&graph, (start.0, start.1, false), None, |(_, _, c)| *c);
+
     let mut costs = Grid::new(grid.rows(), grid.cols());
     costs.fill(usize::MAX);
-
-    let final_cost = walk(&grid, &mut costs, start, Direction::Right, 0)
-        .into_iter()
-        .min()
-        .unwrap();
+    for ((row, col, _), cost) in node_costs {
+        costs[(row, col)] = cost.min(costs[(row, col)]);
+    }
 
     let tracker = track(
         &grid,
         &costs,
         Grid::new(grid.rows(), grid.cols()),
-        start,
+        (start.0.try_into().unwrap(), start.1.try_into().unwrap()),
         Direction::Right,
         0,
-        final_cost,
+        costs[(end.0, end.1)],
     );
 
     #[cfg(test)]

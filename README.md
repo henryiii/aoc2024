@@ -129,7 +129,7 @@ Also see [Blessed.rs](https://blessed.rs), a curated list of good Rust libraries
 
 ## Final timings
 
-On my MacBook (Intel), these are my timings (total program runtime `1223ms`):
+On my MacBook (Intel), these are my timings (total program runtime 640ms, was 1223ms before rewriting day 16):
 
 ```text
 Day 01
@@ -193,9 +193,9 @@ Solution A: 1457740    (1.695ms)
 Solution B: 1467145    (7.208ms)
 Time taken: 10.240ms
 Day 16
-Solution A: 72400    (327.150ms)
-Solution B: 435    (382.326ms)
-Time taken: 710.242ms
+Solution A: 72400    (14.226ms)
+Solution B: 435    (66.575ms)
+Time taken: 80.892ms
 Day 17
 Solution A: 7,4,2,5,1,4,6,0,4    (0.018ms)
 Solution B: 164278764924605    (0.124ms)
