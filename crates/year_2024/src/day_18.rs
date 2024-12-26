@@ -63,14 +63,19 @@ fn solution_b(input: &str) -> String {
     let size = if coords.len() < 1000 { 7 } else { 71 };
     let nbytes = if coords.len() < 1000 { 12 } else { 1024 };
     let map = make_grid(&coords[0..nbytes], size);
-    let mut graph = make_graph(&map);
-    for (x, y) in &coords[nbytes..] {
-        graph.remove_node((*x, *y));
-        if !has_path_connecting(&graph, (0, 0), (size - 1, size - 1), None) {
-            return format!("{x},{y}");
+    let graph = make_graph(&map);
+    let part_point = coords[nbytes..].partition_point(|(x, y)| {
+        let mut new_graph = graph.clone();
+        for coord in &coords[nbytes..] {
+            new_graph.remove_node((coord.0, coord.1));
+            if coord == &(*x, *y) {
+                break;
+            }
         }
-    }
-    unreachable!();
+        has_path_connecting(&new_graph, (0, 0), (size - 1, size - 1), None)
+    });
+    let (x, y) = coords[nbytes + part_point];
+    format!("{x},{y}")
 }
 
 pub fn main(_: bool) {
