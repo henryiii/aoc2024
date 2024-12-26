@@ -110,17 +110,17 @@ fn track(
         })
         .collect();
 
-        if paths.len() == 1 {
-            (dir, start, cost) = paths.pop().unwrap();
-        } else {
+        if paths.is_empty() {
             break;
+        }
+        (dir, start, cost) = paths.pop().unwrap();
+
+        for (dir, start, cost) in paths {
+            let nres = track(grid, costs, tracker.clone(), start, dir, cost, final_cost);
+            res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
         }
     }
 
-    for (dir, start, cost) in paths {
-        let nres = track(grid, costs, tracker.clone(), start, dir, cost, final_cost);
-        res.iter_mut().zip(nres.iter()).for_each(|(r, t)| *r |= *t);
-    }
     res
 }
 
