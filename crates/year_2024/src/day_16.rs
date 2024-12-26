@@ -71,41 +71,51 @@ fn track(
     grid: &Grid<char>,
     costs: &Grid<usize>,
     mut tracker: Grid<bool>,
-    start: (i64, i64),
-    dir: Direction,
-    cost: Int,
+    mut start: (i64, i64),
+    mut dir: Direction,
+    mut cost: Int,
     final_cost: Int,
 ) -> Grid<bool> {
     let mut res = Grid::new(grid.rows(), grid.cols());
-    *tracker.get_mut(start.0, start.1).unwrap() = true;
+    let mut paths: Vec<_>;
 
-    let paths: Vec<_> = [
-        (dir, cost + 1),
-        (dir.counter_clockwise(), cost + 1000 + 1),
-        (dir.clockwise(), cost + 1000 + 1),
-    ]
-    .iter()
-    .filter_map(|(dir, cost)| {
-        if *cost > final_cost {
-            return None;
-        }
-        let new_pos = start + *dir;
-        let char = *grid.get(new_pos.0, new_pos.1)?;
-        if char == 'E' {
-            res.iter_mut()
-                .zip(tracker.iter())
-                .for_each(|(r, t)| *r |= *t);
-        }
+    loop {
+        *tracker.get_mut(start.0, start.1).unwrap() = true;
 
-        // Careful here! We might enter a cell at a 90 degree angle from a
-        // cheaper path and end in a tie, so we need to allow for that.
-        let current_cost = *costs.get(new_pos.0, new_pos.1)?;
-        if char == '.' && (current_cost == *cost || current_cost + 1000 == *cost) {
-            return Some((*dir, new_pos, *cost));
+        paths = [
+            (dir, cost + 1),
+            (dir.counter_clockwise(), cost + 1000 + 1),
+            (dir.clockwise(), cost + 1000 + 1),
+        ]
+        .iter()
+        .filter_map(|(dir, cost)| {
+            if *cost > final_cost {
+                return None;
+            }
+            let new_pos = start + *dir;
+            let char = *grid.get(new_pos.0, new_pos.1)?;
+            if char == 'E' {
+                res.iter_mut()
+                    .zip(tracker.iter())
+                    .for_each(|(r, t)| *r |= *t);
+            }
+
+            // Careful here! We might enter a cell at a 90 degree angle from a
+            // cheaper path and end in a tie, so we need to allow for that.
+            let current_cost = *costs.get(new_pos.0, new_pos.1)?;
+            if char == '.' && (current_cost == *cost || current_cost + 1000 == *cost) {
+                return Some((*dir, new_pos, *cost));
+            }
+            None
+        })
+        .collect();
+
+        if paths.len() == 1 {
+            (dir, start, cost) = paths.pop().unwrap();
+        } else {
+            break;
         }
-        None
-    })
-    .collect();
+    }
 
     for (dir, start, cost) in paths {
         let nres = track(grid, costs, tracker.clone(), start, dir, cost, final_cost);
