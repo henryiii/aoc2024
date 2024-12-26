@@ -23,30 +23,39 @@ type Int = usize;
 fn walk(
     grid: &Grid<char>,
     costs: &mut Grid<usize>,
-    start: (i64, i64),
-    dir: Direction,
-    cost: Int,
+    mut start: (i64, i64),
+    mut dir: Direction,
+    mut cost: Int,
 ) -> Vec<Int> {
     let mut res = vec![];
-    *costs.get_mut(start.0, start.1).unwrap() = cost;
-    let paths: Vec<_> = [
-        (dir, cost + 1),
-        (dir.counter_clockwise(), cost + 1000 + 1),
-        (dir.clockwise(), cost + 1000 + 1),
-    ]
-    .iter()
-    .filter_map(|(dir, cost)| {
-        let new_pos = start + *dir;
-        let char = *grid.get(new_pos.0, new_pos.1)?;
-        if char == 'E' {
-            res.push(*cost);
+    let mut paths: Vec<_>;
+    loop {
+        *costs.get_mut(start.0, start.1).unwrap() = cost;
+        paths = [
+            (dir, cost + 1),
+            (dir.counter_clockwise(), cost + 1000 + 1),
+            (dir.clockwise(), cost + 1000 + 1),
+        ]
+        .iter()
+        .filter_map(|(dir, cost)| {
+            let new_pos = start + *dir;
+            let char = *grid.get(new_pos.0, new_pos.1)?;
+            if char == 'E' {
+                res.push(*cost);
+            }
+            if char == '.' && *costs.get(new_pos.0, new_pos.1)? > *cost {
+                return Some((*dir, new_pos, *cost));
+            }
+            None
+        })
+        .collect();
+
+        if paths.len() == 1 {
+            (dir, start, cost) = paths[0];
+        } else {
+            break;
         }
-        if char == '.' && *costs.get(new_pos.0, new_pos.1)? > *cost {
-            return Some((*dir, new_pos, *cost));
-        }
-        None
-    })
-    .collect();
+    }
     for (dir, path, cost) in paths {
         res.extend(walk(grid, costs, path, dir, cost));
     }
