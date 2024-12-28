@@ -5,15 +5,17 @@
 <https://adventofcode.com/2024/day/9>
 
 Warning: Example does not have side by side movement for part 2.
+
+I reworked this to be much faster by holding vectors of `(id, size)` pairs. `VecDeque` is not faster,
+due to the fact that removing from the front isn't that common, and the vectors are small.
 */
 
 use derive_new::new;
 use itertools::Itertools;
 
-#[derive(Debug, Clone, Copy, new)]
+#[derive(Debug, Clone, new)]
 struct Block {
-    pub id: usize,
-    pub size: usize,
+    pub id_size: Vec<(usize, usize)>,
     pub empty: usize,
 }
 
@@ -30,16 +32,17 @@ fn mk_data(numbers: &[usize]) -> Vec<Block> {
         .chain(std::iter::once(&0))
         .tuples()
         .enumerate()
-        .map(|(i, (a, b))| Block::new(i, *a, *b))
+        .map(|(i, (a, b))| Block::new(vec![(i, *a)], *b))
         .collect()
 }
 
 fn expand_filesystem(data: &[Block]) -> Vec<Option<usize>> {
     data.iter()
         .flat_map(|block| {
-            [Some(block.id)]
-                .repeat(block.size)
-                .into_iter()
+            block
+                .id_size
+                .iter()
+                .flat_map(|&(id, size)| [Some(id)].repeat(size).into_iter())
                 .chain([None].repeat(block.empty))
         })
         .collect()
@@ -67,27 +70,21 @@ fn solution_a(input: &str) -> usize {
 
 fn solution_b(input: &str) -> usize {
     let numbers = read(input);
-    let data = mk_data(&numbers);
-    let mut compact = data.clone();
-    for block in data.iter().rev() {
-        let (orig_pos, &orig) = compact.iter().find_position(|x| x.id == block.id).unwrap();
-        if let Some((target_pos, &target)) = compact.iter().find_position(|x| x.empty >= block.size)
-        {
-            if target_pos < orig_pos {
-                compact[orig_pos - 1].empty += orig.size + orig.empty;
-                compact[target_pos].empty = 0;
-                compact.remove(orig_pos);
-                compact.insert(
-                    target_pos + 1,
-                    Block::new(orig.id, orig.size, target.empty - orig.size),
-                );
-                if target_pos + 1 == orig_pos {
-                    compact[orig_pos].empty += orig.size + orig.empty;
-                }
+    let mut data = mk_data(&numbers);
+    for i in (0..data.len()).rev() {
+        let item = data[i].id_size[0];
+        if let Some((pos, _)) = data[0..i].iter().find_position(|x| x.empty >= item.1) {
+            data[pos].empty -= item.1;
+            data[pos].id_size.push(item);
+            data[i].id_size.remove(0);
+            if data[i].id_size.is_empty() {
+                data[i].empty += item.1;
+            } else {
+                data[i - 1].empty += item.1;
             }
         }
     }
-    let filesystem = expand_filesystem(&compact);
+    let filesystem = expand_filesystem(&data);
     checksum(filesystem.into_iter())
 }
 
