@@ -1,12 +1,13 @@
 name: Docs
 
 on:
+  pull_request:
   push:
     branches:
       - main
 
 concurrency:
-  group: "pages"
+  group: "pages-${{github.ref}}"
   cancel-in-progress: true
 
 env:
@@ -15,29 +16,51 @@ env:
 jobs:
   docs:
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Install wasm-pack
+        run: npm install -g wasm-pack
+      - name: Build docs
+        run: cargo doc --no-deps --workspace
+      - run: echo "<meta http-equiv=\"refresh\" content=\"0; url=aoc2024\">" > target/doc/index.html
+      - name: Remove file with bad permissions
+        run: rm target/doc/.lock
+      - name: Build WASM
+        run: wasm-pack build crates/wasm_2024 --target no-modules
+      - name: Copy WASM to output
+        run: |
+          cp crates/wasm_2024/index.html target/doc
+          cp -R crates/wasm_2024/pkg target/doc
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: target/doc
+
+  deploy:
+    runs-on: ubuntu-latest
     permissions:
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    needs: docs
+    if: github.ref == 'refs/heads/main'
 
     steps:
-      - uses: Swatinem/rust-cache@v2
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - uses: actions/checkout@v4
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-      - name: Build docs
-        run: cargo doc --no-deps --workspace
-      - run: echo "<meta http-equiv=\"refresh\" content=\"0; url=aoc2024\">" > target/doc/index.html
-      - name: Remove file with bad permissions
-        run: rm target/doc/.lock
+      - uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: _site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./target/doc
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+

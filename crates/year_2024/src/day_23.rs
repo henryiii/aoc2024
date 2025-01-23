@@ -49,7 +49,7 @@ fn intercon<'a>(graph: &UnGraphMap<&'a str, ()>) -> HashSet<Vec<&'a str>> {
         .collect()
 }
 
-fn solution_a(input: &str) -> Int {
+pub fn solution_a(input: &str) -> Int {
     let pairs = read_input(input);
     let graph: UnGraphMap<&str, ()> =
         GraphMap::from_edges(pairs.iter().map(|(a, b)| (&a[..], &b[..])));
@@ -59,7 +59,7 @@ fn solution_a(input: &str) -> Int {
         .count()
 }
 
-fn solution_b(input: &str) -> String {
+pub fn solution_b(input: &str) -> String {
     let pairs = read_input(input);
     let graph: UnGraphMap<&str, ()> =
         GraphMap::from_edges(pairs.iter().map(|(a, b)| (&a[..], &b[..])));

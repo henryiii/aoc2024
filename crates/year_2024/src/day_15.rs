@@ -95,7 +95,7 @@ fn push_vertical(
     Some(ret)
 }
 
-fn solution_a(input: &str, vis: bool) -> Int {
+fn solution_a_vis(input: &str, vis: bool) -> Int {
     let (mut grid, dirs) = read_input(input);
     let (mut pos, _) = grid.indexed_iter().find(|(_, &c)| c == '@').unwrap();
     vis.then(|| visualize(&grid, |c| *c));
@@ -111,7 +111,7 @@ fn solution_a(input: &str, vis: bool) -> Int {
         .sum()
 }
 
-fn solution_b(input: &str, vis: bool) -> Int {
+fn solution_b_vis(input: &str, vis: bool) -> Int {
     let (grid, dirs) = read_input(input);
     let mut grid = Grid::from_vec(
         grid.iter()
@@ -149,11 +149,19 @@ fn solution_b(input: &str, vis: bool) -> Int {
         .sum()
 }
 
+pub fn solution_a(input: &str) -> Int {
+    solution_a_vis(input, false)
+}
+
+pub fn solution_b(input: &str) -> Int {
+    solution_b_vis(input, false)
+}
+
 pub fn main(vis: bool) {
     aoc::run(
         "15",
-        |input| solution_a(input, vis),
-        |input| solution_b(input, vis),
+        |input| solution_a_vis(input, vis),
+        |input| solution_b_vis(input, vis),
     );
 }
 
@@ -164,11 +172,11 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(super::solution_a(INPUT, true), 10092);
+        assert_eq!(super::solution_a_vis(INPUT, true), 10092);
     }
 
     #[test]
     fn test_sample_b() {
-        assert_eq!(super::solution_b(INPUT, true), 9021);
+        assert_eq!(super::solution_b_vis(INPUT, true), 9021);
     }
 }

@@ -124,7 +124,7 @@ fn track(
     res
 }
 
-fn solution_a(input: &str) -> Int {
+pub fn solution_a(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
     let end = grid.indexed_iter().find(|&(_, c)| *c == 'E').unwrap().0;
@@ -138,7 +138,7 @@ fn solution_a(input: &str) -> Int {
     costs[&(end.0, end.1, false)]
 }
 
-fn solution_b(input: &str) -> Int {
+pub fn solution_b(input: &str) -> Int {
     let grid = read_char(input);
     let start = grid.indexed_iter().find(|&(_, c)| *c == 'S').unwrap().0;
     let end = grid.indexed_iter().find(|&(_, c)| *c == 'E').unwrap().0;

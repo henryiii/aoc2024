@@ -2,6 +2,7 @@
 name = "year_2024"
 edition.workspace = true
 version.workspace = true
+publish = false
 
 [dependencies]
 aoc-parse.workspace = true

@@ -87,13 +87,13 @@ fn compute_inputs(
         .fold(0, |acc, x| acc * 2 + usize::from(x))
 }
 
-fn solution_a(input: &str) -> Int {
+pub fn solution_a(input: &str) -> Int {
     let (inputs, connections) = read_input(input);
     let cons = setup(&connections);
     compute_inputs(&cons, &inputs)
 }
 
-fn solution_b(input: &str) -> String {
+pub fn solution_b(input: &str) -> String {
     let (lines, connections) = read_input(input);
     let cons = setup(&connections);
     let max_input = lines

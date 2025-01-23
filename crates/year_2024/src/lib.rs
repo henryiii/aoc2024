@@ -1,3 +1,9 @@
+// All the parts ask for "must_use"
+#![allow(clippy::must_use_candidate)]
+// No need to document errors
+#![allow(clippy::missing_errors_doc)]
+#![allow(clippy::missing_panics_doc)]
+
 // I used seq macro here first, but cargo fmt doesn't expand it and therefore
 // misses the modules.
 

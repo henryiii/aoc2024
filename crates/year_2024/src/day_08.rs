@@ -48,12 +48,12 @@ fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
     antinodes.iter().filter(|&v| *v).count()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let map = read_char(input);
     solution(&map, 1..2)
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let map = read_char(input);
     solution(&map, 0..(map.cols().max(map.rows())))
 }

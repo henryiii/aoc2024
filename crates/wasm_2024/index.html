@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WASM 2024 Interface</title>
+</head>
+<body>
+    <h1>WASM 2024 Interface</h1>
+    <textarea id="inputText" placeholder="Paste your string here..." rows="4" cols="50"></textarea>
+    <br><br>
+    <label for="functionSelect">Select Function:</label>
+    <select id="functionSelect">
+        <option value="01">Day 01</option>
+        <option value="02">Day 02</option>
+        <option value="03">Day 03</option>
+        <option value="04">Day 04</option>
+        <option value="05">Day 05</option>
+        <option value="06">Day 06</option>
+        <option value="07">Day 07</option>
+        <option value="08">Day 08</option>
+        <option value="09">Day 09</option>
+        <option value="10">Day 10</option>
+        <option value="11">Day 11</option>
+        <option value="12">Day 12</option>
+        <option value="13">Day 13</option>
+        <option value="14">Day 14</option>
+        <option value="15">Day 15</option>
+        <option value="16">Day 16</option>
+        <option value="17">Day 17</option>
+        <option value="18">Day 18</option>
+        <option value="19">Day 19</option>
+        <option value="20">Day 20</option>
+        <option value="21">Day 21</option>
+        <option value="22">Day 22</option>
+        <option value="23">Day 23</option>
+        <option value="24">Day 24</option>
+        <option value="25">Day 25</option>
+    </select>
+    <br><br>
+    <button id="processButton">Process</button>
+    <h2>Results</h2>
+    <div>
+        <p><strong>Result from _a:</strong></p>
+        <pre id="resultA">(Waiting for input...)</pre>
+    </div>
+    <div>
+        <p><strong>Result from _b:</strong></p>
+        <pre id="resultB">(Waiting for input...)</pre>
+    </div>
+
+    <script src="pkg/wasm_2024.js"></script>
+    <script>
+        const wasmFunctions = wasm_bindgen;
+
+        document.getElementById('processButton').addEventListener('click', async () => {
+            await wasm_bindgen();
+            const inputText = document.getElementById('inputText').value;
+            const selectedFunctionBase = document.getElementById('functionSelect').value;
+
+            try {
+                const resultA = wasmFunctions[`day_a_${selectedFunctionBase}`](inputText);
+                const resultB = wasmFunctions[`day_b_${selectedFunctionBase}`](inputText);
+
+                document.getElementById('resultA').textContent = resultA;
+                document.getElementById('resultB').textContent = resultB;
+            } catch (error) {
+                document.getElementById('resultA').textContent = 'Error: ' + error.message;
+                document.getElementById('resultB').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

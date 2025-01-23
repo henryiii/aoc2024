@@ -57,14 +57,14 @@ fn read_input(input: &str) -> Vec<Machine> {
     .unwrap()
 }
 
-fn solution_a(input: &str) -> i64 {
+pub fn solution_a(input: &str) -> i64 {
     read_input(input)
         .iter()
         .filter_map(|m| m.chk_all(0..=100).map(|(a, b)| a * 3 + b))
         .sum()
 }
 
-fn solution_b(input: &str) -> i64 {
+pub fn solution_b(input: &str) -> i64 {
     let add = 10_000_000_000_000;
     read_input(input)
         .iter()
