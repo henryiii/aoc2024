@@ -4,6 +4,10 @@
 #![allow(clippy::missing_errors_doc)]
 #![allow(clippy::missing_panics_doc)]
 
+/*!
+You can see this in WASM [here](./wasm).
+*/
+
 // I used seq macro here first, but cargo fmt doesn't expand it and therefore
 // misses the modules.
 
