@@ -32,7 +32,7 @@ jobs:
         run: wasm-pack build crates/wasm_2024 --target no-modules
       - name: Copy WASM to output
         run: |
-          cp crates/wasm_2024/index.html target/doc
+          cp crates/wasm_2024/index.html target/doc/wasm.html
           cp -R crates/wasm_2024/pkg target/doc
       - uses: actions/upload-artifact@v4
         with:
