@@ -145,8 +145,7 @@ fn solution_b(input: &str) -> Int {
     let graph = make_graph(&grid);
     let node_costs = dijkstra(&graph, (start.0, start.1, false), None, |(_, _, c)| *c);
 
-    let mut costs = Grid::new(grid.rows(), grid.cols());
-    costs.fill(usize::MAX);
+    let mut costs = grid.map_ref(|_| usize::MAX);
     for ((row, col, _), cost) in node_costs {
         costs[(row, col)] = cost.min(costs[(row, col)]);
     }
