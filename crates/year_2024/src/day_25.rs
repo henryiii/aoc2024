@@ -37,7 +37,7 @@ fn convert_input(input: &Grid<char>) -> LockKey {
     }
 }
 
-fn solution_a(input: &str) -> Int {
+pub fn solution_a(input: &str) -> Int {
     let input = read_input(input);
     let locks_and_keys: Vec<_> = input.iter().map(convert_input).collect();
     let locks: Vec<_> = locks_and_keys
@@ -70,7 +70,7 @@ fn solution_a(input: &str) -> Int {
         .sum()
 }
 
-const fn solution_b(_: &str) -> Int {
+pub const fn solution_b(_: &str) -> Int {
     0
 }
 

@@ -33,6 +33,7 @@ thiserror = "2.0.8"
 
 getdata = { path = "crates/getdata" }
 aoc = { path = "crates/aoc", default-features = false }
+year_2024 = { path = "crates/year_2024", default-features = false }
 
 
 [profile.release]

@@ -160,12 +160,16 @@ fn solution(input: &str, robots: usize) -> usize {
         .sum()
 }
 
+pub fn solution_a(input: &str) -> usize {
+    solution(input, 2)
+}
+
+pub fn solution_b(input: &str) -> usize {
+    solution(input, 25)
+}
+
 pub fn main(_: bool) {
-    aoc::run(
-        "21",
-        |input| solution(input, 2),
-        |input| solution(input, 25),
-    );
+    aoc::run("21", solution_a, solution_b);
 }
 
 #[cfg(test)]

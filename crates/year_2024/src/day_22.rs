@@ -48,14 +48,14 @@ fn expand(vals: &[u64]) -> Vec<Vec<u8>> {
         .collect()
 }
 
-fn solution_a(input: &str) -> u64 {
+pub fn solution_a(input: &str) -> u64 {
     let nums = read_input(input);
     nums.into_iter()
         .map(|v| (0..2000).fold(v, |acc, _| evolve(acc)))
         .sum()
 }
 
-fn solution_b(input: &str) -> u16 {
+pub fn solution_b(input: &str) -> u16 {
     let nums = read_input(input);
     let vals = expand(&nums);
     let mut totals = vec![0u16; 19usize.pow(4)];

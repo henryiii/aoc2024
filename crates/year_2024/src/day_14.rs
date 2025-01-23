@@ -51,7 +51,7 @@ fn vis_grid(grid: &Grid<usize>) {
     }
 }
 
-fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
+fn solution_a_full<const X: Int, const Y: Int>(input: &str) -> usize {
     let robots = read_input(input);
     let size = (X, Y);
     let new_robots = robots
@@ -72,7 +72,7 @@ fn solution_a<const X: Int, const Y: Int>(input: &str) -> usize {
     counts.values().product()
 }
 
-fn solution_b(input: &str, vis: bool) -> usize {
+fn solution_b_full(input: &str, vis: bool) -> usize {
     let mut robots = read_input(input);
     let size = (101, 103);
     let mut grid = Grid::new(103, 101);
@@ -95,8 +95,18 @@ fn solution_b(input: &str, vis: bool) -> usize {
     0
 }
 
+pub fn solution_a(input: &str) -> usize {
+    solution_a_full::<101, 103>(input)
+}
+
+pub fn solution_b(input: &str) -> usize {
+    solution_b_full(input, false)
+}
+
 pub fn main(vis: bool) {
-    aoc::run("14", solution_a::<101, 103>, |input| solution_b(input, vis));
+    aoc::run("14", solution_a_full::<101, 103>, |input| {
+        solution_b_full(input, vis)
+    });
 }
 
 #[cfg(test)]
@@ -105,6 +115,6 @@ mod tests {
 
     #[test]
     fn test_sample_a() {
-        assert_eq!(super::solution_a::<11, 7>(INPUT), 12);
+        assert_eq!(super::solution_a_full::<11, 7>(INPUT), 12);
     }
 }

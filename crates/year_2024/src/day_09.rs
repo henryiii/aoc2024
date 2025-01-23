@@ -55,7 +55,7 @@ fn checksum(filesystem_iter: impl Iterator<Item = Option<usize>>) -> usize {
         .sum()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let numbers = read(input);
     let data = mk_data(&numbers);
     let filesystem = expand_filesystem(&data);
@@ -68,7 +68,7 @@ fn solution_a(input: &str) -> usize {
     checksum(compact)
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let numbers = read(input);
     let mut data = mk_data(&numbers);
     for i in (0..data.len()).rev() {

@@ -233,3 +233,8 @@ Solution A: 3287    (4.662ms)
 Solution B: 0    (0.000ms)
 Time taken: 4.702ms
 ```
+
+
+## Wasm experiments
+
+I'm trying Wasm. I installed `wasm-pack`. I also installed the `wasm32-unknown-unknown` target with `rustup target add wasm32-unknown-unknown`. I then ran `wasm-pack build crates/wasm_2024 --target no-modules`.

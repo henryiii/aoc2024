@@ -60,6 +60,14 @@ fn solution(input: &str, cheat: usize, limit: usize) -> Int {
     find_costs(&path, cheat, limit)
 }
 
+pub fn solution_a(input: &str) -> Int {
+    solution(input, 2, 100)
+}
+
+pub fn solution_b(input: &str) -> Int {
+    solution(input, 20, 100)
+}
+
 pub fn main(_: bool) {
     aoc::run(
         "20",

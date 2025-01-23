@@ -63,12 +63,12 @@ fn compute(vals: &[(u64, Vec<u64>)], ops: &[Ops]) -> u64 {
         .sum()
 }
 
-fn solution_a(input: &str) -> u64 {
+pub fn solution_a(input: &str) -> u64 {
     let vals = read_data(input);
     compute(&vals, &[Ops::Add, Ops::Mul])
 }
 
-fn solution_b(input: &str) -> u64 {
+pub fn solution_b(input: &str) -> u64 {
     let vals = read_data(input);
     compute(&vals, &[Ops::Add, Ops::Mul, Ops::Cat])
 }

@@ -40,7 +40,7 @@ fn find_path(map: &Grid<u32>, start_pos: (i64, i64)) -> Vec<(i64, i64)> {
         .collect()
 }
 
-fn solution_a(input: &str) -> usize {
+pub fn solution_a(input: &str) -> usize {
     let map = read_int(input);
     let starts = find_starts(&map);
     starts
@@ -49,7 +49,7 @@ fn solution_a(input: &str) -> usize {
         .sum()
 }
 
-fn solution_b(input: &str) -> usize {
+pub fn solution_b(input: &str) -> usize {
     let map = read_int(input);
     let starts = find_starts(&map);
     starts
