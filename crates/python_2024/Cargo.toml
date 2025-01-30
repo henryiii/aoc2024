@@ -1,0 +1,17 @@
+[package]
+name = "python_2024"
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+publish = false
+
+[dependencies]
+pyo3 = { version = "0.23.1", features = ["abi3-py39"]}
+year_2024.workspace = true
+
+[lints]
+workspace = true
+
+[lib]
+name = "aoc2024"
+crate-type = ["cdylib"]
