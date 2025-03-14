@@ -12,11 +12,11 @@ use std::collections::HashSet;
 use grid::Grid;
 use strum::IntoEnumIterator;
 
-use aoc::grid::{read_int, Direction};
+use aoc::grid::{Direction, read_int};
 
 fn find_starts(map: &Grid<u32>) -> Vec<(i64, i64)> {
     map.indexed_iter()
-        .filter(|(_, &i)| i == 0)
+        .filter(|&(_, &i)| i == 0)
         .map(|((x, y), _)| (x.try_into().unwrap(), y.try_into().unwrap()))
         .collect()
 }

@@ -24,7 +24,7 @@ fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
         // Every node of a char
         let locs: Vec<(i64, i64)> = map
             .indexed_iter()
-            .filter(|(_, &ch)| ch == c)
+            .filter(|&(_, &ch)| ch == c)
             .map(|((x, y), _)| (x.try_into().unwrap(), y.try_into().unwrap()))
             .collect();
 

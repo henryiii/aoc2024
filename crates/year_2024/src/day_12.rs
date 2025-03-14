@@ -16,7 +16,7 @@ use std::collections::HashSet;
 use grid::Grid;
 use strum::IntoEnumIterator;
 
-use aoc::grid::{read_char, Direction};
+use aoc::grid::{Direction, read_char};
 
 fn find_region(seen: &mut Grid<bool>, map: &Grid<char>, start: (i64, i64)) -> Vec<(i64, i64)> {
     *seen.get_mut(start.0, start.1).unwrap() = true;

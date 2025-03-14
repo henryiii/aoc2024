@@ -17,7 +17,7 @@ This looks great, by the way, though it's not really accurate to the way I solve
 use std::iter;
 
 use counter::Counter;
-use grid::{grid, Grid};
+use grid::{Grid, grid};
 use itertools::Itertools;
 
 enum Paths {
@@ -60,7 +60,7 @@ impl KeyPad {
     }
 
     fn indexed_iter(&self) -> impl Iterator<Item = ((usize, usize), &char)> {
-        self.pad.indexed_iter().filter(|(_, &c)| c != 'x')
+        self.pad.indexed_iter().filter(|&(_, &c)| c != 'x')
     }
 
     fn iter(&self) -> impl Iterator<Item = &char> {
@@ -68,7 +68,7 @@ impl KeyPad {
     }
 
     fn pos(&self, current: char) -> (usize, usize) {
-        self.indexed_iter().find(|(_, &c)| c == current).unwrap().0
+        self.indexed_iter().find(|&(_, &c)| c == current).unwrap().0
     }
 
     fn paths(&self, current: char, target: char) -> Paths {

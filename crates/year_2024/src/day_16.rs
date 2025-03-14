@@ -14,7 +14,7 @@ it's fast enough as is, based on the original solution.
 
 #[cfg(test)]
 use aoc::grid::dual_visualize;
-use aoc::grid::{read_char, Direction};
+use aoc::grid::{Direction, read_char};
 
 use grid::Grid;
 use itertools::Itertools;
@@ -42,7 +42,7 @@ fn make_graph(grid: &Grid<char>) -> UnGraphMap<(usize, usize, bool), usize> {
     });
     let cons = grid
         .indexed_iter()
-        .filter(|(pos, &c)| {
+        .filter(|&(ref pos, &c)| {
             c != '#'
                 && (!(grid[(pos.0 + 1, pos.1)] != '#'
                     && grid[(pos.0 - 1, pos.1)] != '#'

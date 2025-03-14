@@ -15,7 +15,7 @@ Direction by removing Position, which now only helps very slightly, due to
 
 use grid::Grid;
 
-use aoc::grid::{read_char, Direction};
+use aoc::grid::{Direction, read_char};
 use aoc::par::prelude::*;
 
 enum Result {
@@ -71,7 +71,7 @@ pub fn solution_b(input: &str) -> usize {
     if let Result::Exited(solved_map) = solve(&orig_map) {
         solved_map
             .indexed_iter()
-            .filter(|(v, &c)| c > 0 && starting_pos != *v)
+            .filter(|&(ref v, &c)| c > 0 && starting_pos != *v)
             .collect::<Vec<_>>()
             .par_iter()
             .filter(|((x, y), _)| {
