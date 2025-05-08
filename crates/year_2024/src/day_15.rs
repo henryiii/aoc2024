@@ -10,7 +10,7 @@ require searching through the (moving) blocks, which would might be a bit slow,
 but finding and moving the blocks would be easier, I think.
 */
 
-use aoc::grid::{visualize, Direction};
+use aoc::grid::{Direction, visualize};
 
 use grid::Grid;
 use itertools::Itertools;
@@ -97,7 +97,7 @@ fn push_vertical(
 
 fn solution_a_vis(input: &str, vis: bool) -> Int {
     let (mut grid, dirs) = read_input(input);
-    let (mut pos, _) = grid.indexed_iter().find(|(_, &c)| c == '@').unwrap();
+    let (mut pos, _) = grid.indexed_iter().find(|&(_, &c)| c == '@').unwrap();
     vis.then(|| visualize(&grid, |c| *c));
     for dir in dirs {
         if let Some(new_pos) = push_simple(&mut grid, pos, dir) {
@@ -106,7 +106,7 @@ fn solution_a_vis(input: &str, vis: bool) -> Int {
     }
     vis.then(|| visualize(&grid, |c| *c));
     grid.indexed_iter()
-        .filter(|(_, &c)| c == 'O')
+        .filter(|&(_, &c)| c == 'O')
         .map(|((r, c), _)| r * 100 + c)
         .sum()
 }
@@ -125,7 +125,7 @@ fn solution_b_vis(input: &str, vis: bool) -> Int {
             .collect(),
         grid.cols() * 2,
     );
-    let (mut pos, _) = grid.indexed_iter().find(|(_, &c)| c == '@').unwrap();
+    let (mut pos, _) = grid.indexed_iter().find(|&(_, &c)| c == '@').unwrap();
 
     for dir in dirs {
         let new_pos = match dir {
@@ -144,7 +144,7 @@ fn solution_b_vis(input: &str, vis: bool) -> Int {
     vis.then(|| visualize(&grid, |x| *x));
 
     grid.indexed_iter()
-        .filter(|(_, &c)| c == '[')
+        .filter(|&(_, &c)| c == '[')
         .map(|((r, c), _)| r * 100 + c)
         .sum()
 }

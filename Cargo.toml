@@ -4,9 +4,9 @@ resolver = "2"
 default-members = ["crates/aoc", "crates/year_2024"]
 
 [workspace.package]
-edition = "2021"
+edition = "2024"
 version = "0.1.0"
-rust-version = "1.82"
+rust-version = "1.85"
 
 [workspace.lints.clippy]
 all = "warn"

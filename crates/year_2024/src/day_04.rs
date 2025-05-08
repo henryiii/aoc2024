@@ -9,7 +9,7 @@ This does a few variations on wordsearch.
 
 use grid::Grid;
 
-use aoc::grid::{read_char, DIRECTIONS, XDIRECTIONS};
+use aoc::grid::{DIRECTIONS, XDIRECTIONS, read_char};
 
 const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
 const MAS: [char; 3] = ['M', 'A', 'S'];
