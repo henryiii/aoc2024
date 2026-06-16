@@ -35,7 +35,7 @@ fn intercon<'a>(graph: &UnGraphMap<&'a str, ()>) -> HashSet<Vec<&'a str>> {
         .nodes()
         .flat_map(|node| {
             let neighbors = graph.neighbors(node);
-            neighbors.permutations(2).filter_map(move |v| {
+            neighbors.combinations(2).filter_map(move |v| {
                 let (a, b) = v.into_iter().collect_tuple().unwrap();
                 if graph.contains_edge(a, b) {
                     let mut res = vec![node, a, b];
