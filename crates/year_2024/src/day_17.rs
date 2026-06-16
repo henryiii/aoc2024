@@ -49,28 +49,34 @@ fn read_input(input: &str) -> ((u64, u64, u64), Vec<OpCode>) {
     .unwrap()
 }
 
+// The combo operand is only decoded for the instructions that use it. Decoding
+// it eagerly would panic on the reserved value 7, which is a legal *literal*
+// operand for `bxl`/`jnz`/`bxc` (e.g. the common `bxl 7`).
+fn combo_operand(literal_operand: u64, reg: &Registers) -> u64 {
+    match literal_operand {
+        0..4 => literal_operand,
+        4 => reg.a,
+        5 => reg.b,
+        6 => reg.c,
+        _ => unreachable!(),
+    }
+}
+
 fn computer(mut reg: Registers, instructions: &[OpCode]) -> Vec<u8> {
     let mut out = Vec::new();
     let mut instr_ptr = 0;
     while instr_ptr + 1 < instructions.len() {
         let opcode = instructions[instr_ptr];
         let literal_operand = instructions[instr_ptr + 1] as u64;
-        let combo_operand = match literal_operand {
-            0..4 => literal_operand,
-            4 => reg.a,
-            5 => reg.b,
-            6 => reg.c,
-            _ => unreachable!(),
-        };
         match opcode {
             OpCode::Adv => {
-                reg.a /= 2u64.pow(combo_operand.try_into().unwrap());
+                reg.a /= 2u64.pow(combo_operand(literal_operand, &reg).try_into().unwrap());
             }
             OpCode::Bxl => {
                 reg.b = reg.b.bitxor(literal_operand);
             }
             OpCode::Bst => {
-                reg.b = combo_operand & 7;
+                reg.b = combo_operand(literal_operand, &reg) & 7;
             }
             OpCode::Jnz => {
                 if reg.a != 0 {
@@ -82,13 +88,17 @@ fn computer(mut reg: Registers, instructions: &[OpCode]) -> Vec<u8> {
                 reg.b = reg.c.bitxor(reg.b);
             }
             OpCode::Out => {
-                out.push((combo_operand & 7).try_into().unwrap());
+                out.push(
+                    (combo_operand(literal_operand, &reg) & 7)
+                        .try_into()
+                        .unwrap(),
+                );
             }
             OpCode::Bdv => {
-                reg.b = reg.a / 2u64.pow(combo_operand.try_into().unwrap());
+                reg.b = reg.a / 2u64.pow(combo_operand(literal_operand, &reg).try_into().unwrap());
             }
             OpCode::Cdv => {
-                reg.c = reg.a / 2u64.pow(combo_operand.try_into().unwrap());
+                reg.c = reg.a / 2u64.pow(combo_operand(literal_operand, &reg).try_into().unwrap());
             }
         }
         instr_ptr += 2;

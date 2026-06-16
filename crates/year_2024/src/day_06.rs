@@ -23,13 +23,17 @@ enum Result {
     Cyclic,
 }
 
-fn next_step(map: &Grid<char>, pos: (i64, i64), dir: Direction) -> Direction {
-    let next = pos + dir;
-    if map.get(next.0, next.1) == Some(&'#') {
-        next_step(map, pos, dir.clockwise())
-    } else {
-        dir
+fn next_step(map: &Grid<char>, pos: (i64, i64), mut dir: Direction) -> Direction {
+    // Turn clockwise until the way ahead is clear. Bail after a full rotation so
+    // a guard boxed in on all four sides can't recurse/loop forever.
+    for _ in 0..4 {
+        let next = pos + dir;
+        if map.get(next.0, next.1) != Some(&'#') {
+            return dir;
+        }
+        dir = dir.clockwise();
     }
+    dir
 }
 
 fn get_pos<T: TryFrom<usize>>(map: &Grid<char>) -> (T, T) {
