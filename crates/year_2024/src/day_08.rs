@@ -29,8 +29,7 @@ fn solution(map: &Grid<char>, range: Range<usize>) -> usize {
             .collect();
 
         // Every pair of nodes
-        locs.iter().combinations(2).for_each(|v| {
-            let (&a, &b) = v.iter().collect_tuple().unwrap();
+        locs.iter().array_combinations().for_each(|[&a, &b]| {
             let dir = (b.0 - a.0, b.1 - a.1);
             for n in range.clone() {
                 let n: i64 = n.try_into().unwrap();

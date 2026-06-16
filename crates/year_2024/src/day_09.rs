@@ -42,8 +42,8 @@ fn expand_filesystem(data: &[Block]) -> Vec<Option<usize>> {
             block
                 .id_size
                 .iter()
-                .flat_map(|&(id, size)| [Some(id)].repeat(size).into_iter())
-                .chain([None].repeat(block.empty))
+                .flat_map(|&(id, size)| std::iter::repeat_n(Some(id), size))
+                .chain(std::iter::repeat_n(None, block.empty))
         })
         .collect()
 }

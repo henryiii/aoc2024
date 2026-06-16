@@ -76,14 +76,14 @@ impl KeyPad {
         let new_pos = self.pos(target);
 
         let vert_chars = if cur_pos.0 < new_pos.0 {
-            iter::repeat('v').take(new_pos.0 - cur_pos.0)
+            iter::repeat_n('v', new_pos.0 - cur_pos.0)
         } else {
-            iter::repeat('^').take(cur_pos.0 - new_pos.0)
+            iter::repeat_n('^', cur_pos.0 - new_pos.0)
         };
         let horiz_chars = if cur_pos.1 < new_pos.1 {
-            iter::repeat('>').take(new_pos.1 - cur_pos.1)
+            iter::repeat_n('>', new_pos.1 - cur_pos.1)
         } else {
-            iter::repeat('<').take(cur_pos.1 - new_pos.1)
+            iter::repeat_n('<', cur_pos.1 - new_pos.1)
         };
 
         if cur_pos.0 == new_pos.0 {
