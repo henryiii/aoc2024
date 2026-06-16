@@ -1,3 +1,5 @@
+// The README (included as crate docs) is prose; don't lint product names like "MacBook".
+#![allow(clippy::doc_markdown)]
 #![doc = include_str!("../../../README.md")]
 /*!
 ## aoc crate

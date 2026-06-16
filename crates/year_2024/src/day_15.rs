@@ -87,7 +87,7 @@ fn push_vertical(
         _ => {
             panic!("Unexpected characters: {c} {next_c} going {dir:?} {push:?}");
         }
-    };
+    }
     let mut ret: Vec<_> = push.into_iter().unique().sorted_unstable().collect();
     if dir == Direction::Down {
         ret.reverse();

@@ -13,7 +13,7 @@ but then part 2 is 60x faster, as it's just reading the cache. But it's not real
 acturate for how long it really takes, and this has a faster part 1, so doing it this way.
 */
 
-use cached::proc_macro::cached;
+use cached::cached;
 
 type Int = usize;
 

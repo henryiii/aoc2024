@@ -11,6 +11,7 @@ struct Opts {
 }
 
 #[allow(clippy::cognitive_complexity)]
+#[allow(clippy::unnecessary_semicolon)] // false positive from the seq! expansion
 fn main() {
     let opts = Opts::parse();
 
