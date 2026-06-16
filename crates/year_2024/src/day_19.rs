@@ -17,31 +17,31 @@ use cached::cached;
 
 type Int = usize;
 
-fn read_input(input: &str) -> (Vec<Vec<char>>, Vec<Vec<char>>) {
+fn read_input(input: &str) -> (Vec<String>, Vec<String>) {
     use aoc_parse::{parser, prelude::*};
 
     parser!(
-        section(line(repeat_sep(alpha+, ", ")))
-        section(lines(alpha+))
+        section(line(repeat_sep(string(alpha+), ", ")))
+        section(lines(string(alpha+)))
     )
     .parse(input)
     .unwrap()
 }
 
-#[cached(key = "Vec<char>", convert = "{Vec::from(line)}")]
-fn has_match(patterns: &[Vec<char>], line: &[char]) -> bool {
+#[cached(key = "String", convert = "{line.to_owned()}")]
+fn has_match(patterns: &[String], line: &str) -> bool {
     patterns.iter().any(|pattern| {
-        line.strip_prefix(&pattern[..])
+        line.strip_prefix(pattern.as_str())
             .is_some_and(|slice| slice.is_empty() || has_match(patterns, slice))
     })
 }
 
-#[cached(key = "Vec<char>", convert = "{Vec::from(line)}")]
-fn count_match(patterns: &[Vec<char>], line: &[char]) -> Int {
+#[cached(key = "String", convert = "{line.to_owned()}")]
+fn count_match(patterns: &[String], line: &str) -> Int {
     patterns
         .iter()
         .map(|pattern| {
-            line.strip_prefix(&pattern[..]).map_or(0, |slice| {
+            line.strip_prefix(pattern.as_str()).map_or(0, |slice| {
                 if slice.is_empty() {
                     1
                 } else {
