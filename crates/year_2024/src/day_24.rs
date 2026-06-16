@@ -46,19 +46,21 @@ fn read_input(input: &str) -> (Vec<(String, bool)>, Vec<(String, String, String,
 fn lookup_value(
     key: &str,
     cons: &HashMap<&str, (&str, Instruction, &str)>,
-    inputs: &[(String, bool)],
+    cache: &mut HashMap<String, bool>,
 ) -> bool {
-    if let Some((_, val)) = inputs.iter().find(|(k, _)| k == key) {
-        return *val;
+    if let Some(&val) = cache.get(key) {
+        return val;
     }
     let (a, instr, b) = cons[key];
-    let a = lookup_value(a, cons, inputs);
-    let b = lookup_value(b, cons, inputs);
-    match instr {
+    let a = lookup_value(a, cons, cache);
+    let b = lookup_value(b, cons, cache);
+    let val = match instr {
         Instruction::And => a & b,
         Instruction::Or => a | b,
         Instruction::Xor => a ^ b,
-    }
+    };
+    cache.insert(key.to_owned(), val);
+    val
 }
 
 fn setup(
@@ -79,10 +81,11 @@ fn compute_inputs(
     cons: &HashMap<&str, (&str, Instruction, &str)>,
     inputs: &[(String, bool)],
 ) -> Int {
+    let mut cache: HashMap<String, bool> = inputs.iter().map(|(k, v)| (k.clone(), *v)).collect();
     cons.keys()
         .filter(|k| k.starts_with('z'))
         .sorted()
-        .map(|&x| lookup_value(x, cons, inputs))
+        .map(|&x| lookup_value(x, cons, &mut cache))
         .rev()
         .fold(0, |acc, x| acc * 2 + usize::from(x))
 }
@@ -102,11 +105,12 @@ pub fn solution_b(input: &str) -> String {
         .max()
         .unwrap();
     let max_output = max_input + 1;
+    let last_output = format!("z{max_output}");
     let mut bad_connections = HashSet::new();
     // Checking rules for a ripple carry adder
     // Every output must be connected via an XOR (except the last one, which is the final carry)
     bad_connections.extend(cons.iter().filter(|&(out, (_, op, _))| {
-        out.starts_with('z') && *op != Instruction::Xor && *out != format!("z{max_output}")
+        out.starts_with('z') && *op != Instruction::Xor && *out != last_output
     }));
     // Every XOR must connect to an input or an output
     bad_connections.extend(cons.iter().filter(|&(out, (in1, op, in2))| {
@@ -125,7 +129,7 @@ pub fn solution_b(input: &str) -> String {
             && !matches!(*in2, "x00" | "y00")
     }));
     // Make a collection of all OR inputs
-    let adder_ors: HashSet<_> = cons
+    let or_inputs: HashSet<_> = cons
         .iter()
         .filter(|&(_, (_, op, _))| *op == Instruction::Or)
         .flat_map(|(_, (in1, _, in2))| [in1, in2])
@@ -135,19 +139,13 @@ pub fn solution_b(input: &str) -> String {
         *op == Instruction::And
             && !matches!(*in1, "x00" | "y00")
             && !matches!(*in2, "x00" | "y00")
-            && !adder_ors.contains(out)
+            && !or_inputs.contains(out)
     }));
 
-    // Make a collection of all OR inputs
-    let all_ors: HashSet<_> = cons
-        .iter()
-        .filter(|&(_, (_, op, _))| *op == Instruction::Or)
-        .flat_map(|(_, (in1, _, in2))| [in1, in2])
-        .collect();
-    // ORs can only be feed by ANDs
+    // ORs can only be fed by ANDs
     bad_connections.extend(
         cons.iter()
-            .filter(|&(out, (_, op, _))| *op != Instruction::And && all_ors.contains(out)),
+            .filter(|&(out, (_, op, _))| *op != Instruction::And && or_inputs.contains(out)),
     );
 
     bad_connections

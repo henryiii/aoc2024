@@ -10,9 +10,12 @@ other code a bit, and realizing that a histogram was much more performant at the
 cost of some memory.
 */
 
-// 2284 is too high
-
 use itertools::Itertools;
+
+/// Each price delta lands in `-9..=9`, i.e. 19 buckets; a window of four deltas
+/// indexes a flat histogram of `19^4` entries.
+const BUCKETS: usize = 19;
+const HIST_SIZE: usize = BUCKETS.pow(4);
 
 fn read_input(input: &str) -> Vec<u64> {
     use aoc_parse::{parser, prelude::*};
@@ -58,8 +61,8 @@ pub fn solution_a(input: &str) -> u64 {
 pub fn solution_b(input: &str) -> u16 {
     let nums = read_input(input);
     let vals = expand(&nums);
-    let mut totals = vec![0u16; 19usize.pow(4)];
-    let mut seen = vec![false; 19usize.pow(4)];
+    let mut totals = vec![0u16; HIST_SIZE];
+    let mut seen = vec![false; HIST_SIZE];
 
     for vv in vals {
         seen.fill(false);
@@ -68,7 +71,7 @@ pub fn solution_b(input: &str) -> u16 {
             let b = usize::from(*cc + 9 - *bb);
             let c = usize::from(*dd + 9 - *cc);
             let d = usize::from(*ee + 9 - *dd);
-            let idx = a * 19usize.pow(3) + b * 19usize.pow(2) + c * 19usize.pow(1) + d;
+            let idx = ((a * BUCKETS + b) * BUCKETS + c) * BUCKETS + d;
             if !seen[idx] {
                 totals[idx] += u16::from(*ee);
                 seen[idx] = true;

@@ -8,6 +8,8 @@ This has us find and run very simple instructions embedded in junk. The second
 part has state.
 */
 
+use std::sync::LazyLock;
+
 use regex::Regex;
 
 enum Instruction {
@@ -16,9 +18,13 @@ enum Instruction {
     Mul(u64, u64),
 }
 
+static MUL: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap());
+static MUL_DO_DONT: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)|do\(\)|don't\(\)").unwrap());
+
 pub fn solution_a(input: &str) -> u64 {
-    let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)").unwrap();
-    reg.captures_iter(input)
+    MUL.captures_iter(input)
         .map(|cap| {
             let a: u64 = cap[1].parse().unwrap();
             let b: u64 = cap[2].parse().unwrap();
@@ -28,8 +34,8 @@ pub fn solution_a(input: &str) -> u64 {
 }
 
 pub fn solution_b(input: &str) -> u64 {
-    let reg = Regex::new(r"mul\(([[:digit:]]+),([[:digit:]]+)\)|do\(\)|don't\(\)").unwrap();
-    reg.captures_iter(input)
+    MUL_DO_DONT
+        .captures_iter(input)
         .map(|cap| match &cap[0] {
             "do()" => Instruction::Do,
             "don't()" => Instruction::Dont,
