@@ -34,6 +34,11 @@ impl Machine {
     fn chk_analytical(&self) -> Option<(i64, i64)> {
         let det = self.a.0 * self.b.1 - self.a.1 * self.b.0;
         if det == 0 {
+            // Colinear buttons. Brute-force the feasible range, but guard the
+            // bounds against a divide-by-zero when a button has a zero axis.
+            if self.b.1 == 0 || self.a.0 == 0 {
+                return None;
+            }
             let min = self.prize.1 / self.b.1;
             let max = self.prize.0 / self.a.0;
             return self.chk_all(min..=max);
