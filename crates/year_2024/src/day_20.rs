@@ -69,11 +69,7 @@ pub fn solution_b(input: &str) -> Int {
 }
 
 pub fn main(_: bool) {
-    aoc::run(
-        "20",
-        |input| solution(input, 2, 100),
-        |input| solution(input, 20, 100),
-    );
+    aoc::run("20", solution_a, solution_b);
 }
 
 #[cfg(test)]

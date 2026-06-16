@@ -41,17 +41,14 @@ impl<T: Euclid> Point<T> {
 impl<T, V> Index<Point<V>> for Grid<T>
 where
     usize: TryFrom<V>,
+    <usize as TryFrom<V>>::Error: Debug,
 {
     type Output = T;
 
     fn index(&self, pos: Point<V>) -> &Self::Output {
         &self[(
-            usize::try_from(pos.1)
-                .ok()
-                .expect("Row must not be negative"),
-            usize::try_from(pos.0)
-                .ok()
-                .expect("Column must not be negative"),
+            usize::try_from(pos.1).expect("Row must not be negative"),
+            usize::try_from(pos.0).expect("Column must not be negative"),
         )]
     }
 }
@@ -64,8 +61,27 @@ where
 {
     fn index_mut(&mut self, pos: Point<V>) -> &mut Self::Output {
         &mut self[(
-            usize::try_from(pos.1).unwrap(),
-            usize::try_from(pos.0).unwrap(),
+            usize::try_from(pos.1).expect("Row must not be negative"),
+            usize::try_from(pos.0).expect("Column must not be negative"),
         )]
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Point;
+    use grid::grid;
+
+    // The crate disables doctests (the README is included as crate docs), so the
+    // indexing example lives here as a real test instead.
+    #[test]
+    fn index_by_point() {
+        let mut g = grid![[1, 2][3, 4]];
+        let p: Point<i64> = Point(0, 0);
+        assert_eq!(g[p], 1);
+        assert_eq!(g[Point(1i64, 0)], 2);
+        assert_eq!(g[Point(0i64, 1)], 3);
+        g[Point(1i64, 1)] = 9;
+        assert_eq!(g[Point(1i64, 1)], 9);
     }
 }
