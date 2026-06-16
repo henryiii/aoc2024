@@ -34,16 +34,17 @@ struct Registers {
     c: u64,
 }
 
-fn read_input(input: &str) -> ((u64, u64, u64), Vec<OpCode>) {
+fn read_input(input: &str) -> (Registers, Vec<OpCode>) {
     use aoc_parse::{parser, prelude::*};
 
     parser!(
-        section(
+        regs:section(
             line("Register A: " u64)
             line("Register B: " u64)
             line("Register C: " u64)
         )
-        section("Program: " repeat_sep(a:u8 => OpCode::try_from(a).unwrap(), ","))
+        prog:section("Program: " repeat_sep(a:u8 => OpCode::try_from(a).unwrap(), ","))
+        => (Registers::new(regs.0, regs.1, regs.2), prog)
     )
     .parse(input)
     .unwrap()
@@ -108,46 +109,30 @@ fn computer(mut reg: Registers, instructions: &[OpCode]) -> Vec<u8> {
 
 pub fn solution_a(input: &str) -> String {
     let (reg, instructions) = read_input(input);
-    let reg = Registers::new(reg.0, reg.1, reg.2);
     let out = computer(reg, &instructions);
     out.iter().join(",")
 }
 
 pub fn solution_b(input: &str) -> u64 {
     let (reg, instructions) = read_input(input);
-    let expected_out = instructions.iter().map(|x| *x as u8).collect_vec();
-    let size: u32 = expected_out.len().try_into().unwrap();
+    let expected: Vec<u8> = instructions.iter().map(|x| *x as u8).collect();
 
-    // Shortcut for simple runs
-    if size < 7 {
-        return (0..8u64.pow(size))
-            .find(|val| computer(Registers::new(*val, reg.1, reg.2), &instructions) == expected_out)
-            .unwrap();
+    // The program reads register A three bits at a time from the bottom up,
+    // emitting one output per group, so the i-th output is fixed by the octit
+    // at position i. Build A from the top octit down, keeping every prefix whose
+    // output matches the corresponding suffix of the program, then take the
+    // smallest. (The previous version locked in the first matching octit, which
+    // missed value 0 and wasn't general.)
+    let mut candidates = vec![0u64];
+    for i in (0..expected.len()).rev() {
+        let want = &expected[i..];
+        candidates = candidates
+            .iter()
+            .flat_map(|&acc| (0..8).map(move |octit| acc * 8 + octit))
+            .filter(|&a| computer(Registers::new(a, reg.b, reg.c), &instructions) == want)
+            .collect();
     }
-
-    // Try to find the value, assuming each value is locked in place one it prints
-    let mut val = 0;
-    for i in 0..expected_out.len() {
-        val *= 8;
-        for _ in 0..8 {
-            val += 1;
-            let reg = Registers::new(val, reg.1, reg.2);
-            let out = computer(reg, &instructions);
-            if *out.first().unwrap() == expected_out[expected_out.len() - 1 - i] {
-                break;
-            }
-        }
-    }
-    // The assumption above is too strict for the final value due to the two
-    // 8-bit registers
-    for i in (val - 0o77)..=(val + 0o77) {
-        let reg = Registers::new(i, reg.1, reg.2);
-        let out = computer(reg, &instructions);
-        if out == expected_out {
-            return i;
-        }
-    }
-    unreachable!();
+    candidates.into_iter().min().unwrap()
 }
 
 pub fn main(_: bool) {

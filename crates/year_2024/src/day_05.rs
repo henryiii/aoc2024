@@ -36,7 +36,10 @@ fn compare_rules(rules: &HashSet<(u64, u64)>, a: u64, b: u64) -> std::cmp::Order
 
 /// Returns true if the order follows the rules.
 fn in_order(rules: &HashSet<(u64, u64)>, order: &[u64]) -> bool {
-    order.is_sorted_by(|&a, &b| compare_rules(rules, a, b) == std::cmp::Ordering::Less)
+    // `is_sorted_by`'s predicate asks "is a ordered before-or-equal b". Pairs
+    // with no rule compare `Equal`, which must count as in order, so test
+    // against `Greater` rather than `== Less`.
+    order.is_sorted_by(|&a, &b| compare_rules(rules, a, b) != std::cmp::Ordering::Greater)
 }
 
 /// Reorders the order to follow the rules. Returns a new ordered vector.
