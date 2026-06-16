@@ -1,5 +1,6 @@
 #![allow(clippy::must_use_candidate)]
 #![allow(clippy::redundant_clone)]
+#![allow(clippy::implicit_clone)]
 
 use pyo3::prelude::*;
 

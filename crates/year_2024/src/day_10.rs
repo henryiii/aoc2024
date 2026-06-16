@@ -27,13 +27,13 @@ fn find_path(map: &Grid<u32>, start_pos: (i64, i64)) -> Vec<(i64, i64)> {
     Direction::iter()
         .flat_map(|dir| {
             let pos = start_pos + dir;
-            if let Some(&val) = map.get(pos.0, pos.1) {
-                if val == start_val + 1 {
-                    if val == 9 {
-                        return vec![pos];
-                    }
-                    return find_path(map, pos);
+            if let Some(&val) = map.get(pos.0, pos.1)
+                && val == start_val + 1
+            {
+                if val == 9 {
+                    return vec![pos];
                 }
+                return find_path(map, pos);
             }
             vec![]
         })

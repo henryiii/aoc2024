@@ -6,7 +6,7 @@ default-members = ["crates/aoc", "crates/year_2024"]
 [workspace.package]
 edition = "2024"
 version = "0.1.0"
-rust-version = "1.85"
+rust-version = "1.96"
 
 [workspace.lints.clippy]
 all = "warn"
@@ -15,21 +15,21 @@ nursery = "warn"
 
 [workspace.dependencies]
 aoc-parse = "0.2.18"
-cached = "0.54.0"
+cached = "2.0.2"
 clap = { version = "4.5.22", features = ["derive"] }
-counter = "0.6.0"
+counter = "0.7.1"
 derive-new = { version = "0.7.0", default-features = false }
-derive_more = { version = "1.0.0", features = ["add", "from", "mul", "try_from"] }
-grid = "0.16.0"
+derive_more = { version = "2.1.1", features = ["add", "from", "mul", "try_from"] }
+grid = "1.0.1"
 inline_colorization = "0.1.6"
-itertools = "0.14.0"
+itertools = "0.15.0"
 num = { version = "0.4.3", default-features = false }
 paste = "1.0.15"
-petgraph = { version = "0.7.1", default-features = false, features = ["graphmap"] }
+petgraph = { version = "0.8.3", default-features = false, features = ["graphmap", "std"] }
 regex = { version = "1.11.1", default-features = false }
-seq-macro = "0.3.5"
-strum = { version = "0.26.3", features = ["derive"] }
-thiserror = "2.0.8"
+seq-macro = "0.3.6"
+strum = { version = "0.28.0", features = ["derive"] }
+thiserror = "2.0.18"
 
 getdata = { path = "crates/getdata" }
 aoc = { path = "crates/aoc", default-features = false }
