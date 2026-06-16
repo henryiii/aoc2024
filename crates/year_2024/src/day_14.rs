@@ -81,11 +81,18 @@ fn solution_b_full(input: &str, vis: bool) -> usize {
             *pos = (*pos + *vel).rem_euclid(&size);
         }
 
+        // The picture appears the first time no two robots share a cell. Detect
+        // that while placing them instead of rescanning the whole grid after.
         grid.fill(0);
+        let mut unique = true;
         for (pos, _) in &robots {
             grid[*pos] += 1;
+            if grid[*pos] > 1 {
+                unique = false;
+                break;
+            }
         }
-        if grid.iter().all(|x| *x <= 1) {
+        if unique {
             if vis {
                 vis_grid(&grid);
             }
