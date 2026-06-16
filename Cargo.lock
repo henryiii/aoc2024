@@ -1272,7 +1272,9 @@ dependencies = [
 name = "python_2024"
 version = "0.1.0"
 dependencies = [
+ "paste",
  "pyo3",
+ "seq-macro",
  "year_2024",
 ]
 
