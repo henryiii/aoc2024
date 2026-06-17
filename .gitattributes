@@ -1,0 +1,4 @@
+# Normalize line endings to LF on checkout everywhere. Puzzle inputs are
+# embedded via include_str! and parsed assuming \n, so CRLF on Windows
+# checkouts would break parsing (and the tests that compile in samples/).
+* text=auto eol=lf
